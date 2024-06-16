@@ -8,7 +8,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:smart_cafeteria/main.dart';
+// import 'package:smart_cafeteria/main.dart';
+import 'package:smart_cafeteria/myapp.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
