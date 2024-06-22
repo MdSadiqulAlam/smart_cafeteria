@@ -17,9 +17,10 @@ class CategoryCard extends StatelessWidget {
       width: card_height * 0.9,
       height: card_height * 1,
       child: Card.filled(
+        // color: Theme.of(context).colorScheme.secondaryFixed,
         child: InkWell(
-          onTap: () {Placeholder();},
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+          onTap: () {},
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           child: Column(
             children: [
               Padding(
@@ -43,7 +44,7 @@ class CategoryCard extends StatelessWidget {
                 category_.name,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
-                  fontSize: 14.5,
+                  // fontSize: 14,
                 ),
               ),
             ],

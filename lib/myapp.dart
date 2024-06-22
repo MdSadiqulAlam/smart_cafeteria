@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/components/theme_switch.dart';
 import 'package:smart_cafeteria/pages/homepage/homepage.dart';
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
@@ -6,7 +7,6 @@ import 'config/theme/util.dart';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // final brightness = View.of(context).platformDispatcher.platformBrightness;
@@ -16,14 +16,18 @@ class MyApp extends StatelessWidget {
 
     // Use with Google Fonts package to use downloadable fonts
     TextTheme textTheme = createTextTheme(context, "Roboto", "Poppins");
-    MaterialTheme theme = MaterialTheme(textTheme);
+    MaterialTheme totalTheme = MaterialTheme(textTheme);
+    //ThemeData myTheme= brightness == Brightness.light ? totalTheme.light() : totalTheme.dark();
+    ThemeData myTheme =totalTheme.light();
+
     return MaterialApp(
       title: 'Flutter Demo',
-      // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      theme: theme.light(),
+      theme: myTheme,
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff63a002)),
+      // ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home:  const MyHomePage(),
     );
   }
 }
-
