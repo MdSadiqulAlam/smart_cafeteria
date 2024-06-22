@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/components/theme_switch.dart';
 import 'package:smart_cafeteria/pages/homepage/homepage.dart';
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
