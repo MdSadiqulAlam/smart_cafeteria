@@ -19,7 +19,12 @@ class CategoryCard extends StatelessWidget {
       child: Card.filled(
         // color: Theme.of(context).colorScheme.secondaryFixed,
         child: InkWell(
-          onTap: () {},
+          onTap: () {ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(" ${category_.name} Category "),
+              duration: const Duration(milliseconds: 700),
+            ),
+          );},
           borderRadius: const BorderRadius.all(Radius.circular(15)),
           child: Column(
             children: [

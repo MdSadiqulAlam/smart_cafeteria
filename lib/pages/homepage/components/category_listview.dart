@@ -5,15 +5,15 @@ import 'category_card.dart';
 class CategoryList extends StatelessWidget {
   const CategoryList({
     super.key,
-    required this.card_height,
+    required this.cardHeight,
   });
 
-  final double card_height;
+  final double cardHeight;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: card_height,
+      height: cardHeight,
       child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           itemCount: categories.length,
@@ -25,7 +25,7 @@ class CategoryList extends StatelessWidget {
           },
           itemBuilder: (BuildContext context, int index) {
             return CategoryCard(
-              card_height: card_height,
+              card_height: cardHeight,
               category_: categories[index],
             );
           }),

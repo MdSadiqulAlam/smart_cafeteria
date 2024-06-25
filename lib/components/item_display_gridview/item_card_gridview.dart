@@ -13,7 +13,14 @@ class ItemCardGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(" Item ${item_.name}"),
+            duration: const Duration(milliseconds: 700),
+          ),
+        );
+      },
       // splashColor: Theme.of(context).colorScheme.secondaryFixedDim,
       // radius: 50,
       borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -103,7 +110,14 @@ class ItemCardGridView extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: IconButton.outlined(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("${item_.name} added to cart"),
+                      duration: const Duration(milliseconds: 700),
+                    ),
+                  );
+                },
                 tooltip: "Add To Cart",
                 style: IconButton.styleFrom(
                   // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -139,6 +153,7 @@ class FavoriteIconButton extends StatefulWidget {
 
 class _FavoriteIconButtonState extends State<FavoriteIconButton> {
   bool favorite_ = false;
+
   // _FavoriteIconButtonState({
   //   required this.favorite_,
   // });

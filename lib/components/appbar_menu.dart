@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/components/theme_switch.dart';
 
 class AppbarMenu extends StatelessWidget {
   const AppbarMenu({super.key});
@@ -6,7 +7,7 @@ class AppbarMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Drawer(
-      // child:ThemeSwitch(),
+      child:ThemeSwitch(),
     );
   }
 }

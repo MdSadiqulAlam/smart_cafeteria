@@ -12,7 +12,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       // backgroundColor:
       //     Theme.of(context).colorScheme.inversePrimary, // not needed
       // backgroundColor: Theme.of(context).colorScheme.surface,
-      title:  const Text("title nai"),
+      title: const Text("Search Bar"),
       actions: [
         IconButton(
           icon: Icon(
@@ -20,10 +20,24 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             color: Theme.of(context).colorScheme.primary,
           ),
           // tooltip: "Notification",
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Notification"),
+                duration: Duration(milliseconds: 700),
+              ),
+            );
+          },
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("View Profile"),
+                duration: Duration(milliseconds: 700),
+              ),
+            );
+          },
           // tooltip: "Profile",
           style: IconButton.styleFrom(
             padding: const EdgeInsets.all(0),
