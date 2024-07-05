@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/pages/homepage/components/carousel_slider.dart';
-import '../../components/item_display_gridview/item_display_gridview.dart';
+import 'components/item_display_gridview.dart';
 import 'components/category_listview.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -8,8 +8,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    double cardHeight = const Size.fromHeight(kToolbarHeight).height * 1.8;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(10, 3, 10, 2),
@@ -24,7 +22,8 @@ class MyHomePage extends StatelessWidget {
               "Delicious Food",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                    fontSize: 19,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
             ),
           ),
@@ -38,7 +37,7 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          CategoryList(cardHeight: cardHeight),
+          CategoryList(),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -47,15 +46,16 @@ class MyHomePage extends StatelessWidget {
                 child: Text(
                   "Available NOW!",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 19,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                 ),
               ),
               const SizedBox(width: 10),
               const SizedBox(
-                height: 20,
-                width: 20,
+                height: 19,
+                width: 19,
                 child: Image(
                   image: AssetImage("assets/categorical_image/fire.gif"),
                   fit: BoxFit.cover,
@@ -71,9 +71,10 @@ class MyHomePage extends StatelessWidget {
             child: Text(
               "Ready To Go!",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
           ),
           // Padding(

@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
     // Use with Google Fonts package to use downloadable fonts
     TextTheme textTheme = createTextTheme(context, "Roboto", "Poppins");
     MaterialTheme totalTheme = MaterialTheme(textTheme);
-    ThemeData myTheme= brightness == Brightness.light ? totalTheme.light() : totalTheme.dark();
-    // ThemeData myTheme =totalTheme.light();
+    // ThemeData myTheme= brightness == Brightness.light ? totalTheme.light() : totalTheme.dark();
+    ThemeData myTheme =totalTheme.light();
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff63a002)),
       // ),
       debugShowCheckedModeBanner: false,
-      home:  RootPage(),
+      home:  const RootPage(),
     );
   }
 }

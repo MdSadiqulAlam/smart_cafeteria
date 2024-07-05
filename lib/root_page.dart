@@ -3,10 +3,21 @@ import 'package:smart_cafeteria/pages/cart/cart.dart';
 import 'package:smart_cafeteria/pages/favorites/favorites.dart';
 import 'package:smart_cafeteria/pages/homepage/homepage.dart';
 import 'package:smart_cafeteria/pages/orders/orders.dart';
-import 'components/appbar_menu.dart';
-import 'components/homepage_appbar.dart';
+import 'components/appbar.dart';
 
-List<Widget> allPages = [MyHomePage(), Favorites(), MyCart(), MyOrders()];
+class PageElement {
+  final Widget pageBody;
+  final String tittle;
+
+  PageElement({required this.pageBody, required this.tittle});
+}
+
+List<PageElement> allPages = [
+  PageElement(pageBody: MyHomePage(), tittle: "HomePage"),
+  PageElement(pageBody: Favorites(), tittle: "Favorites"),
+  PageElement(pageBody: MyCart(), tittle: "Cart"),
+  PageElement(pageBody: MyOrders(), tittle: "Orders")
+];
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -16,15 +27,20 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-
   int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: AppbarMenu(),
-      appBar: const HomeAppbar(),
-      body: allPages[currentPage],
+      // drawer: AppbarMenu(),
+      appBar: MyAppbar(
+        showTitle: true,
+        showNotification: true,
+        viewProfile: true,
+        currentPage: currentPage,
+        pageTitle: allPages[currentPage].tittle,
+      ),
+      body: allPages[currentPage].pageBody,
       bottomNavigationBar: NavigationBar(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         indicatorColor: Theme.of(context).colorScheme.primaryContainer,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../../model/test_model/item_info.dart';
+import '../../item_detail/item_detail.dart';
+
 class CarouselItem {
   String imgPath;
   String price;
@@ -41,10 +44,16 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           items: itemList.map((item) {
             return InkWell(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Item ${currentIndex + 1} tapped"),
-                    duration: const Duration(milliseconds: 700),
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text("Item ${currentIndex + 1} tapped"),
+                //     duration: const Duration(milliseconds: 700),
+                //   ),
+                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ItemDetail(item_: allItems.first),
                   ),
                 );
               },
@@ -99,7 +108,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           curve: Curves.linear,
           margin: EdgeInsets.symmetric(horizontal: isSelected ? 5 : 2),
           width: isSelected ? 33 : 12,
-          height: 8,
+          height: 7,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
             color: isSelected ? Colors.grey[600] : Colors.grey[400],
