@@ -15,7 +15,7 @@ class CategoryList extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: categories.length,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (BuildContext context, int index) {
+        separatorBuilder: (_, __) {
           return const SizedBox(
             width: 1,
           );

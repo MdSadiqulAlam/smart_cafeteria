@@ -17,7 +17,7 @@ class _FavoriteGridviewState extends State<FavoriteGridview> {
     return GridView.builder(
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
-      itemCount: allItems.length * 5,
+      itemCount: allItems.length * 2,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         // maxCrossAxisExtent: 180,

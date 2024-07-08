@@ -56,7 +56,9 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FilledButton.tonal(
-                    onPressed: _addToCart,
+                    onPressed: () {
+                      _addToCart();
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 5),
@@ -97,7 +99,9 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
                     ),
                   ),
                   FilledButton.tonal(
-                    onPressed: _addToCart,
+                    onPressed: () {
+                      _addToCart();
+                    },
                     child: const Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),

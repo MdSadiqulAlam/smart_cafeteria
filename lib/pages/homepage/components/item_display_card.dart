@@ -63,7 +63,7 @@ class ItemCardGridView extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 3),
+                  padding: const EdgeInsets.only(left: 10, right: 1.5),
                   child: Text(
                     item_.name.toCapitalCase(),
                     maxLines: 1,

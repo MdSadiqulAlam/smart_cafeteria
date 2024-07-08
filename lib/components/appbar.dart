@@ -23,7 +23,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
         const Size.fromHeight(kToolbarHeight).height * 0.75;
 
     return AppBar(
-      surfaceTintColor: Theme.of(context).colorScheme.secondaryContainer,
+      // surfaceTintColor: Theme.of(context).colorScheme.secondaryContainer,
       titleSpacing: 0,
       // title: const Text("Search Bar"),
       title: Visibility(
@@ -38,7 +38,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
                     pageTitle!,
                     style: TextStyle(
                       fontSize: 24,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 )),
@@ -63,7 +63,8 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Visibility(
-          visible: currentPage == 0,
+          // visible: currentPage == 0,
+          visible: viewProfile,
           child: IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(

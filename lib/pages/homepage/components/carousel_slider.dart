@@ -1,29 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
 import '../../../model/test_model/item_info.dart';
 import '../../item_detail/item_detail.dart';
-
-class CarouselItem {
-  String imgPath;
-  String price;
-
-  CarouselItem({
-    required this.imgPath,
-    required this.price,
-  });
-}
-
-final List<CarouselItem> itemList = [
-  CarouselItem(
-      imgPath: 'assets/test_image/carousel/chicken1.png', price: "100"),
-  CarouselItem(
-      imgPath: 'assets/test_image/carousel/khichuri1.png', price: "55"),
-  CarouselItem(
-      imgPath: 'assets/test_image/carousel/sandwich1.png', price: "50"),
-  CarouselItem(imgPath: 'assets/test_image/carousel/shin2.png', price: "10"),
-  CarouselItem(imgPath: 'assets/test_image/carousel/sub1.png', price: "80"),
-];
 
 class CarouselWithIndicator extends StatefulWidget {
   const CarouselWithIndicator({super.key});
@@ -41,7 +19,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       children: [
         CarouselSlider(
           // items: imgList.map((imgPath) =>Image.asset(imgPath)).toList() ,
-          items: itemList.map((item) {
+          items: allItems.take(5).map((item) {
             return InkWell(
               onTap: () {
                 // ScaffoldMessenger.of(context).showSnackBar(
@@ -66,7 +44,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.asset(
-                    item.imgPath,
+                    item.imagePath,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -78,7 +56,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             initialPage: 0,
             autoPlay: true,
             viewportFraction: 0.85,
-            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayInterval: const Duration(milliseconds: 2500),
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {
@@ -101,18 +79,17 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: List.generate(itemList.length, (index) {
+      children: List.generate(5, (index) {
         bool isSelected = index == currentIndex;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           curve: Curves.linear,
           margin: EdgeInsets.symmetric(horizontal: isSelected ? 5 : 2),
           width: isSelected ? 33 : 12,
-          height: 7,
+          height: 6.5,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
             color: isSelected ? Colors.grey[600] : Colors.grey[400],
-            // ? Theme.of(context).colorScheme.onTertiaryFixed
           ),
         );
       }),

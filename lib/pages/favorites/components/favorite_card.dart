@@ -25,7 +25,6 @@ class FavoriteCard extends StatelessWidget {
       },
       borderRadius: BorderRadius.circular(17),
       child: Ink(
-        // height: cardHeight,
         decoration: BoxDecoration(
           // border: Border.all(color: Theme.of(context).colorScheme.outlineVariant,width: 2),
           borderRadius: BorderRadius.circular(17),
@@ -38,11 +37,14 @@ class FavoriteCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(3),
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: const BorderRadius.horizontal(
+                        left: Radius.circular(17),
+                        right: Radius.circular(2),
+                      ),
                       child: Image.asset(
                         item_.imagePath,
                         fit: BoxFit.cover,
@@ -60,13 +62,13 @@ class FavoriteCard extends StatelessWidget {
                       item_.name.toCapitalCase(),
                       // style: GoogleFonts.poppins(fontSize: 17, color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.w500,),
                       style:
-                      Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                     ),
                     Row(
                       children: [
@@ -76,14 +78,14 @@ class FavoriteCard extends StatelessWidget {
                               .textTheme
                               .labelLarge
                               ?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                         ),
                         Icon(
                           Icons.local_fire_department_outlined,
                           color: Theme.of(context).colorScheme.outline,
                           size:
-                          Theme.of(context).textTheme.labelLarge?.fontSize,
+                              Theme.of(context).textTheme.labelLarge?.fontSize,
                           // weight: 123,
                         ),
                         Text(
@@ -92,8 +94,8 @@ class FavoriteCard extends StatelessWidget {
                               .textTheme
                               .labelMedium
                               ?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                         ),
                       ],
                     ),
@@ -102,9 +104,9 @@ class FavoriteCard extends StatelessWidget {
                       child: Text(
                         item_.itemDetail,
                         style:
-                        Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.outline,
-                        ),
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -113,12 +115,12 @@ class FavoriteCard extends StatelessWidget {
                     Text(
                       "TK. ${item_.price}",
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer,
-                        fontSize: 15,
-                        // fontWeight: FontWeight.bold,
-                      ),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontSize: 15,
+                            // fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ],
                 ),

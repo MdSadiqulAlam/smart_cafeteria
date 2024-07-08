@@ -51,7 +51,7 @@ class ItemDetail extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -64,18 +64,14 @@ class ItemDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 27,
                         ),
                   ),
-                  Expanded(
-                    child: Text(
-                      "  (${item_.itemDetail})",
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Text(
+                    '   x1',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ],
               ),
@@ -143,13 +139,28 @@ class ItemDetail extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 15),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  item_.itemDetail,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color:
+                    Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 "Description",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 18,
+                      fontSize: 19.2,
                       fontWeight: FontWeight.bold,
                     ),
               ),

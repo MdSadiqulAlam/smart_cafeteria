@@ -12,7 +12,7 @@ class ItemDisplayGridView extends StatelessWidget {
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: allItems.length * 5,
+      itemCount: allItems.length * 2,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         // crossAxisCount: 2,
         maxCrossAxisExtent: 180,

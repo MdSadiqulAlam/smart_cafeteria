@@ -23,7 +23,7 @@ class Favorites extends StatelessWidget {
                   // fontWeight: FontWeight.w500,
                 ),
           ),
-          Divider(color: Theme.of(context).colorScheme.onSurface),
+          Divider(color: Theme.of(context).colorScheme.outline),
           const SizedBox(height: 15),
           const FavoriteGridview(),
         ],
