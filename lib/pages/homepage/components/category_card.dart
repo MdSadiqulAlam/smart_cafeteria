@@ -1,4 +1,6 @@
+import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/pages/homepage/components/categorical_item_display.dart';
 import '../../../model/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -20,10 +22,17 @@ class CategoryCard extends StatelessWidget {
         // color: Theme.of(context).colorScheme.secondaryFixed,
         child: InkWell(
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(" ${category_.name} Category "),
-                duration: const Duration(milliseconds: 700),
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(" ${category_.name} Category "),
+            //     duration: const Duration(milliseconds: 700),
+            //   ),
+            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CategoricalItemDisplay(
+                    name: category_.name, tag: category_.tag),
               ),
             );
           },
@@ -48,7 +57,7 @@ class CategoryCard extends StatelessWidget {
                 ),
               ),
               Text(
-                category_.name,
+                category_.name.toCapitalCase(),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
                   // fontSize: 14,

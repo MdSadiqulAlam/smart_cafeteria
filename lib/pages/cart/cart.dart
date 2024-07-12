@@ -13,6 +13,7 @@ class MyCart extends StatefulWidget {
 class _MyCartState extends State<MyCart> {
   @override
   Widget build(BuildContext context) {
+    // print(allItems.length);
     return Column(
       children: [
         Expanded(
@@ -21,22 +22,20 @@ class _MyCartState extends State<MyCart> {
             padding: const EdgeInsets.fromLTRB(12, 3, 12, 2),
             // physics: const BouncingScrollPhysics(),
             physics: const ClampingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(1.2, 0, 1.2, 15),
-              child: ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: allItems.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 20),
-                itemBuilder: (_, int index) {
-                  final double cardHeight =
-                      const Size.fromHeight(kToolbarHeight).height * 2;
-                  MyItemInfo item_ = allItems[index % allItems.length];
-                  // const double textSize_ = 14;
+            child: ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              // itemCount: allItems.length,
+              itemCount: 7,
+              separatorBuilder: (_, __) => const SizedBox(height: 18),
+              itemBuilder: (_, int index) {
+                final double cardHeight =
+                    const Size.fromHeight(kToolbarHeight).height * 2;
+                MyItemInfo item_ = allItems[index % allItems.length];
+                // const double textSize_ = 14;
 
-                  return CartItemCard(item_: item_, cardHeight: cardHeight);
-                },
-              ),
+                return CartItemCard(item_: item_, cardHeight: cardHeight);
+              },
             ),
           ),
         ),
@@ -56,4 +55,3 @@ class _MyCartState extends State<MyCart> {
     );
   }
 }
-

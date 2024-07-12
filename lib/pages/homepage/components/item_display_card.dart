@@ -1,6 +1,7 @@
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/test_model/item_info.dart';
 import '../../item_detail/item_detail.dart';
 
@@ -89,7 +90,7 @@ class ItemCardGridView extends StatelessWidget {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onSecondaryContainer,
-                                  fontWeight: FontWeight.w100,
+                                  // fontWeight: FontWeight.w100,
                                 ),
                       ),
                       Icon(
@@ -134,10 +135,8 @@ class ItemCardGridView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     "TK. ${item_.price}",
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                    style: getTextTheme(context).titleSmall?.copyWith(
+                          color: getColorScheme(context).onSecondaryContainer,
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),

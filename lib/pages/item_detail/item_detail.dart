@@ -145,11 +145,10 @@ class ItemDetail extends StatelessWidget {
                 child: Text(
                   item_.itemDetail,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color:
-                    Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ),

@@ -5,14 +5,26 @@ import 'item_display_card.dart';
 class ItemDisplayGridView extends StatelessWidget {
   const ItemDisplayGridView({
     super.key,
+    this.filter = false,
+    this.filterCategory = "",
   });
+
+  final bool filter;
+  final String filterCategory;
 
   @override
   Widget build(BuildContext context) {
+    // Create a filtered list based on the filter criteria
+    final List<MyItemInfo> filteredItems = filter
+        ? allItems
+            .where((item) => item.category.contains(filterCategory))
+            .toList()
+        : allItems;
+
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: allItems.length * 2,
+      itemCount: filteredItems.length,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         // crossAxisCount: 2,
         maxCrossAxisExtent: 180,
@@ -22,7 +34,8 @@ class ItemDisplayGridView extends StatelessWidget {
         crossAxisSpacing: 7,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return ItemCardGridView(item_: allItems[index % allItems.length]);
+        MyItemInfo item_ = filteredItems[index % allItems.length];
+        return ItemCardGridView(item_: item_);
       },
     );
   }

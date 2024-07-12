@@ -63,10 +63,10 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 5),
                       child: LoadingAnimationWidget.fourRotatingDots(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                          size: 28),
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        size: 29,
+                      ),
                     ),
                   ),
                 ],

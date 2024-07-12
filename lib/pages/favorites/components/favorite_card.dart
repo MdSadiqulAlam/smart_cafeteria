@@ -1,5 +1,6 @@
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 
 import '../../../model/test_model/item_info.dart';
 import '../../item_detail/item_detail.dart';
@@ -74,18 +75,14 @@ class FavoriteCard extends StatelessWidget {
                       children: [
                         Text(
                           "KCal: ${item_.kcal} ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
+                          style: getTextTheme(context).labelLarge?.copyWith(
+                                color: getColorScheme(context).outline,
                               ),
                         ),
                         Icon(
                           Icons.local_fire_department_outlined,
-                          color: Theme.of(context).colorScheme.outline,
-                          size:
-                              Theme.of(context).textTheme.labelLarge?.fontSize,
+                          color: getColorScheme(context).outline,
+                          size: getTextTheme(context).labelLarge?.fontSize,
                           // weight: 123,
                         ),
                         Text(

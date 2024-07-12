@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_cafeteria/empty_screen.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppbar({
@@ -9,6 +10,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.showTitle = false,
     this.showNotification = false,
     this.viewProfile = false,
+    this.viewOption = false,
   });
 
   final int? currentPage;
@@ -16,22 +18,26 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool showTitle;
   final bool showNotification;
   final bool viewProfile;
+  final bool viewOption;
 
   @override
   Widget build(BuildContext context) {
     double searchBarHeight =
         const Size.fromHeight(kToolbarHeight).height * 0.75;
+    // print(preferredSize.height * 0.48);
+    // print(preferredSize.height * 0.6);
 
     return AppBar(
-      // surfaceTintColor: Theme.of(context).colorScheme.secondaryContainer,
+      surfaceTintColor: Theme.of(context).colorScheme.secondaryContainer,
       titleSpacing: 0,
       // title: const Text("Search Bar"),
       title: Visibility(
           visible: showTitle,
           child: currentPage == 0
-              ? Searchbar(
+              ? MySearchbar(
                   searchBarHeight: searchBarHeight,
-                  preferredSize: preferredSize)
+                  preferredSize: preferredSize,
+                )
               : Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Text(
@@ -47,10 +53,16 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           visible: showNotification,
           child: IconButton(
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EmptyScreen(),
+                ),
+              );
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Notification"),
-                  duration: Duration(milliseconds: 700),
+                  duration: Duration(milliseconds: 1000),
                 ),
               );
             },
@@ -58,8 +70,8 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
               Icons.notifications_none,
               color: Theme.of(context).colorScheme.primary,
             ),
-            iconSize: preferredSize.height * 0.48,
-            // tooltip: "Notification",
+            iconSize: 27,
+            tooltip: "Notifications",
           ),
         ),
         Visibility(
@@ -67,14 +79,20 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           visible: viewProfile,
           child: IconButton(
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EmptyScreen(),
+                ),
+              );
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("View Profile"),
-                  duration: Duration(milliseconds: 700),
+                  duration: Duration(milliseconds: 1000),
                 ),
               );
             },
-            // tooltip: "Profile",
+            tooltip: "View Profile",
             style: IconButton.styleFrom(
               padding: const EdgeInsets.all(0),
             ),
@@ -82,11 +100,48 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
               Icons.account_circle,
               color: Theme.of(context).colorScheme.primary,
             ),
-            iconSize: preferredSize.height * 0.6,
+            iconSize: 34,
+          ),
+        ),
+        Visibility(
+          // visible: currentPage == 0,
+          visible: viewOption,
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EmptyScreen(),
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("View Profile"),
+                  duration: Duration(milliseconds: 1000),
+                ),
+              );
+            },
+            tooltip: "Options",
+            style: IconButton.styleFrom(
+              padding: const EdgeInsets.all(0),
+            ),
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            iconSize: 25,
           ),
         ),
         const SizedBox(width: 15),
       ],
+      // bottom: TabBar(
+      //   // isScrollable: true,
+      //   tabs: [
+      //     Tab(text: 'All'),
+      //     Tab(text: 'Pending'),
+      //     Tab(text: 'Completed'),
+      //   ],
+      // ),
     );
   }
 
@@ -94,8 +149,8 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class Searchbar extends StatelessWidget {
-  const Searchbar({
+class MySearchbar extends StatelessWidget {
+  const MySearchbar({
     super.key,
     required this.searchBarHeight,
     required this.preferredSize,
@@ -134,7 +189,7 @@ class Searchbar extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                "Search Food Item ",
+                "Search Food Item",
                 style: GoogleFonts.roboto(
                   fontSize: 18,
                   color: Theme.of(context).colorScheme.primary,

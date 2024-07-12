@@ -101,8 +101,9 @@ class _ConfirmPaymentButtonState extends State<ConfirmPaymentButton> {
                   horizontal: 40,
                 ),
                 child: LoadingAnimationWidget.fourRotatingDots(
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    size: 33),
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  size: 36,
+                ),
               ),
             ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/homepage/components/carousel_slider.dart';
 import 'components/item_display_gridview.dart';
 import 'components/category_listview.dart';
@@ -20,10 +21,10 @@ class MyHomePage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 1.5),
             child: Text(
               "Delicious Food",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: getTextTheme(context).titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 19,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: getColorScheme(context).onSurface,
                   ),
             ),
           ),
