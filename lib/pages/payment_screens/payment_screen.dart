@@ -73,39 +73,27 @@ class _ConfirmPaymentButtonState extends State<ConfirmPaymentButton> {
           child: child,
         );
       },
-      child: loadingPayment == false
-          ? FilledButton.tonal(
-              onPressed: () {
-                _loadPayment();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
+      child: FilledButton.tonal(
+        onPressed: () {
+          _loadPayment();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: loadingPayment == false
+              ? Text(
                   'Confirm Payment',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
                       ?.copyWith(fontSize: 20),
                   // style: TextStyle(fontSize: 20),
-                ),
-              ),
-            )
-          : Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 7,
-                  horizontal: 40,
-                ),
-                child: LoadingAnimationWidget.fourRotatingDots(
+                )
+              : LoadingAnimationWidget.fourRotatingDots(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
-                  size: 36,
+                  size: 30,
                 ),
-              ),
-            ),
+        ),
+      ),
     );
   }
 }

@@ -24,141 +24,181 @@ class OrderCard extends StatelessWidget {
       return allItems[item.itemIndex].name.toCapitalCase();
     }).join(', ');
 
-    return Container(
-      // height: cardHeight,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        // color: order_.completed
-        //     ? getColorScheme(context).secondaryContainer
-        //     : brightness
-        //         ? getColorScheme(context).primaryFixed.withOpacity(0.8)
-        //         : getColorScheme(context).onPrimaryFixedVariant,
-        color: brightness
-            ? getColorScheme(context).secondaryContainer
-            : getColorScheme(context).secondaryContainer.withOpacity(0.85),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Order: ${order_.orderID}',
-                  style: getTextTheme(context).titleMedium?.copyWith(
-                        color: getColorScheme(context).onSecondaryContainer,
-                      ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: Text(
-                    order_.completed ? 'Completed' : 'Pending Pickup',
-                    style: getTextTheme(context).labelLarge?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: order_.completed
-                              ? Colors.green
-                              : Colors.amber.shade800,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 3),
-            Text(
-              itemNames,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: getTextTheme(context).titleSmall?.copyWith(
-                    fontSize: 18,
-                    color: getColorScheme(context).onSecondaryContainer,
-                    // fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 7),
-            MyStatusRow(
-              label: 'Status',
-              status: order_.completed ? 'Completed' : 'Paid',
-            ),
-            const MyHorizontalDivider(),
-            MyStatusRow(
-              label: 'Price (${order_.totalItem} Items)',
-              status: '${order_.totalPaid} Tk',
-            ),
-            const MyHorizontalDivider(),
-            MyStatusRow(
-              label: order_.completed ? 'Completed On' : 'Paid On',
-              status: '${order_.time} ${order_.date}',
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //Details button
-                SizedBox(
-                  width: getScreenWidth(context) * 0.35,
-                  child: FilledButton(
-                    onPressed: () {
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(
-                      //     content: Text("Order tapped"),
-                      //     duration: Duration(milliseconds: 700),
-                      //   ),
-                      // );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrderDetails(order_: order_),
-                        ),
-                      );
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor: brightness
-                          ? getColorScheme(context).primaryContainer
-                          : getColorScheme(context)
-                              .primaryContainer
-                              .withOpacity(0.57),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17),
-                      ),
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Getting QR code"),
+            duration: Duration(milliseconds: 700),
+          ),
+        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ItemDetail(item_: item_),
+        //   ),
+        // );
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Ink(
+        // height: cardHeight,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          // color: order_.completed
+          //     ? getColorScheme(context).secondaryContainer
+          //     : brightness
+          //         ? getColorScheme(context).primaryFixed.withOpacity(0.8)
+          //         : getColorScheme(context).onPrimaryFixedVariant,
+          color: brightness
+              ? getColorScheme(context).secondaryContainer
+              : getColorScheme(context).secondaryContainer.withOpacity(0.85),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Order: ${order_.orderID}',
+                      style: getTextTheme(context).titleMedium?.copyWith(
+                            color: getColorScheme(context).onSecondaryContainer,
+                          ),
                     ),
-                    child: Center(
+                  ),
+                  Container(
+                    // color: Colors.amber,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
                       child: Text(
-                        'Details',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: getColorScheme(context).onPrimaryContainer,
+                        order_.completed ? 'Completed' : 'Pending Pickup',
+                        style: getTextTheme(context).labelLarge?.copyWith(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: order_.completed
+                                  ? Colors.green
+                                  : Colors.amber.shade800,
+                            ),
+                      ),
+                    ),
+                  ),
+                  order_.completed
+                      ? const SizedBox.shrink()
+                      : Container(
+                          // color: Colors.red,
+                          child: Icon(Icons.qr_code_sharp, size: 20),
+                        ),
+                ],
+              ),
+              const SizedBox(height: 3),
+              Text(
+                itemNames,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: getTextTheme(context).titleSmall?.copyWith(
+                      fontSize: 18,
+                      color: getColorScheme(context).onSecondaryContainer,
+                      // fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 7),
+              MyStatusRow(
+                label: 'Status',
+                status: order_.completed ? 'Completed' : 'Paid',
+              ),
+              const MyHorizontalDivider(),
+              MyStatusRow(
+                label: 'Price (${order_.totalItem} Items)',
+                status: '${order_.totalPaid} Tk',
+              ),
+              const MyHorizontalDivider(),
+              MyStatusRow(
+                label: order_.completed ? 'Completed On' : 'Paid On',
+                status: '${order_.time} ${order_.date}',
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  //Details button
+                  SizedBox(
+                    width: getScreenWidth(context) * 0.35,
+                    child: FilledButton(
+                      onPressed: () {
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text("Order tapped"),
+                        //     duration: Duration(milliseconds: 700),
+                        //   ),
+                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetails(order_: order_),
+                          ),
+                        );
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: brightness
+                            ? getColorScheme(context).primaryContainer
+                            : getColorScheme(context)
+                                .primaryContainer
+                                .withOpacity(0.57),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Details',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: getColorScheme(context).onPrimaryContainer,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                // Reorder button
-                SizedBox(
-                  width: getScreenWidth(context) * 0.35,
-                  child: FilledButton(
-                    onPressed: () {
-                      checkoutBottomSheet(context);
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor:
-                          getColorScheme(context).primary.withOpacity(0.8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17),
+                  // Reorder button
+                  SizedBox(
+                    width: getScreenWidth(context) * 0.35,
+                    child: FilledButton(
+                      onPressed: () {
+                        checkoutBottomSheet(context);
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor:
+                            getColorScheme(context).primary.withOpacity(0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17),
+                        ),
+                      ),
+                      child: const Center(
+                        child: Text('Re-Order', style: TextStyle(fontSize: 18)),
                       ),
                     ),
-                    child: const Center(
-                      child: Text('Re-Order', style: TextStyle(fontSize: 18)),
-                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              order_.completed
+                  ? const SizedBox.shrink()
+                  : Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'Tap to get QRCode',
+                        style: TextStyle(
+                          color: getColorScheme(context).onSecondaryContainer,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+            ],
+          ),
         ),
       ),
     );
