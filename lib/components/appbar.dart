@@ -1,147 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_cafeteria/empty_screen.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
+import 'package:smart_cafeteria/pages/empty_screen.dart';
+
+import '../pages/authentication/login/login.dart';
+import '../pages/notification/notification.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppbar({
     super.key,
-    this.currentPage,
+    // this.currentPage,
     this.pageTitle = "",
     this.showTitle = false,
     this.showNotification = false,
     this.viewProfile = false,
     this.viewOption = false,
+    this.leadingBackArrow = true,
+    this.titlePadding = true,
   });
 
-  final int? currentPage;
+  // final int? currentPage;
   final String? pageTitle;
   final bool showTitle;
   final bool showNotification;
   final bool viewProfile;
   final bool viewOption;
+  final bool leadingBackArrow;
+  final bool titlePadding;
 
   @override
   Widget build(BuildContext context) {
-    double searchBarHeight =
-        const Size.fromHeight(kToolbarHeight).height * 0.75;
-    // print(preferredSize.height * 0.48);
-    // print(preferredSize.height * 0.6);
-
     return AppBar(
-      surfaceTintColor: Theme.of(context).colorScheme.secondaryContainer,
+      automaticallyImplyLeading: leadingBackArrow,
+      surfaceTintColor: getColorScheme(context).secondaryContainer,
       titleSpacing: 0,
-      // title: const Text("Search Bar"),
       title: Visibility(
-          visible: showTitle,
-          child: currentPage == 0
-              ? MySearchbar(
-                  searchBarHeight: searchBarHeight,
-                  preferredSize: preferredSize,
-                )
-              : Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Text(
-                    pageTitle!,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                )),
+        visible: showTitle,
+        child: pageTitle == 'HomePage'
+            ? const MySearchbar()
+            : Padding(
+                padding: EdgeInsets.only(left: titlePadding ? 30 : 0),
+                child: Text(pageTitle!, style: TextStyle(fontSize: 24, color: getColorScheme(context).primary)),
+              ),
+      ),
       actions: [
-        Visibility(
-          visible: showNotification,
-          child: IconButton(
+        if (showNotification)
+          IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EmptyScreen(),
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Notification"),
-                  duration: Duration(milliseconds: 1000),
-                ),
-              );
+              Get.to(()=>const NotificationScreen());
             },
-            icon: Icon(
-              Icons.notifications_none,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            iconSize: 27,
+            icon: Icon(Icons.notifications_none, color: getColorScheme(context).primary, size: 27),
             tooltip: "Notifications",
           ),
-        ),
-        Visibility(
-          // visible: currentPage == 0,
-          visible: viewProfile,
-          child: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EmptyScreen(),
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("View Profile"),
-                  duration: Duration(milliseconds: 1000),
-                ),
-              );
+        if (viewProfile)
+          PopupMenuButton<String>(
+            elevation: 7,
+            padding: const EdgeInsets.all(0),
+            icon: Icon(Icons.account_circle, color: getColorScheme(context).primary, size: 34),
+            onSelected: (value) {
+              if (value == 'profile') {
+                /// todo: user login
+                Get.to(()=>const LoginScreen());
+              }
+              // else if (value == 'settings') {
+              //   Get.to(()=>const EmptyScreen());
+              // }
             },
-            tooltip: "View Profile",
-            style: IconButton.styleFrom(
-              padding: const EdgeInsets.all(0),
-            ),
-            icon: Icon(
-              Icons.account_circle,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            iconSize: 34,
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem(
+                  value: 'profile', child: SizedBox(width: 100, child: Text('View Profile', style: TextStyle(fontSize: 16)))),
+              // const PopupMenuItem(
+              //   value: 'settings',
+              //   child: SizedBox(width: 100, child: Text('Settings', style: TextStyle(fontSize: 16))),
+              // ),
+            ],
           ),
-        ),
-        Visibility(
-          // visible: currentPage == 0,
-          visible: viewOption,
-          child: IconButton(
+        if (viewOption)
+          IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EmptyScreen(),
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("View Profile"),
-                  duration: Duration(milliseconds: 1000),
-                ),
-              );
+              Get.to(()=>const EmptyScreen());
             },
             tooltip: "Options",
-            style: IconButton.styleFrom(
-              padding: const EdgeInsets.all(0),
-            ),
-            icon: Icon(
-              Icons.more_vert_rounded,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            iconSize: 25,
+            style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+            icon: Icon(Icons.more_vert_rounded, color: getColorScheme(context).primary, size: 25),
           ),
-        ),
         const SizedBox(width: 15),
       ],
-      // bottom: TabBar(
-      //   // isScrollable: true,
-      //   tabs: [
-      //     Tab(text: 'All'),
-      //     Tab(text: 'Pending'),
-      //     Tab(text: 'Completed'),
-      //   ],
-      // ),
     );
   }
 
@@ -150,14 +95,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class MySearchbar extends StatelessWidget {
-  const MySearchbar({
-    super.key,
-    required this.searchBarHeight,
-    required this.preferredSize,
-  });
-
-  final double searchBarHeight;
-  final Size preferredSize;
+  const MySearchbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -166,36 +104,19 @@ class MySearchbar extends StatelessWidget {
       child: InkWell(
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(" SearchBar"),
-              duration: Duration(milliseconds: 700),
-            ),
+            const SnackBar(content: Text(" SearchBar"), duration: Duration(milliseconds: 700)),
           );
         },
         borderRadius: BorderRadius.circular(30),
         child: Ink(
-          height: searchBarHeight,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Theme.of(context).colorScheme.secondaryContainer,
-          ),
+          height: 42,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: getColorScheme(context).secondaryContainer),
           child: Row(
             children: [
               const SizedBox(width: 20),
-              Icon(
-                Icons.search_rounded,
-                color: Theme.of(context).colorScheme.primary,
-                size: preferredSize.height * 0.46,
-              ),
+              Icon(Icons.search_rounded, color: getColorScheme(context).primary, size: 26),
               const SizedBox(width: 10),
-              Text(
-                "Search Food Item",
-                style: GoogleFonts.roboto(
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                // style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18,fontFamily:  ),
-              ),
+              Text("Search Food Item", style: GoogleFonts.roboto(fontSize: 18, color: getColorScheme(context).primary)),
             ],
           ),
         ),

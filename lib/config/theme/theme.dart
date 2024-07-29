@@ -8,7 +8,8 @@ class MaterialTheme {
   static ColorScheme lightScheme() {
     return const ColorScheme(
       brightness: Brightness.light,
-      primary: Color(4283916632),
+      primary: Color(0xff576158),
+      // primary: Color(0xff636F65),
       surfaceTint: Color(4283916632),
       onPrimary: Color(4294967295),
       primaryContainer: Color(0xffbec9be),

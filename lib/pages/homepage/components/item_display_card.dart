@@ -1,8 +1,10 @@
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test_model/item_info.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
+
 import '../../item_detail/item_detail.dart';
 
 class ItemCardGridView extends StatelessWidget {
@@ -11,175 +13,156 @@ class ItemCardGridView extends StatelessWidget {
     required this.item_,
   });
 
-  final MyItemInfo item_;
+  final ItemModel item_;
 
   @override
   Widget build(BuildContext context) {
     final double ratingCount = item_.ratingCount;
     final Map<double, double> ratingMap = item_.ratingMap;
-    final double rating = fixedPrecision((5 * ratingMap[5]! +
-            4 * ratingMap[4]! +
-            3 * ratingMap[3]! +
-            2 * ratingMap[2]! +
-            1 * ratingMap[1]!) /
-        ratingCount);
+    final double rating = fixedPrecision(
+        (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
 
     return InkWell(
       onTap: () {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(" Item ${item_.name}"),
-        //     duration: const Duration(milliseconds: 700),
-        //   ),
-        // );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ItemDetail(item_: item_)));
+        /// old
+        // Get.to(()=>ItemDetail(item_: item_));
+        Get.to(() => ItemDetail(item_: item_));
       },
       // splashColor: Theme.of(context).colorScheme.secondaryFixedDim,
       // radius: 50,
       borderRadius: const BorderRadius.all(Radius.circular(12)),
       child: Ink(
-        decoration: BoxDecoration(
-          // border: Border.all(color: Theme.of(context).colorScheme.outlineVariant,width: 2),
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.secondaryContainer,
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: getColorScheme(context).secondaryContainer),
         child: Stack(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// image
                 Padding(
                   padding: const EdgeInsets.fromLTRB(5, 5, 5, 2),
                   child: AspectRatio(
                     aspectRatio: 1.5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        item_.imagePath,
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset(item_.imagePath, fit: BoxFit.cover),
                     ),
                   ),
                 ),
+
+                /// name
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 1.5),
+                  padding: const EdgeInsets.only(left: 7, right: 1.5),
                   child: Text(
                     item_.name.toCapitalCase(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     // style: GoogleFonts.poppins(fontSize: 17, color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.w500,),
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                    style: getTextTheme(context).headlineSmall?.copyWith(
+                          color: getColorScheme(context).onSecondaryContainer,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                 ),
+
+                /// rating and sold
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        "KCal: ${item_.kcal} ",
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                  // fontWeight: FontWeight.w100,
-                                ),
-                      ),
-                      Icon(
-                        Icons.local_fire_department_outlined,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        size: Theme.of(context).textTheme.labelMedium?.fontSize,
-                        // weight: 123,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       RatingBarIndicator(
-                          itemCount: 1,
-                          rating: fixedPrecision(rating / 5),
-                          itemSize: 17,
-                          unratedColor: Colors.white,
-                          itemBuilder: (_, __) {
-                            return Icon(
-                              Icons.star_sharp,
-                              color: Colors.amber.shade700,
-                            );
-                          }),
+                        itemCount: 1,
+                        rating: fixedPrecision(rating / 5),
+                        itemSize: 17,
+                        unratedColor: Colors.white,
+                        itemBuilder: (_, __) => Icon(Icons.star_sharp, color: Colors.amber.shade700),
+                      ),
                       Text(
                         "$rating  | sold:${item_.itemSold}",
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                ),
+                        style: getTextTheme(context).labelMedium?.copyWith(
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
                       ),
                     ],
                   ),
                 ),
+
+                /// price , calories
+                const SizedBox(height: 1),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "TK. ${item_.price}",
-                    style: getTextTheme(context).titleSmall?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Row(
+                    children: [
+                      Text(
+                        "TK. ${item_.price}",
+                        style: getTextTheme(context).titleSmall?.copyWith(
+                              color: getColorScheme(context).onSecondaryContainer,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      Text(
+                        "   | ",
+                        style: getTextTheme(context).labelLarge?.copyWith(
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
+                      ),
+                      Icon(
+                        Icons.local_fire_department_outlined,
+                        color: getColorScheme(context).onSecondaryContainer,
+                        size: getTextTheme(context).labelLarge?.fontSize,
+                        // weight: 123,
+                      ),
+                      Text(
+                        "${item_.kcal} Cal",
+                        style: getTextTheme(context).labelLarge?.copyWith(
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const Positioned(
-              top: 2,
-              right: 1,
-              child: FavoriteIconButton(),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: IconButton.outlined(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("${item_.name} added to cart"),
-                      duration: const Duration(milliseconds: 700),
-                    ),
-                  );
-                },
-                tooltip: "Add To Cart",
-                style: IconButton.styleFrom(
-                  // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                  padding: const EdgeInsets.all(3),
-                  minimumSize: const Size.square(20),
-                  maximumSize: const Size.square(40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(11),
-                  ),
-                  side: BorderSide(
-                    width: 2,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                ),
-                icon: const Icon(Icons.add),
-              ),
-            ),
+
+            /// favorite button
+            const Positioned(top: 8, right: 7, child: FavoriteIconButton()),
+
+            /// add to cart
+            Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(item_: item_)),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AddToCartOutlineButton extends StatelessWidget {
+  const AddToCartOutlineButton({super.key, required this.item_});
+
+  final ItemModel item_;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 27,
+      width: 27,
+      child: IconButton.outlined(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("${item_.name} added to cart"), duration: const Duration(milliseconds: 700)),
+          );
+        },
+        tooltip: "Add To Cart",
+        style: IconButton.styleFrom(
+          padding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          side: BorderSide(width: 2, color: getColorScheme(context).outline),
+        ),
+        icon: const Icon(Icons.add),
       ),
     );
   }
@@ -188,18 +171,12 @@ class ItemCardGridView extends StatelessWidget {
 class FavoriteIconButton extends StatefulWidget {
   const FavoriteIconButton({super.key});
 
-  // final bool isFavorite = false;
-
   @override
   State<FavoriteIconButton> createState() => _FavoriteIconButtonState();
 }
 
 class _FavoriteIconButtonState extends State<FavoriteIconButton> {
   bool favorite_ = false;
-
-  // _FavoriteIconButtonState({
-  //   required this.favorite_,
-  // });
 
   void _toggleFavorite() {
     setState(() {
@@ -209,18 +186,18 @@ class _FavoriteIconButtonState extends State<FavoriteIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton.filledTonal(
-      onPressed: _toggleFavorite,
-      tooltip: "Add To Favorites",
-      style: IconButton.styleFrom(
-        padding: const EdgeInsets.all(7),
-        minimumSize: const Size.square(30),
-        maximumSize: const Size.square(50),
-      ),
-      icon: Icon(
-        favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-        color: Theme.of(context).colorScheme.error,
-        size: favorite_ ? 21 : 18,
+    return SizedBox(
+      height: 32,
+      width: 32,
+      child: IconButton.filledTonal(
+        onPressed: _toggleFavorite,
+        tooltip: "Add To Favorites",
+        style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+        icon: Icon(
+          favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+          color: Theme.of(context).colorScheme.error,
+          size: favorite_ ? 21 : 18,
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../model/test_model/item_info.dart';
+
+import '../../model/item_model.dart';
 import 'components/cart_item_card.dart';
 import 'components/checkout_segment.dart';
 
@@ -13,44 +14,27 @@ class MyCart extends StatefulWidget {
 class _MyCartState extends State<MyCart> {
   @override
   Widget build(BuildContext context) {
-    // print(allItems.length);
     return Column(
       children: [
         Expanded(
-          flex: 13,
+          flex: 14,
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(12, 3, 12, 2),
             // physics: const BouncingScrollPhysics(),
-            physics: const ClampingScrollPhysics(),
             child: ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               // itemCount: allItems.length,
               itemCount: 7,
-              separatorBuilder: (_, __) => const SizedBox(height: 18),
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (_, int index) {
-                final double cardHeight =
-                    const Size.fromHeight(kToolbarHeight).height * 2;
-                MyItemInfo item_ = allItems[index % allItems.length];
-                // const double textSize_ = 14;
-
-                return CartItemCard(item_: item_, cardHeight: cardHeight);
+                ItemModel item_ = allItems[index % allItems.length];
+                return CartItemCard(item_: item_);
               },
             ),
           ),
         ),
-        const Expanded(
-          flex: 1,
-          // child: Container(
-          //   padding: const EdgeInsets.only(bottom: 5),
-          //   color: Colors.grey.withOpacity(0  ),
-          //   child: FilledButton(
-          //     onPressed: () {},
-          //     child: SizedBox(width:MediaQuery.of(context).size.width*0.8,child: Text("nai")),
-          //   ),
-          // ),
-          child: CheckoutSegment(),
-        ),
+        const Expanded(flex: 1, child: CheckoutSegment()),
       ],
     );
   }

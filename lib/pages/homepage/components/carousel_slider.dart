@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../../model/test_model/item_info.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
+
+import '../../../model/item_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class CarouselWithIndicator extends StatefulWidget {
@@ -20,33 +23,18 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
         CarouselSlider(
           // items: imgList.map((imgPath) =>Image.asset(imgPath)).toList() ,
           items: allItems.take(5).map((item) {
+            ItemModel item_ = allItems[currentIndex];
             return InkWell(
               onTap: () {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     content: Text("Item ${currentIndex + 1} tapped"),
-                //     duration: const Duration(milliseconds: 700),
-                //   ),
-                // );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ItemDetail(item_: allItems.first),
-                  ),
-                );
+                Get.to(() => ItemDetail(item_: item_));
               },
               borderRadius: BorderRadius.circular(15),
               child: Ink(
-                width: MediaQuery.sizeOf(context).width * 0.85,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                width: getScreenWidth(context) * 0.85,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    item.imagePath,
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.asset(item.imagePath, fit: BoxFit.cover),
                 ),
               ),
             );
@@ -56,7 +44,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             initialPage: 0,
             autoPlay: true,
             viewportFraction: 0.85,
-            autoPlayInterval: const Duration(milliseconds: 2500),
+            autoPlayInterval: const Duration(milliseconds: 2000),
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {
@@ -65,12 +53,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             },
           ),
         ),
-        Positioned(
-          bottom: 7,
-          left: 0,
-          right: 0,
-          child: buildCarouselIndicator(),
-        )
+        Positioned(bottom: 7, left: 0, right: 0, child: buildCarouselIndicator()),
       ],
     );
   }
@@ -85,12 +68,10 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           duration: const Duration(milliseconds: 250),
           curve: Curves.linear,
           margin: EdgeInsets.symmetric(horizontal: isSelected ? 5 : 2),
-          width: isSelected ? 33 : 12,
-          height: 6.5,
+          width: isSelected ? 33 : 11,
+          height: 5.5,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: isSelected ? Colors.grey[600] : Colors.grey[400],
-          ),
+              borderRadius: BorderRadius.circular(40), color: isSelected ? Colors.grey.shade600 : Colors.grey.shade400),
         );
       }),
     );

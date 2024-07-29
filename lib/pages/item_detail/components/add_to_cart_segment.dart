@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 
 class AddToCartSegment extends StatefulWidget {
   const AddToCartSegment({super.key});
@@ -30,10 +31,7 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
         itemCount = 1;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Item Added to Cart"),
-          duration: Duration(milliseconds: 700),
-        ),
+        const SnackBar(content: Text("Item Added to Cart"), duration: Duration(milliseconds: 700)),
       );
     }
   }
@@ -45,31 +43,19 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         transitionBuilder: (Widget child, Animation<double> animation) {
-          return ScaleTransition(
-            scale: animation,
-            child: child,
-          );
+          return ScaleTransition(scale: animation, child: child);
         },
         child: addingToCart
-            ? Row(
+            ? FilledButton.tonal(
                 key: const ValueKey<bool>(true),
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FilledButton.tonal(
-                    onPressed: () {
-                      _addToCart();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 5),
-                      child: LoadingAnimationWidget.fourRotatingDots(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        size: 29,
-                      ),
-                    ),
+                onPressed: _addToCart,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                    color: getColorScheme(context).onSecondaryContainer,
+                    size: 29,
                   ),
-                ],
+                ),
               )
             : Row(
                 key: const ValueKey<bool>(false),
@@ -87,8 +73,7 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
                             _updateItemCount(-1);
                           },
                         ),
-                        Text("$itemCount",
-                            style: const TextStyle(fontSize: 20)),
+                        Text("$itemCount", style: const TextStyle(fontSize: 20)),
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
@@ -99,16 +84,10 @@ class _AddToCartSegmentState extends State<AddToCartSegment> {
                     ),
                   ),
                   FilledButton.tonal(
-                    onPressed: () {
-                      _addToCart();
-                    },
+                    onPressed: _addToCart,
                     child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
-                      child: Text(
-                        "Add To Cart",
-                        style: TextStyle(fontSize: 20),
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+                      child: Text("Add To Cart", style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 ],

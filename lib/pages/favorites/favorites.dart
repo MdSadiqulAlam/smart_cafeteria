@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/favorites/components/favorite_gridview.dart';
-
-int cnt = 35;
 
 class Favorites extends StatelessWidget {
   const Favorites({super.key});
+
+  final int cnt = 35;
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +18,14 @@ class Favorites extends StatelessWidget {
         children: [
           Text(
             "Favorite Items ($cnt)",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            style: getTextTheme(context).titleLarge?.copyWith(
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.onSurface,
-                  // fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w500,
                 ),
           ),
-          Divider(color: Theme.of(context).colorScheme.outline),
-          const SizedBox(height: 15),
+          Divider(color: getColorScheme(context).outline),
+          const SizedBox(height: 5),
           const FavoriteGridview(),
         ],
       ),

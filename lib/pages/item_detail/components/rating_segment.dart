@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_cafeteria/pages/item_detail/components/rating_star_indicator.dart';
 import 'package:smart_cafeteria/pages/item_detail/components/rating_progress_indicator.dart';
+import 'package:smart_cafeteria/pages/item_detail/components/rating_star_indicator.dart';
 
 class RatingSegment extends StatelessWidget {
   const RatingSegment({

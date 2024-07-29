@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/model/test_model/item_info.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
+
 import 'favorite_card.dart';
 
 class FavoriteGridview extends StatefulWidget {
@@ -21,13 +22,14 @@ class _FavoriteGridviewState extends State<FavoriteGridview> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         // maxCrossAxisExtent: 180,
-        mainAxisExtent: 100,
+        mainAxisExtent: 103,
         // childAspectRatio: 0.95,
         mainAxisSpacing: 10,
         // crossAxisSpacing: 7,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return FavoriteCard(item_: allItems[index % allItems.length]);
+        final ItemModel item_ = allItems[index % allItems.length];
+        return FavoriteCard(item_: item_);
       },
     );
   }

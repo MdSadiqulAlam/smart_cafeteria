@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.13.1
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
   change_case: ^2.1.0
@@ -20,20 +21,25 @@ dependencies:
   go_router: ^14.2.0
   flutter_rating_bar: ^4.0.1
   intl: ^0.19.0
+  get: ^4.6.6
+  smooth_page_indicator: ^1.2.0
+  readmore: ^3.0.0
+
+  # firebase
+  firebase_core: ^3.2.0
+  firebase_auth: ^5.1.2
+  get_storage: ^2.1.1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^4.0.0
 
 flutter_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
-  image_path: "assets/logos/smart_cafeteria.png"
-  adaptive_icon_background: "#9e9e9e"
-  adaptive_icon_foreground: "assets/logos/app_icon.png"
+  image_path: "assets/logos/app_logo.png"
 
 flutter:
   uses-material-design: true
@@ -42,3 +48,4 @@ flutter:
      - assets/categorical_image/
      - assets/test_image/
      - assets/test_icons/
+     - assets/onboard_image/

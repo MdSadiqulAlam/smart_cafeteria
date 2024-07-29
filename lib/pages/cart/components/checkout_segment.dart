@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 
-import '../../payment_screens/checkout_bottom_sheet.dart';
+import '../../payment/checkout_bottom_sheet.dart';
 
 class CheckoutSegment extends StatelessWidget {
   const CheckoutSegment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const double textSize_ = 19;
+    const double textSize_ = 18;
+
     return Container(
       decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: Theme.of(context).colorScheme.outline,
-            width: 0.5,
-          ),
-        ),
-        color: Theme.of(context).colorScheme.secondaryContainer,
+        border: Border.symmetric(horizontal: BorderSide(color: getColorScheme(context).outline, width: 0.5)),
+        color: getColorScheme(context).secondaryContainer,
       ),
-      height: 20,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -30,14 +26,13 @@ class CheckoutSegment extends StatelessWidget {
               children: [
                 Icon(
                   Icons.local_fire_department_outlined,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  color: getColorScheme(context).onSecondaryContainer,
                   size: textSize_ + 3,
                 ),
                 Text(
-                  "200",
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                  "200 Cal",
+                  style: getTextTheme(context).labelLarge?.copyWith(
+                        color: getColorScheme(context).onSecondaryContainer,
                         fontSize: textSize_,
                       ),
                 ),
@@ -51,17 +46,16 @@ class CheckoutSegment extends StatelessWidget {
               TextSpan(children: [
                 TextSpan(
                   text: "Total: ",
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                  style: getTextTheme(context).labelLarge?.copyWith(
+                        color: getColorScheme(context).onSecondaryContainer,
                         fontSize: textSize_,
                       ),
                 ),
                 TextSpan(
                   text: "970 Tk.",
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  style: getTextTheme(context).labelLarge?.copyWith(
                         // color: Theme.of(context).colorScheme.onSecondaryContainer,
-                        color: Theme.of(context).colorScheme.error,
+                        color: getColorScheme(context).error,
                         fontSize: textSize_ + 3,
                       ),
                 ),
@@ -72,9 +66,7 @@ class CheckoutSegment extends StatelessWidget {
             onPressed: () {
               checkoutBottomSheet(context);
             },
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 17),
-            ),
+            style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 17)),
             child: Text(
               "CheckOut (7)",
               style: TextStyle(fontSize: textSize_ - 2),

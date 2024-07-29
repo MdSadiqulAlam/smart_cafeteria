@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class GetConfig {
 bool getBrightness(BuildContext context) {
   return true;
   // return (View.of(context).platformDispatcher.platformBrightness ==Brightness.light);
@@ -20,4 +19,3 @@ ColorScheme getColorScheme(BuildContext context) =>
     Theme.of(context).colorScheme;
 
 TextTheme getTextTheme(BuildContext context) => Theme.of(context).textTheme;
-// }

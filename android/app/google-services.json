@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "171370620446",
+    "project_id": "smartcafe-202114064",
+    "storage_bucket": "smartcafe-202114064.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171370620446:android:99dd05f1d40a336e60f00f",
+        "android_client_info": {
+          "package_name": "com.example.smart_cafeteria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171370620446-82r2snm8rruam7p270fn9l796pup89bc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smart_cafeteria",
+            "certificate_hash": "dd083a847fd3044f92521ac1d6e66c3a4a4c09d9"
+          }
+        },
+        {
+          "client_id": "171370620446-03o2kdj8ncevu79sg3hpkv41sgjsc4uf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1MR1oY-zpVJ7bw18uaKgZQAZRx0pTzE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171370620446-03o2kdj8ncevu79sg3hpkv41sgjsc4uf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "171370620446-g8hgtb68p79evic4ohjfmvu9lih5vhcp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartCafeteria"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

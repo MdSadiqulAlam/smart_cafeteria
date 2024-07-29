@@ -4,11 +4,7 @@ import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/pages/homepage/components/item_display_gridview.dart';
 
 class CategoricalItemDisplay extends StatelessWidget {
-  const CategoricalItemDisplay({
-    super.key,
-    required this.name,
-    required this.tag,
-  });
+  const CategoricalItemDisplay({super.key, required this.name, required this.tag});
 
   final String name;
   final String tag;
@@ -18,7 +14,8 @@ class CategoricalItemDisplay extends StatelessWidget {
     return Scaffold(
       appBar: MyAppbar(showTitle: true, pageTitle: name.toCapitalCase()),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 2),
+        // padding: const EdgeInsets.fromLTRB(10, 10, 10, 2),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 2),
         physics: const BouncingScrollPhysics(),
         child: ItemDisplayGridView(filter: true, filterCategory: tag),
       ),
