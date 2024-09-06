@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/model/item_model.dart';
+import 'package:smart_cafeteria/model/test/item_model.dart';
 
 import 'favorite_card.dart';
 

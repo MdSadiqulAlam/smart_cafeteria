@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
-import '../../../model/item_model.dart';
+import '../../../model/test/item_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class CarouselWithIndicator extends StatefulWidget {

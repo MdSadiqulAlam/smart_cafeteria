@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/onboarding/onboarding_controller.dart';
-import 'package:smart_cafeteria/pages/onboarding/onboarding_page.dart';
+import 'package:smart_cafeteria/pages/onboarding/components/onboarding_controller.dart';
+import 'package:smart_cafeteria/pages/onboarding/components/onboarding_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding extends StatelessWidget {

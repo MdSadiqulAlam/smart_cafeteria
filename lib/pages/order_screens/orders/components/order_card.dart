@@ -2,8 +2,8 @@ import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/item_model.dart';
-import 'package:smart_cafeteria/model/order_model.dart';
+import 'package:smart_cafeteria/model/test/item_model.dart';
+import 'package:smart_cafeteria/model/test/order_model.dart';
 import 'package:smart_cafeteria/pages/order_screens/order_detail/order_details.dart';
 
 import '../../../payment/checkout_bottom_sheet.dart';

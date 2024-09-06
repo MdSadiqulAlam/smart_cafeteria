@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/loading_screen.dart';
+import 'package:smart_cafeteria/general_bindings.dart';
+import 'package:smart_cafeteria/components/loading_widgets.dart';
 
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: myTheme,
+      initialBinding: GeneralBindings(),
       // theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff63a002))),
       debugShowCheckedModeBanner: false,
       home: const LoadingScreen(),

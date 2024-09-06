@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/item_model.dart';
-import 'package:smart_cafeteria/model/order_model.dart';
+import 'package:smart_cafeteria/model/test/item_model.dart';
+import 'package:smart_cafeteria/model/test/order_model.dart';
 import 'order_detail_component.dart';
 import 'ordered_item_card.dart';
 

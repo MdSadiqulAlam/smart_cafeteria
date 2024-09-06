@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/notification_model.dart';
+import 'package:smart_cafeteria/model/test/notification_model.dart';
 import 'components/notification_card.dart';
 
 class NotificationScreen extends StatelessWidget {

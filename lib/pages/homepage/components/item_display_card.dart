@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/item_model.dart';
+import 'package:smart_cafeteria/model/test/item_model.dart';
 
 import '../../item_detail/item_detail.dart';
 

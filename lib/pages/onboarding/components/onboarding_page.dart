@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../config/get_config.dart';
+import '../../../config/get_config.dart';
 
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({super.key, required this.title, required this.subtitle, required this.imagePath});

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:get/get.dart';
-import 'package:smart_cafeteria/pages/root_page.dart';
+import 'package:smart_cafeteria/pages/authentication/signup/components/email_verification_controller.dart';
 
 Future<void> emailVerificationBottomSheet({required BuildContext context, required String email_}) async {
+  final controller = Get.put(EmailVerificationController());
   showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {
@@ -40,7 +41,7 @@ Future<void> emailVerificationBottomSheet({required BuildContext context, requir
                 SizedBox(
                   width: getScreenWidth(context) * 0.42,
                   child: FilledButton.tonal(
-                    onPressed: () {},
+                    onPressed: () => controller.sendEmailVerification(),
                     child: const Text('Resend Email', style: TextStyle(fontSize: 17)),
                   ),
                 ),
@@ -49,16 +50,7 @@ Future<void> emailVerificationBottomSheet({required BuildContext context, requir
                 SizedBox(
                   width: getScreenWidth(context) * 0.42,
                   child: FilledButton(
-                    onPressed: () {
-                      /// todo: check email verified
-                      // emailVerificationAlert(context);
-                      Get.off(() => const RootPage());
-                      Get.snackbar(
-                        'Account Created Successfully',
-                        'Welcome to Smart Cafeteria',
-                        backgroundColor: getColorScheme(context).primaryContainer,
-                      );
-                    },
+                    onPressed: () => controller.checkEmailVerificationStatus(),
                     child: const Text('Continue', style: TextStyle(fontSize: 17)),
                   ),
                 ),
@@ -78,7 +70,7 @@ Future<void> emailVerificationAlert(BuildContext context) async {
       return AlertDialog(
         title: const Text('Email unverified!'),
         content: const Text('Please verify the provided email before continuing'),
-        actions: <Widget>[FilledButton.tonal(onPressed: () => Get.back(), child: const Text('OK'))],
+        actions: <Widget>[FilledButton(onPressed: () => Get.back(), child: const Text('OK'))],
       );
     },
   );

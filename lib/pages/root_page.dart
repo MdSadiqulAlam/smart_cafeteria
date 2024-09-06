@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/cart/cart.dart';
@@ -32,6 +33,7 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    // print(FirebaseAuth.instance.currentUser);
     return Scaffold(
       // drawer: AppbarMenu(),
       appBar: MyAppbar(

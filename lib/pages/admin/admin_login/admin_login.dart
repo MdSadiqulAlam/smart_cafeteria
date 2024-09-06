@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/empty_screen.dart';
-import 'package:smart_cafeteria/pages/role_based_enter_screen.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 
 class AdminLogin extends StatelessWidget {
   const AdminLogin({super.key});

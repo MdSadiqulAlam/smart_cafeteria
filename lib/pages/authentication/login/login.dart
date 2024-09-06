@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/role_based_enter_screen.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 
-import '../../../components/form_components.dart';
-import 'components/user_login_form.dart';
+import 'package:smart_cafeteria/components/form_components.dart';
+import 'package:smart_cafeteria/pages/authentication/login/components/user_login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

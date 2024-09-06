@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/authentication/signup/components/email_verification_bottom_sheet.dart';
+import 'package:smart_cafeteria/pages/authentication/signup/components/signup_controller.dart';
+import 'package:smart_cafeteria/utilities/validators.dart';
 
 class UserSignupForm extends StatelessWidget {
   const UserSignupForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SignupController());
+
     return Form(
+      key: controller.signupFormKey,
       child: Column(
         children: [
           Row(
@@ -15,6 +21,8 @@ class UserSignupForm extends StatelessWidget {
               /// first name
               Expanded(
                 child: TextFormField(
+                  controller: controller.firstName,
+                  validator: (value) => MyValidator.validateEmptyText('First Name', value),
                   expands: false,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -28,6 +36,8 @@ class UserSignupForm extends StatelessWidget {
               const SizedBox(width: 15),
               Expanded(
                 child: TextFormField(
+                  controller: controller.lastName,
+                  validator: (value) => MyValidator.validateEmptyText('Last Name', value),
                   expands: false,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -42,6 +52,8 @@ class UserSignupForm extends StatelessWidget {
           /// email
           const SizedBox(height: 16),
           TextFormField(
+            controller: controller.email,
+            validator: (value) => MyValidator.validateEmail(value),
             expands: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -53,6 +65,8 @@ class UserSignupForm extends StatelessWidget {
           /// phone
           const SizedBox(height: 16),
           TextFormField(
+            controller: controller.phoneNumber,
+            validator: (value) => MyValidator.validatePhoneNumber(value),
             expands: false,
             decoration: InputDecoration(
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -63,36 +77,46 @@ class UserSignupForm extends StatelessWidget {
 
           /// password
           const SizedBox(height: 16),
-          TextFormField(
-            expands: false,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-              labelText: 'Create Password',
-              prefixIcon: const Icon(Icons.password_rounded),
-              suffixIcon: const Icon(Icons.visibility_off_outlined),
+          Obx(
+            () => TextFormField(
+              controller: controller.createPassword,
+              validator: (value) => MyValidator.validatePassword(value),
+              obscureText: controller.hidePassword.value,
+              expands: false,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                labelText: 'Create Password',
+                prefixIcon: const Icon(Icons.password_rounded),
+                suffixIcon: IconButton(
+                  onPressed: () => controller.hidePassword.value = !controller.hidePassword.value,
+                  icon: Icon(controller.hidePassword.value ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                ),
+              ),
             ),
           ),
 
           /// confirm password
-          const SizedBox(height: 16),
-          TextFormField(
-            expands: false,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-              labelText: 'Confirm Password',
-              prefixIcon: const Icon(Icons.password_rounded),
-              suffixIcon: const Icon(Icons.visibility_off_outlined),
-            ),
-          ),
+          // const SizedBox(height: 16),
+          // TextFormField(
+          //   controller: controller.confirmPassword,
+          //   expands: false,
+          //   decoration: InputDecoration(
+          //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          //     labelText: 'Confirm Password',
+          //     prefixIcon: const Icon(Icons.password_rounded),
+          //     suffixIcon: const Icon(Icons.visibility_off_outlined),
+          //   ),
+          // ),
 
           /// signup button
-          const SizedBox(height: 40),
+          const SizedBox(height: 50),
           SizedBox(
             width: getScreenWidth(context) * 0.7,
             child: FilledButton(
               onPressed: () {
                 /// bottom sheet
-                emailVerificationBottomSheet(context: context, email_: 'sadiqul@gmail.com');
+                // emailVerificationBottomSheet(context: context, email_: 'sadiqul@gmail.com');
+                controller.signup(context);
               },
               style: FilledButton.styleFrom(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

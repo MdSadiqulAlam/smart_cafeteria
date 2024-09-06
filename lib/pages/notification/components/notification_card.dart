@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/get_config.dart';
-import '../../../model/item_model.dart';
-import '../../../model/notification_model.dart';
+import '../../../model/test/item_model.dart';
+import '../../../model/test/notification_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class NotificationCard extends StatelessWidget {

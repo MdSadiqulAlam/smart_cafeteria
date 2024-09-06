@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:smart_cafeteria/pages/role_based_enter_screen.dart';
-
-import '../../data/repositories/authentication/authentication_repository.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
+import 'package:smart_cafeteria/data/repositories/authentication/authentication_repository.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();

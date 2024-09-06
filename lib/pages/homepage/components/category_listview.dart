@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
-import '../../../model/category_model.dart';
+import '../../../model/test/category_model.dart';
 import 'category_card.dart';
 
 class CategoryList extends StatelessWidget {

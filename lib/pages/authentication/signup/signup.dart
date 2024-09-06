@@ -25,7 +25,7 @@ class SignupScreen extends StatelessWidget {
             const UserSignupForm(),
 
             /// divider
-            const SizedBox(height: 150),
+            const SizedBox(height: 25),
             const FormDivider(dividerText: 'Or SignUp with'),
 
             /// other login options
