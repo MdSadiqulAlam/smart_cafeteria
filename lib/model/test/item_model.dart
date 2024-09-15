@@ -1,15 +1,16 @@
 class ItemModel {
   const ItemModel({
-    required this.name,
-    required this.kcal,
-    required this.price,
-    required this.imagePath,
+    required this.name,/// dfg
+    required this.kcal,/// sfdg
+    required this.price,/// sdg
+    required this.imagePath,/// dgsd
     required this.itemSold,
-    required this.description,
-    required this.itemDetail,
+    required this.description,///
+    required this.itemDetail,///
     required this.ratingCount,
     required this.ratingMap,
-    required this.category,
+    required this.category,///adf
+    required this.quantity,///afd
   });
 
   final String name;
@@ -22,6 +23,12 @@ class ItemModel {
   final double ratingCount;
   final Map<double, double> ratingMap;
   final List<String> category;
+  final int quantity;
+
+  @override
+  String toString() {
+    return 'ItemModel(name: $name, kcal: $kcal, price: $price, category: $category, quantity: $quantity)';
+  }
 }
 
 // 27 items
@@ -39,6 +46,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12934,
     ratingMap: {5: 10500, 4: 1700, 3: 0, 2: 0, 1: 734},
     category: ['lunch'],
+    quantity: 0,
   ),
   ItemModel(
     name: "sandwich",
@@ -52,6 +60,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 13231,
     ratingMap: {5: 2231, 4: 2000, 3: 4000, 2: 4000, 1: 1000},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "sub sandwich",
@@ -65,6 +74,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 22857,
     ratingMap: {5: 17000, 4: 2000, 3: 3000, 2: 800, 1: 57},
     category: ['lunch', 'snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "chicken fry",
@@ -78,6 +88,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 8573,
     ratingMap: {5: 6500, 4: 1500, 3: 400, 2: 100, 1: 73},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "shingara",
@@ -91,6 +102,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 10234,
     ratingMap: {5: 8000, 4: 1500, 3: 500, 2: 100, 1: 134},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "french fry",
@@ -104,6 +116,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12000,
     ratingMap: {5: 9000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "fried rice",
@@ -112,11 +125,12 @@ final List<ItemModel> allItems = <ItemModel>[
     imagePath: 'assets/test_image/fried_rice.png',
     itemSold: 600,
     description:
-    "Fried rice is a versatile and delicious dish featuring rice stir-fried with a variety of vegetables, eggs, and sometimes meat or seafood. Each spoonful offers a burst of flavors and textures, from the crunchy vegetables to the tender rice grains. Seasoned with soy sauce and other spices, fried rice is a perfect meal for any time of the day. Often garnished with fresh herbs or green onions, it can be enjoyed on its own or as a side dish. The simplicity and flavor of fried rice make it a popular choice for both casual and festive occasions.",
+        "Fried rice is a versatile and delicious dish featuring rice stir-fried with a variety of vegetables, eggs, and sometimes meat or seafood. Each spoonful offers a burst of flavors and textures, from the crunchy vegetables to the tender rice grains. Seasoned with soy sauce and other spices, fried rice is a perfect meal for any time of the day. Often garnished with fresh herbs or green onions, it can be enjoyed on its own or as a side dish. The simplicity and flavor of fried rice make it a popular choice for both casual and festive occasions.",
     itemDetail: "Rice, Vegetables, Egg, Soy Sauce",
     ratingCount: 13000,
     ratingMap: {5: 9500, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['lunch'],
+    quantity: 0,
   ),
   ItemModel(
     name: "chicken teheri",
@@ -130,6 +144,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11500,
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['lunch'],
+    quantity: 0,
   ),
   ItemModel(
     name: "porota",
@@ -143,6 +158,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 10500,
     ratingMap: {5: 2000, 4: 2000, 3: 300, 2: 6100, 1: 100},
     category: ['breakfast'],
+    quantity: 0,
   ),
   ItemModel(
     name: "dal shobji",
@@ -156,6 +172,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11000,
     ratingMap: {5: 1000, 4: 2000, 3: 7500, 2: 300, 1: 200},
     category: ['breakfast'],
+    quantity: 0,
   ),
   ItemModel(
     name: "chocobar",
@@ -169,6 +186,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 10500,
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['ice_cream'],
+    quantity: 0,
   ),
   ItemModel(
     name: "cone ice cream",
@@ -182,6 +200,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12000,
     ratingMap: {5: 9000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
+    quantity: 0,
   ),
   ItemModel(
     name: "coffee",
@@ -195,6 +214,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12500,
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "mojo",
@@ -208,6 +228,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12500,
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "cleamon",
@@ -221,6 +242,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11500,
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "tea",
@@ -234,6 +256,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11500,
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "samosa",
@@ -247,6 +270,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 10500,
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "alur chop",
@@ -260,6 +284,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11000,
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "patties",
@@ -273,6 +298,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11500,
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "burger",
@@ -286,6 +312,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 14000,
     ratingMap: {5: 10000, 4: 2500, 3: 1000, 2: 300, 1: 200},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "hot dog",
@@ -299,6 +326,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 12500,
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['snacks'],
+    quantity: 0,
   ),
   ItemModel(
     name: "cup ice cream",
@@ -312,6 +340,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11000,
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
+    quantity: 0,
   ),
   ItemModel(
     name: "water",
@@ -325,6 +354,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 15000,
     ratingMap: {5: 11000, 4: 3000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "rc cola",
@@ -338,6 +368,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 13000,
     ratingMap: {5: 9500, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "starship chocolate",
@@ -351,6 +382,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 10500,
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "starship mango",
@@ -364,6 +396,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11000,
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
+    quantity: 0,
   ),
   ItemModel(
     name: "mishti doi",
@@ -377,6 +410,7 @@ final List<ItemModel> allItems = <ItemModel>[
     ratingCount: 11500,
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
+    quantity: 0,
   ),
 ];
 

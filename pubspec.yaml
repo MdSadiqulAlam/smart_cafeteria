@@ -25,6 +25,8 @@ dependencies:
   smooth_page_indicator: ^1.2.0
   readmore: ^3.0.0
   connectivity_plus: ^5.0.1
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
 
   # firebase
   firebase_core: ^3.2.0
@@ -53,3 +55,4 @@ flutter:
      - assets/test_image/
      - assets/test_icons/
      - assets/onboard_image/
+     - assets/default_image/

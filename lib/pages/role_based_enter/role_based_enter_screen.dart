@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/admin/admin_login/admin_login.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/components/role_select_controller.dart';
 import 'package:smart_cafeteria/pages/root_page.dart';
 
 class RoleBasedEnterScreen extends StatelessWidget {
@@ -9,6 +10,8 @@ class RoleBasedEnterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RoleSelectController());
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -52,8 +55,10 @@ class RoleBasedEnterScreen extends StatelessWidget {
               height: 55,
               child: ElevatedButton(
                 onPressed: () {
+                  controller.userRole=false;
+                  controller.roleValidate();
                   // Get.offAll(const EmptyScreen());
-                  Get.to(()=>const AdminLogin());
+                  // Get.to(()=>const AdminLogin());
                   // Get.put(AuthenticationRepository());
                 },
                 style: ElevatedButton.styleFrom(
@@ -69,8 +74,10 @@ class RoleBasedEnterScreen extends StatelessWidget {
               height: 55,
               child: ElevatedButton(
                 onPressed: () {
+                  controller.userRole=true;
+                  controller.roleValidate();
                   // Get.offAll(RootPage());
-                  Get.to(()=>RootPage());
+                  // Get.to(()=>RootPage());
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(0),

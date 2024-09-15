@@ -1,14 +1,9 @@
-import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test/item_model.dart';
 import 'package:smart_cafeteria/model/test/order_model.dart';
-import 'package:smart_cafeteria/pages/order_screens/order_detail/order_details.dart';
-import 'package:smart_cafeteria/pages/payment/checkout_bottom_sheet.dart';
 
-class OrderCard extends StatelessWidget {
-  const OrderCard({super.key, required this.order_});
+class OrderCardAdmin extends StatelessWidget {
+  const OrderCardAdmin({super.key, required this.order_});
 
   final OrderModel order_;
 
@@ -16,13 +11,15 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // final double cardHeight = const Size.fromHeight(kToolbarHeight).height * 2;
     final bool brightness = getBrightness(context);
-    // Aggregate item names
-    final String itemNames = order_.orderedItems.map((item) {
-      return allItems[item.itemIndex].name.toCapitalCase();
-    }).join(', ');
+
+    /// Aggregate item names
+    // final String itemNames = order_.orderedItems.map((item) {
+    //   return allItems[item.itemIndex].name.toCapitalCase();
+    // }).join(', ');
 
     return InkWell(
       onTap: () {
+        // todo: goto details
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Getting QR code"), duration: Duration(milliseconds: 700)),
         );
@@ -64,25 +61,25 @@ class OrderCard extends StatelessWidget {
                           ),
                     ),
                   ),
-                  order_.completed ? const SizedBox.shrink() : const Icon(Icons.qr_code_sharp, size: 20),
+                  // order_.completed ? const SizedBox.shrink() : const Icon(Icons.qr_code_sharp, size: 20),
                 ],
               ),
 
               /// item names
-              const SizedBox(height: 1),
-              Text(
-                itemNames,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: getTextTheme(context).titleSmall?.copyWith(
-                      fontSize: 18,
-                      color: getColorScheme(context).onSecondaryContainer,
-                      // fontWeight: FontWeight.bold,
-                    ),
-              ),
+              // const SizedBox(height: 1),
+              // Text(
+              //   itemNames,
+              //   maxLines: 1,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: getTextTheme(context).titleSmall?.copyWith(
+              //     fontSize: 18,
+              //     color: getColorScheme(context).onSecondaryContainer,
+              //     // fontWeight: FontWeight.bold,
+              //   ),
+              // ),
 
               /// info table
-              const SizedBox(height: 7),
+              const SizedBox(height: 10),
               MyStatusRow(
                 label: 'Status',
                 status: order_.completed ? 'Completed' : 'Paid',
@@ -99,60 +96,60 @@ class OrderCard extends StatelessWidget {
               ),
 
               /// buttons
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  /// Details button
-                  SizedBox(
-                    width: getScreenWidth(context) * 0.33,
-                    height: 35,
-                    child: FilledButton(
-                      onPressed: () {
-                        Get.to(() => OrderDetails(order_: order_));
-                      },
-                      style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: brightness
-                            ? getColorScheme(context).primaryContainer
-                            : getColorScheme(context).primaryContainer.withOpacity(0.57),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Details',
-                          style: TextStyle(fontSize: 18, color: getColorScheme(context).onPrimaryContainer),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  /// Reorder button
-                  SizedBox(
-                    width: getScreenWidth(context) * 0.33,
-                    height: 35,
-                    child: FilledButton(
-                      onPressed: () {
-                        checkoutBottomSheet(context);
-                      },
-                      style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: getColorScheme(context).primary.withOpacity(0.85),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      ),
-                      child: const Center(child: Text('Re-Order', style: TextStyle(fontSize: 18))),
-                    ),
-                  ),
-                ],
-              ),
-              order_.completed
-                  ? const SizedBox.shrink()
-                  : Align(
-                      alignment: Alignment.topRight,
-                      child: Text('Tap to get QRCode',
-                          style: TextStyle(
-                              color: getColorScheme(context).onSecondaryContainer, fontSize: 13, fontWeight: FontWeight.bold)),
-                    ),
+              // const SizedBox(height: 5),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     /// Details button
+              //     SizedBox(
+              //       width: getScreenWidth(context) * 0.33,
+              //       height: 35,
+              //       child: FilledButton(
+              //         onPressed: () {
+              //           Get.to(() => OrderDetails(order_: order_));
+              //         },
+              //         style: FilledButton.styleFrom(
+              //           padding: const EdgeInsets.all(0),
+              //           backgroundColor: brightness
+              //               ? getColorScheme(context).primaryContainer
+              //               : getColorScheme(context).primaryContainer.withOpacity(0.57),
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              //         ),
+              //         child: Center(
+              //           child: Text(
+              //             'Details',
+              //             style: TextStyle(fontSize: 18, color: getColorScheme(context).onPrimaryContainer),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //
+              //     /// Reorder button
+              //     SizedBox(
+              //       width: getScreenWidth(context) * 0.33,
+              //       height: 35,
+              //       child: FilledButton(
+              //         onPressed: () {
+              //           checkoutBottomSheet(context);
+              //         },
+              //         style: FilledButton.styleFrom(
+              //           padding: const EdgeInsets.all(0),
+              //           backgroundColor: getColorScheme(context).primary.withOpacity(0.85),
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              //         ),
+              //         child: const Center(child: Text('Re-Order', style: TextStyle(fontSize: 18))),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // order_.completed
+              //     ? const SizedBox.shrink()
+              //     : Align(
+              //         alignment: Alignment.topRight,
+              //         child: Text('Tap to get QRCode',
+              //             style: TextStyle(
+              //                 color: getColorScheme(context).onSecondaryContainer, fontSize: 13, fontWeight: FontWeight.bold)),
+              //       ),
             ],
           ),
         ),

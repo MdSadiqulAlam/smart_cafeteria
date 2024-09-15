@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/empty_screen.dart';
 import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
+
+import '../admin_root_page.dart';
 
 class AdminLogin extends StatelessWidget {
   const AdminLogin({super.key});
@@ -78,7 +79,7 @@ class AdminLogin extends StatelessWidget {
                               child: FilledButton(
                                 onPressed: () {
                                   /// todo : get.ofall
-                                  Get.to(() => EmptyScreen());
+                                  Get.to(() => AdminRootPage());
                                 },
                                 style: FilledButton.styleFrom(
                                   backgroundColor: getColorScheme(context).primary.withOpacity(0.9),
@@ -96,6 +97,8 @@ class AdminLogin extends StatelessWidget {
               ),
             ),
           ),
+
+          /// got to user login
           Positioned(
             bottom: 10,
             right: 10,

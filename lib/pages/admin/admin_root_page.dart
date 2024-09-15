@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-
-import '../../components/appbar.dart';
+import 'package:smart_cafeteria/components/admin_appbar.dart';
+import 'package:smart_cafeteria/pages/admin/add_new_item/add_new_item.dart';
+import 'package:smart_cafeteria/pages/admin/new_note/new_note.dart';
+import 'package:smart_cafeteria/pages/admin/notes_admin/notes_admin.dart';
+import 'package:smart_cafeteria/pages/admin/order_handle/orders_admin/orders_admin.dart';
+import 'package:get/get.dart';
 import '../../config/get_config.dart';
-import '../homepage/homepage.dart';
+import 'manage_items/manage_items.dart';
 
 class PageElement {
-  PageElement({required this.pageBody, required this.tittle});
+  PageElement({required this.pageBody, required this.title});
 
   final Widget pageBody;
-  final String tittle;
+  final String title;
 }
 
 List<PageElement> allPages = [
   /// todo: pages
-  PageElement(pageBody: MyHomePage(), tittle: "HomePage"),
-  PageElement(pageBody: MyHomePage(), tittle: "HomePage"),
-  PageElement(pageBody: MyHomePage(), tittle: "HomePage"),
-  PageElement(pageBody: MyHomePage(), tittle: "HomePage"),
+  PageElement(pageBody: const OrdersAdmin(), title: "Orders"),
+  PageElement(pageBody: const ManageItems(), title: "Items"),
+  PageElement(pageBody: const NotesAdmin(), title: "Notes"),
+  PageElement(pageBody: Container(color: Colors.greenAccent.shade200), title: "Statistics"),
 ];
 
 class AdminRootPage extends StatefulWidget {
@@ -33,19 +37,20 @@ class _AdminRootPageState extends State<AdminRootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // drawer: AppbarMenu(),
-      appBar: MyAppbar(
+      appBar: AdminAppbar(
         showTitle: true,
-        showNotification: true,
-        viewProfile: true,
+        // showNotification: true,
+        // viewProfile: true,
         // currentPage: currentPage,
-        pageTitle: allPages[currentPage].tittle,
+        pageTitle: allPages[currentPage].title,
         leadingBackArrow: false,
+        viewOption: true,
       ),
       body: allPages[currentPage].pageBody,
       bottomNavigationBar: NavigationBar(
         backgroundColor: getColorScheme(context).secondaryContainer,
         indicatorColor: getColorScheme(context).primaryContainer,
-        destinations: [
+        destinations: const [
           NavigationDestination(
             // icon: Icon(currentPage == 0 ? Icons.home_filled : Icons.home),
             // icon: Icon(Icons.event_note),
@@ -77,6 +82,18 @@ class _AdminRootPageState extends State<AdminRootPage> {
           });
         },
       ),
+      floatingActionButton: currentPage == 3
+          ? const SizedBox.shrink()
+          : FloatingActionButton(
+              onPressed: () {
+                if (currentPage == 1) {
+                  Get.to(const AddNewItem());
+                } else if (currentPage == 2) {
+                  Get.to(const NewNote());
+                }
+              },
+              child: Icon(currentPage == 0 ? Icons.qr_code_outlined : (currentPage == 1 ? Icons.add : Icons.mode_edit_outlined)),
+            ),
     );
   }
 }

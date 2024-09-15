@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 import 'package:smart_cafeteria/data/repositories/authentication/authentication_repository.dart';
+import 'package:smart_cafeteria/pages/root_page.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
@@ -27,7 +28,7 @@ class OnBoardingController extends GetxController {
       // storage.write('isFirstTime', false);
       ///  write is first time false
       Get.find<AuthenticationRepository>().deviceStorage.write('isFirstTime', false);
-      Get.to(()=>const RoleBasedEnterScreen());
+      Get.to(()=>const RootPage());
     } else {
       currentPageIndex.value++;
       pageController.jumpToPage(currentPageIndex.value);
@@ -40,6 +41,6 @@ class OnBoardingController extends GetxController {
     // pageController.jumpTo(1);
     /// todo : write is first time false
     // Get.find<AuthenticationRepository>().deviceStorage.write('isFirstTime', false);
-    Get.to(()=>const RoleBasedEnterScreen());
+    Get.to(()=>const RootPage());
   }
 }

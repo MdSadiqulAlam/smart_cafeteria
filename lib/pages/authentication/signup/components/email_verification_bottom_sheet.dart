@@ -7,6 +7,7 @@ Future<void> emailVerificationBottomSheet({required BuildContext context, requir
   final controller = Get.put(EmailVerificationController());
   showModalBottomSheet<void>(
     context: context,
+    isDismissible: false,
     builder: (BuildContext context) {
       return Container(
         height: getScreenHeight(context) * 0.4,

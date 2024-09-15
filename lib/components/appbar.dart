@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +33,11 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final controller = Get.put(UserController());
+    String? networkImage;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) networkImage = currentUser.photoURL;
+
     return AppBar(
       automaticallyImplyLeading: leadingBackArrow,
       surfaceTintColor: getColorScheme(context).secondaryContainer,
@@ -48,7 +55,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
         if (showNotification)
           IconButton(
             onPressed: () {
-              Get.to(()=>const NotificationScreen());
+              Get.to(() => const NotificationScreen());
             },
             icon: Icon(Icons.notifications_none, color: getColorScheme(context).primary, size: 27),
             tooltip: "Notifications",
@@ -57,11 +64,16 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           PopupMenuButton<String>(
             elevation: 7,
             padding: const EdgeInsets.all(0),
-            icon: Icon(Icons.account_circle, color: getColorScheme(context).primary, size: 34),
+            // icon: Icon(Icons.account_circle, color: getColorScheme(context).primary, size: 34),
+            icon: networkImage == null
+                ? Icon(Icons.account_circle, color: getColorScheme(context).primary, size: 34)
+                : CircleAvatar(
+                    radius: 18,
+                    child: ClipOval(child: CachedNetworkImage(imageUrl: networkImage, height: 32, width: 32, fit: BoxFit.cover)),
+                  ),
             onSelected: (value) {
               if (value == 'profile') {
-                /// todo: user login
-                Get.to(()=>const LoginScreen());
+                Get.to(() => const LoginScreen());
               }
               // else if (value == 'settings') {
               //   Get.to(()=>const EmptyScreen());
@@ -79,7 +91,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
         if (viewOption)
           IconButton(
             onPressed: () {
-              Get.to(()=>const EmptyScreen());
+              Get.to(() => const EmptyScreen());
             },
             tooltip: "Options",
             style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),

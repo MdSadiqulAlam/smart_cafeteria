@@ -9,16 +9,16 @@ import 'package:smart_cafeteria/pages/order_screens/orders/orders.dart';
 
 class PageElement {
   final Widget pageBody;
-  final String tittle;
+  final String title;
 
-  PageElement({required this.pageBody, required this.tittle});
+  PageElement({required this.pageBody, required this.title});
 }
 
 List<PageElement> allPages = [
-  PageElement(pageBody: const MyHomePage(), tittle: "HomePage"),
-  PageElement(pageBody: const Favorites(), tittle: "Favorites"),
-  PageElement(pageBody: const MyCart(), tittle: "Cart"),
-  PageElement(pageBody: const MyOrders(), tittle: "Orders")
+  PageElement(pageBody: const MyHomePage(), title: "HomePage"),
+  PageElement(pageBody: const Favorites(), title: "Favorites"),
+  PageElement(pageBody: const MyCart(), title: "Cart"),
+  PageElement(pageBody: const MyOrders(), title: "Orders")
 ];
 
 class RootPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _RootPageState extends State<RootPage> {
         showNotification: true,
         viewProfile: true,
         // currentPage: currentPage,
-        pageTitle: allPages[currentPage].tittle,
+        pageTitle: allPages[currentPage].title,
         leadingBackArrow: false,
       ),
       body: allPages[currentPage].pageBody,

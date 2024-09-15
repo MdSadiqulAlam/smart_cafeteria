@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:smart_cafeteria/pages/authentication/login/login.dart';
 import 'package:smart_cafeteria/pages/authentication/signup/components/email_verification_bottom_sheet.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 import 'package:smart_cafeteria/pages/root_page.dart';
 import 'package:smart_cafeteria/utilities/exceptions/firebase_auth_exceptions.dart';
 import 'package:smart_cafeteria/utilities/exceptions/format_exceptions.dart';
 import 'package:smart_cafeteria/utilities/exceptions/platform_exceptions.dart';
 
+import '../../../pages/admin/admin_login/admin_login.dart';
 import '../../../pages/onboarding/onboarding.dart';
 import '../../../utilities/exceptions/firebase_exceptions.dart';
 
@@ -20,28 +22,26 @@ class AuthenticationRepository extends GetxController {
   final _auth = FirebaseAuth.instance;
 
   //Get Authenticated user data
-  // User? get authUser => _auth.currentUser;
+  User? get authUser => _auth.currentUser;
 
   @override
   void onReady() {
-    ///remove the launching screen
-    // FlutterNativeSplash.remove();
     ///redirect to the appropriate
-    screenRedirect();
+    // screenRedirect();
+    roleSelect();
+  }
+
+  void roleSelect() {
+    Get.offAll(() => const RoleBasedEnterScreen());
   }
 
   /// Function to show relevant screen
   void screenRedirect() async {
     final user = _auth.currentUser;
     if (user != null) {
-      // print(user);
-      if (user.emailVerified) {
-        //initialize user specific storage
-        // await TLocalStorage.init(user.uid);
-        Get.offAll(() => const RootPage());
-      } else {
-        // Get.offAll(() => VerifyEmailScreen(email: _auth.currentUser?.email));
-        Get.offAll(() => const RootPage());
+      // Get.offAll(() => const RootPage());
+      Get.to(const RootPage());
+      if (user.emailVerified == false) {
         emailVerificationBottomSheet(context: Get.overlayContext!, email_: user.email!);
       }
     } else {
@@ -53,6 +53,11 @@ class AuthenticationRepository extends GetxController {
       //     ? Get.offAll(() => const RoleBasedEnterScreen())
       //     : Get.offAll(() => const Onboarding());
     }
+  }
+
+  void adminScreenRedirect() {
+    // Get.offAll(() =>const AdminLogin());
+    Get.to(const AdminLogin());
   }
 
   /// Email login authentication

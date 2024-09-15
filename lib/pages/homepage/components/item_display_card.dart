@@ -8,10 +8,7 @@ import 'package:smart_cafeteria/model/test/item_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class ItemCardGridView extends StatelessWidget {
-  const ItemCardGridView({
-    super.key,
-    required this.item_,
-  });
+  const ItemCardGridView({super.key, required this.item_});
 
   final ItemModel item_;
 

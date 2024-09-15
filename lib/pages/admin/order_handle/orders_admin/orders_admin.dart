@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../../config/get_config.dart';
-import 'components/orders_listview.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
+import 'package:smart_cafeteria/pages/admin/order_handle/orders_admin/components/orders_listview_admin.dart';
 
-class MyOrders extends StatefulWidget {
-  const MyOrders({super.key});
+class OrdersAdmin extends StatefulWidget {
+  const OrdersAdmin({super.key});
 
   @override
-  State<MyOrders> createState() => _MyOrdersState();
+  State<OrdersAdmin> createState() => _OrdersAdminState();
 }
 
-class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
+class _OrdersAdminState extends State<OrdersAdmin> with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, initialIndex: 1, vsync: this);
+    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
   }
 
   @override
@@ -35,16 +35,15 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
           color: getColorScheme(context).surface,
           child: TabBar(
             controller: _tabController,
-            tabs: const <Widget>[Tab(text: 'All'), Tab(text: 'Pending'), Tab(text: 'Completed')],
+            tabs: const <Widget>[Tab(text: 'Pending'), Tab(text: 'Completed')],
           ),
         ),
         Expanded(
           child: TabBarView(
             controller: _tabController,
             children: const <Widget>[
-              OrdersListview(),
-              OrdersListview(filter: true, completed: false),
-              OrdersListview(filter: true, completed: true),
+              OrdersListviewAdmin(completed: false),
+              OrdersListviewAdmin(completed: true),
             ],
           ),
         ),

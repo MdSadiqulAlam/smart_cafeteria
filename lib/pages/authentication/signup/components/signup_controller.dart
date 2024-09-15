@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/data/repositories/user/user_repository.dart';
 import 'package:smart_cafeteria/model/user_model.dart';
@@ -16,12 +18,27 @@ class SignupController extends GetxController {
   final lastName = TextEditingController();
   final email = TextEditingController();
   final phoneNumber = TextEditingController();
+
   // final username = TextEditingController();
   final createPassword = TextEditingController();
+
   // final confirmPassword = TextEditingController();
 
   /// global key
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+
+  /// Profile Image Picker
+  var selectedImagePath = ''.obs;
+  XFile? image;
+
+  Future<void> pickProfileImage() async {
+    image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      selectedImagePath.value = image!.path;
+    } else {
+      MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'No image selected');
+    }
+  }
 
   /// -- signup
   Future<void> signup(BuildContext context) async {
@@ -44,9 +61,20 @@ class SignupController extends GetxController {
         return;
       }
 
+      /// Check if profile image is selected
+      if (image == null) {
+        Get.back();
+        MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Please select a profile image');
+        return;
+      }
+
       /// register user in firebase
       final userCredential =
           await AuthenticationRepository.instance.registerWithEmailAndPassword(email.text.trim(), createPassword.text.trim());
+
+      /// store image
+      final userRepository = Get.put(UserRepository());
+      final imageUrl = await userRepository.uploadImage('UserDp/', image!);
 
       /// save authentication user data in the Firebase fire-store
       final UserModel newUser = UserModel(
@@ -56,10 +84,9 @@ class SignupController extends GetxController {
         // username: username.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
-        profilePicture: '',
+        profilePicture: imageUrl,
       );
-
-      final userRepository = Get.put(UserRepository());
+      FirebaseAuth.instance.currentUser?.updateProfile(photoURL: imageUrl, displayName: newUser.fullName);
       await userRepository.saveUserRecord(newUser);
 
       /// move to verify email

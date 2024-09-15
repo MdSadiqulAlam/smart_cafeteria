@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
 class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({super.key});
+  const LoadingScreen({super.key, this.transparent = false});
+
+  final bool transparent;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBEC9BE),
+      backgroundColor: transparent ? Colors.transparent : const Color(0xFFBEC9BE),
       body: Container(
         height: getScreenHeight(context),
         width: getScreenWidth(context),

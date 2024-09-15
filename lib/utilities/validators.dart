@@ -16,10 +16,43 @@ class MyValidator {
     // Regular expression for email validation
     final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-    if (!emailRegExp.hasMatch(value)) {
+    if (!emailRegExp.hasMatch(value) || value == 'mistcafe.admin@gmail.com') {
       return 'Invalid email address.';
     }
 
+    return null;
+  }
+
+  static String? validatePrice(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the price';
+    }
+    final number = num.tryParse(value);
+    if (number == null || number <= 0) {
+      return 'Please enter a valid price greater than 0';
+    }
+    return null;
+  }
+
+  static String? validateCalorie(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the calorie count';
+    }
+    final number = num.tryParse(value);
+    if (number == null || number <= 0) {
+      return 'Please enter a valid calorie count greater than 0';
+    }
+    return null;
+  }
+
+  static String? validateStockQuantity(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the stock quantity';
+    }
+    final number = int.tryParse(value);
+    if (number == null || number < 0) {
+      return 'Please enter a valid stock quantity (0 or greater)';
+    }
     return null;
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/pages/authentication/forgot_password/forgot_password.dart';
 import 'package:smart_cafeteria/pages/authentication/signup/signup.dart';
-import 'package:smart_cafeteria/pages/root_page.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
 import '../../../../utilities/validators.dart';
@@ -26,7 +25,7 @@ class UserLogInForm extends StatelessWidget {
             child: TextFormField(
               controller: controller.email,
               validator: (value) => MyValidator.validateEmail(value),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 // border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12),
                 labelText: 'E-Mail',

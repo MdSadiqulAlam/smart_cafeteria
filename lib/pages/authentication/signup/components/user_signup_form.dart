@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/authentication/signup/components/email_verification_bottom_sheet.dart';
 import 'package:smart_cafeteria/pages/authentication/signup/components/signup_controller.dart';
 import 'package:smart_cafeteria/utilities/validators.dart';
 
@@ -16,6 +17,21 @@ class UserSignupForm extends StatelessWidget {
       key: controller.signupFormKey,
       child: Column(
         children: [
+          /// Profile Picture Upload
+          Obx(() => GestureDetector(
+                onTap: () => controller.pickProfileImage(),
+                child: CircleAvatar(
+                  radius: 70,
+                  // ? const AssetImage('assets/images/default_avatar.png')
+                  backgroundImage: controller.selectedImagePath.value.isEmpty
+                      ? const AssetImage('assets/images/default_avatar.png')
+                      : FileImage(File(controller.selectedImagePath.value)) as ImageProvider,
+                  child: const Icon(Icons.camera_alt_outlined),
+                ),
+              )),
+          const SizedBox(height: 30),
+
+          /// name fields
           Row(
             children: [
               /// first name
