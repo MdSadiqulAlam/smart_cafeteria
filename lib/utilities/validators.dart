@@ -16,7 +16,7 @@ class MyValidator {
     // Regular expression for email validation
     final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-    if (!emailRegExp.hasMatch(value) || value == 'mistcafe.admin@gmail.com') {
+    if (!emailRegExp.hasMatch(value)) {
       return 'Invalid email address.';
     }
 
@@ -39,7 +39,7 @@ class MyValidator {
       return 'Please enter the calorie count';
     }
     final number = num.tryParse(value);
-    if (number == null || number <= 0) {
+    if (number == null || number < 0) {
       return 'Please enter a valid calorie count greater than 0';
     }
     return null;

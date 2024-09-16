@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
+import 'package:smart_cafeteria/pages/admin/manage_items/components/manage_items_controller.dart';
 
+import '../../../../data/repositories/user/user_repository.dart';
+import '../../../../model/item_data.dart';
+import '../../../../model/item_model.dart';
 import '../../../../utilities/network_manager.dart';
 
 class AddItemController extends GetxController {
@@ -13,12 +17,14 @@ class AddItemController extends GetxController {
   final price = TextEditingController();
   final kcal = TextEditingController();
   final quantity = TextEditingController();
-  final selectedCategory = RxnString(null);
+
+  // final selectedCategory = RxnString(null);
   final description = TextEditingController();
   final itemDetail = TextEditingController();
 
   /// categories
   List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+  final selectedCategories = <String>[].obs; // List to store multiple selected categories
 
   /// global key
   GlobalKey<FormState> addItemFormKey = GlobalKey<FormState>();
@@ -64,34 +70,38 @@ class AddItemController extends GetxController {
         return;
       }
 
-      // /// register user in firebase
-      // final userCredential =
-      // await AuthenticationRepository.instance.registerWithEmailAndPassword(email.text.trim(), createPassword.text.trim());
-      //
-      // /// store image
-      // final userRepository = Get.put(UserRepository());
-      // final imageUrl = await userRepository.uploadImage('UserDp/', image!);
-      //
-      // /// save authentication user data in the Firebase fire-store
-      // final UserModel newUser = UserModel(
-      //   id: userCredential.user!.uid,
-      //   firstName: firstName.text.trim(),
-      //   lastName: lastName.text.trim(),
-      //   // username: username.text.trim(),
-      //   email: email.text.trim(),
-      //   phoneNumber: phoneNumber.text.trim(),
-      //   profilePicture: imageUrl,
-      // );
-      // FirebaseAuth.instance.currentUser?.updateProfile(photoURL: imageUrl, displayName: newUser.fullName);
-      // await userRepository.saveUserRecord(newUser);
-      //
-      // /// move to verify email
-      // Get.back();
-      // emailVerificationBottomSheet(context: Get.overlayContext!, email_: newUser.email.trim());
+      /// Upload image to Firebase Storage
+      final itemRepository = ItemData(); // Ensure ItemData class is properly imported
+      final imageUrl = await itemRepository.uploadImage('ItemImages/', image!);
+
+      /// Create a new item
+      final newItem = ItemModel(
+        id: '',
+        // ID will be assigned by Firestore
+        name: itemName.text.trim(),
+        imagePath: imageUrl,
+        price: num.parse(price.text.trim()),
+        kcal: num.parse(kcal.text.trim()),
+        category: selectedCategories,
+        quantity: int.parse(quantity.text.trim()),
+        itemDetail: itemDetail.text.trim(),
+        description: description.text.trim(),
+        itemSold: 0,
+        ratingCount: 0.0,
+        ratingMap: {},
+      );
+
+      /// Save item to Firestore
+      await itemRepository.saveToFirestore(newItem);
+
+      ///reload the all items screen
+      await ManageItemsController.instance.fetchItemsFromFirestore();
+      Get.back(); // Close the loading dialog
+      Get.back(); // got to all items screen
+      MyLoadingWidgets.successSnackBar(title: 'Success!', message: 'Item added successfully');
     } catch (e) {
       Get.back();
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
-
 }

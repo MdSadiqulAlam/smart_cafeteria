@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/model/note_model.dart';
 import 'package:flutter/material.dart';
-
 import 'package:smart_cafeteria/pages/admin/notes_admin/components/notes_listview_controller.dart';
-
-import '../../../../components/loading_widgets.dart';
+import 'package:smart_cafeteria/components/loading_widgets.dart';
 
 class EditNoteController extends GetxController {
   final NoteModel note;
@@ -37,10 +35,15 @@ class EditNoteController extends GetxController {
         note: noteBody.text,
         createDate: note.createDate,
       );
+
+      /// update in firebase
       final noteData = NoteData();
       await noteData.updateInFirestore(updatedNote);
 
+      /// update the notes list in front end
       NotesListviewController.instance.fetchNotes();
+
+      ///  go back to previous screen
       Get.back();
       Get.back();
       MyLoadingWidgets.successSnackBar(title: 'Success!', message: 'Note updated successfully.');

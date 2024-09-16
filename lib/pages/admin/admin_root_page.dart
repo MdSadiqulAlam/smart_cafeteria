@@ -20,7 +20,7 @@ List<PageElement> allPages = [
   PageElement(pageBody: const OrdersAdmin(), title: "Orders"),
   PageElement(pageBody: const ManageItems(), title: "Items"),
   PageElement(pageBody: const NotesAdmin(), title: "Notes"),
-  PageElement(pageBody: Container(color: Colors.greenAccent.shade200), title: "Statistics"),
+  PageElement(pageBody: const Center(child: Icon(Icons.timeline,size: 100)), title: "Statistics"),
 ];
 
 class AdminRootPage extends StatefulWidget {

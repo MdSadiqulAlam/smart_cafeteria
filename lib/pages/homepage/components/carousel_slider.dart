@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
-import '../../../model/test/item_model.dart';
+import '../../../model/item_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class CarouselWithIndicator extends StatefulWidget {
@@ -22,8 +22,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       children: [
         CarouselSlider(
           // items: imgList.map((imgPath) =>Image.asset(imgPath)).toList() ,
-          items: allItems.take(5).map((item) {
-            ItemModel item_ = allItems[currentIndex];
+          items: testAllItems.take(5).map((item) {
+            ItemModel item_ = testAllItems[currentIndex];
             return InkWell(
               onTap: () {
                 Get.to(() => ItemDetail(item_: item_));

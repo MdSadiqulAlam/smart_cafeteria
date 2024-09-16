@@ -97,7 +97,9 @@ class AdminAppbar extends StatelessWidget implements PreferredSizeWidget {
         if (viewOption)
           IconButton(
             onPressed: () {
-              Get.to(() => const EmptyScreen());
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Implementing Options....."), duration: Duration(milliseconds: 1000)),
+              );
             },
             tooltip: "Options",
             style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),

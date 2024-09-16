@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/test/item_model.dart';
+import '../../model/item_model.dart';
 import 'components/cart_item_card.dart';
 import 'components/checkout_segment.dart';
 
@@ -24,11 +24,11 @@ class _MyCartState extends State<MyCart> {
             child: ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              // itemCount: allItems.length,
+              // itemCount: testAllItemsTest.length,
               itemCount: 7,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (_, int index) {
-                ItemModel item_ = allItems[index % allItems.length];
+                ItemModel item_ = testAllItems[index % testAllItems.length];
                 return CartItemCard(item_: item_);
               },
             ),

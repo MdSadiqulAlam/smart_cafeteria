@@ -2,7 +2,7 @@ import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/get_config.dart';
-import '../../../../model/test/item_model.dart';
+import '../../../../model/item_model.dart';
 import '../../../../model/test/order_model.dart';
 import '../../../item_detail/item_detail.dart';
 

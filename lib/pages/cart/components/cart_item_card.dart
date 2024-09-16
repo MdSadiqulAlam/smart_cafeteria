@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 
-import '../../../model/test/item_model.dart';
+import '../../../model/item_model.dart';
 import '../../item_detail/item_detail.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -146,7 +146,7 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
             Row(
               children: [
                 Text(
-                  "Tk. ${int.parse(item_.price) * quantity}",
+                  "Tk. ${item_.price * quantity}",
                   style: getTextTheme(context).labelMedium?.copyWith(
                         // color: Theme.of(context).colorScheme.onSecondaryContainer,
                         color: getColorScheme(context).error,
@@ -172,7 +172,7 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
                   size: textSize_ + 2,
                 ),
                 Text(
-                  "${int.parse(item_.kcal) * quantity} cal",
+                  "${item_.kcal * quantity} cal",
                   style: getTextTheme(context).labelLarge?.copyWith(
                         color: getColorScheme(context).onSecondaryContainer,
                         fontSize: textSize_,

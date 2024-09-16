@@ -16,17 +16,19 @@ class ManageItems extends StatelessWidget {
       children: <Widget>[
         /// search field
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
           color: getColorScheme(context).surface,
-          height: 70,
           child: TextFormField(
             controller: controller.searchItem,
             expands: false,
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-              // label: Text('Search'),
-              labelText: 'Search Item',
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              enabledBorder:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(width: 1.5)),
+              focusedBorder:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(width: 1.5)),
+              hintText: 'Search Item',
             ),
           ),
         ),
@@ -49,6 +51,7 @@ class ManageItems extends StatelessWidget {
         ),
 
         /// tab bar body
+        const SizedBox(height: 12),
         Expanded(
           child: TabBarView(
             controller: controller.tabController,

@@ -1,43 +1,98 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+/// item model
 class ItemModel {
-  const ItemModel({
-    required this.name,/// dfg
-    required this.kcal,/// sfdg
-    required this.price,/// sdg
-    required this.imagePath,/// dgsd
+  String id;
+  String name; // admin can set
+  String imagePath; // admin can set
+  num price; // admin can set
+  num kcal; // admin can set
+  List<String> category; // admin can set
+  int quantity; // admin can set
+  String itemDetail; // admin can set
+  String description; // admin can set
+  int itemSold;
+  double ratingCount;
+  Map<double, double> ratingMap;
+
+  ItemModel({
+    required this.id, // Firestore doc ID
+    required this.name,
+    required this.imagePath,
+    required this.price,
+    required this.kcal,
+    required this.category,
+    required this.quantity,
+    required this.itemDetail,
+    required this.description,
     required this.itemSold,
-    required this.description,///
-    required this.itemDetail,///
     required this.ratingCount,
     required this.ratingMap,
-    required this.category,///adf
-    required this.quantity,///afd
   });
 
-  final String name;
-  final String kcal;
-  final String price;
-  final String imagePath;
-  final int itemSold;
-  final String description;
-  final String itemDetail;
-  final double ratingCount;
-  final Map<double, double> ratingMap;
-  final List<String> category;
-  final int quantity;
+  /// Static function to create an empty ItemModel
+  static ItemModel empty() => ItemModel(
+        id: '',
+        name: '',
+        imagePath: '',
+        price: 0,
+        kcal: 0,
+        category: [],
+        quantity: 0,
+        itemDetail: '',
+        description: '',
+        itemSold: 0,
+        ratingCount: 0.0,
+        ratingMap: {},
+      );
 
-  @override
-  String toString() {
-    return 'ItemModel(name: $name, kcal: $kcal, price: $price, category: $category, quantity: $quantity)';
+  /// Convert model to JSON structure for storing data in Firebase
+  Map<String, dynamic> toJson() {
+    return {
+      'Name': name,
+      'ImagePath': imagePath,
+      'Price': price,
+      'Kcal': kcal,
+      'Category': category,
+      'Quantity': quantity,
+      'ItemDetail': itemDetail,
+      'Description': description,
+      'ItemSold': itemSold,
+      'RatingCount': ratingCount,
+      'RatingMap': ratingMap,
+    };
+  }
+
+  /// Factory method to create an ItemModel from a Firebase document snapshot
+  factory ItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return ItemModel(
+      id: document.id,
+      name: data['Name'] ?? '',
+      imagePath: data['ImagePath'] ?? '',
+      price: data['Price'] ?? 0,
+      kcal: data['Kcal'] ?? 0,
+      category: List<String>.from(data['Category'] ?? []),
+      quantity: data['Quantity'] ?? 0,
+      itemDetail: data['ItemDetail'] ?? '',
+      description: data['Description'] ?? '',
+      itemSold: data['ItemSold'] ?? 0,
+      ratingCount: data['RatingCount'] ?? 0.0,
+      ratingMap: Map<double, double>.from(data['RatingMap'] ?? {}),
+    );
   }
 }
 
+
+
 // 27 items
 List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
-final List<ItemModel> allItems = <ItemModel>[
+final List<ItemModel> testAllItems = <ItemModel>[
   ItemModel(
+    id: '',
     name: "khichuri",
-    kcal: "500",
-    price: "55",
+    kcal: 500,
+    price: 55,
     imagePath: 'assets/test_image/khichuri.png',
     itemSold: 150,
     description:
@@ -49,9 +104,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "sandwich",
-    kcal: "150",
-    price: "40",
+    kcal: 150,
+    price: 40,
     imagePath: 'assets/test_image/sandwich.png',
     itemSold: 10,
     description:
@@ -63,9 +119,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "sub sandwich",
-    kcal: "230",
-    price: "80",
+    kcal: 230,
+    price: 80,
     imagePath: 'assets/test_image/sub_sandwich.png',
     itemSold: 990,
     description:
@@ -77,9 +134,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "chicken fry",
-    kcal: "300",
-    price: "70",
+    kcal: 300,
+    price: 70,
     imagePath: 'assets/test_image/chicken_fry.png',
     itemSold: 500,
     description:
@@ -91,9 +149,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "shingara",
-    kcal: "150",
-    price: "15",
+    kcal: 150,
+    price: 15,
     imagePath: 'assets/test_image/shingara.png',
     itemSold: 3000,
     description:
@@ -105,9 +164,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "french fry",
-    kcal: "300",
-    price: "35",
+    kcal: 300,
+    price: 35,
     imagePath: 'assets/test_image/french_fry.png',
     itemSold: 750,
     description:
@@ -119,9 +179,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "fried rice",
-    kcal: "400",
-    price: "90",
+    kcal: 400,
+    price: 90,
     imagePath: 'assets/test_image/fried_rice.png',
     itemSold: 600,
     description:
@@ -133,9 +194,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "chicken teheri",
-    kcal: "550",
-    price: "120",
+    kcal: 550,
+    price: 120,
     imagePath: 'assets/test_image/chicken_teheri.png',
     itemSold: 450,
     description:
@@ -147,9 +209,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "porota",
-    kcal: "350",
-    price: "30",
+    kcal: 350,
+    price: 30,
     imagePath: 'assets/test_image/porota.png',
     itemSold: 500,
     description:
@@ -161,9 +224,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "dal shobji",
-    kcal: "300",
-    price: "50",
+    kcal: 300,
+    price: 50,
     imagePath: 'assets/test_image/dal_shobji.png',
     itemSold: 400,
     description:
@@ -175,9 +239,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "chocobar",
-    kcal: "200",
-    price: "30",
+    kcal: 200,
+    price: 30,
     imagePath: 'assets/test_image/chocobar.png',
     itemSold: 400,
     description:
@@ -189,9 +254,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "cone ice cream",
-    kcal: "250",
-    price: "35",
+    kcal: 250,
+    price: 35,
     imagePath: 'assets/test_image/cone_ice_cream.png',
     itemSold: 300,
     description:
@@ -203,9 +269,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "coffee",
-    kcal: "5",
-    price: "20",
+    kcal: 5,
+    price: 20,
     imagePath: 'assets/test_image/coffee.png',
     itemSold: 1200,
     description:
@@ -217,9 +284,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "mojo",
-    kcal: "150",
-    price: "25",
+    kcal: 150,
+    price: 25,
     imagePath: 'assets/test_image/mojo.png',
     itemSold: 700,
     description:
@@ -231,9 +299,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "cleamon",
-    kcal: "150",
-    price: "25",
+    kcal: 150,
+    price: 25,
     imagePath: 'assets/test_image/cleamon.png',
     itemSold: 650,
     description:
@@ -245,9 +314,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "tea",
-    kcal: "50",
-    price: "10",
+    kcal: 50,
+    price: 10,
     imagePath: 'assets/test_image/tea.png',
     itemSold: 1000,
     description:
@@ -259,9 +329,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "samosa",
-    kcal: "250",
-    price: "25",
+    kcal: 250,
+    price: 25,
     imagePath: 'assets/test_image/samosa.png',
     itemSold: 500,
     description:
@@ -273,9 +344,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "alur chop",
-    kcal: "220",
-    price: "20",
+    kcal: 220,
+    price: 20,
     imagePath: 'assets/test_image/alur_chop.png',
     itemSold: 600,
     description:
@@ -287,9 +359,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "patties",
-    kcal: "260",
-    price: "30",
+    kcal: 260,
+    price: 30,
     imagePath: 'assets/test_image/patties.png',
     itemSold: 400,
     description:
@@ -301,9 +374,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "burger",
-    kcal: "450",
-    price: "100",
+    kcal: 450,
+    price: 100,
     imagePath: 'assets/test_image/burger.png',
     itemSold: 800,
     description:
@@ -315,9 +389,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "hot dog",
-    kcal: "350",
-    price: "70",
+    kcal: 350,
+    price: 70,
     imagePath: 'assets/test_image/hot_dog.png',
     itemSold: 700,
     description:
@@ -329,9 +404,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "cup ice cream",
-    kcal: "300",
-    price: "40",
+    kcal: 300,
+    price: 40,
     imagePath: 'assets/test_image/cup_ice_cream.png',
     itemSold: 500,
     description:
@@ -343,9 +419,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "water",
-    kcal: "0",
-    price: "10",
+    kcal: 0,
+    price: 10,
     imagePath: 'assets/test_image/water.png',
     itemSold: 2000,
     description:
@@ -357,9 +434,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "rc cola",
-    kcal: "150",
-    price: "25",
+    kcal: 150,
+    price: 25,
     imagePath: 'assets/test_image/rc_cola.png',
     itemSold: 800,
     description:
@@ -371,9 +449,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "starship chocolate",
-    kcal: "200",
-    price: "30",
+    kcal: 200,
+    price: 30,
     imagePath: 'assets/test_image/starship_chocolate.png',
     itemSold: 300,
     description:
@@ -385,9 +464,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "starship mango",
-    kcal: "200",
-    price: "30",
+    kcal: 200,
+    price: 30,
     imagePath: 'assets/test_image/starship_mango.png',
     itemSold: 350,
     description:
@@ -399,9 +479,10 @@ final List<ItemModel> allItems = <ItemModel>[
     quantity: 0,
   ),
   ItemModel(
+    id: '',
     name: "mishti doi",
-    kcal: "150",
-    price: "20",
+    kcal: 150,
+    price: 20,
     imagePath: 'assets/test_image/mishti_doi.png',
     itemSold: 400,
     description:
@@ -416,3 +497,35 @@ final List<ItemModel> allItems = <ItemModel>[
 
 // TODO: New Items ###################*****************************************************
 final List<ItemModel> newItems = [];
+// class ItemModel {
+//   const ItemModel({
+//     required this.name, // admin can set
+//     required this.imagePath, // admin can set
+//     required this.price, // admin can set
+//     required this.kcal, // admin can set
+//     required this.category, // admin can set
+//     required this.quantity, // admin can set
+//     required this.itemDetail, // admin can set
+//     required this.description, // admin can set
+//     required this.itemSold,
+//     required this.ratingCount,
+//     required this.ratingMap,
+//   });
+//
+//   final String name;
+//   final String imagePath;
+//   final num price;
+//   final num kcal;
+//   final List<String> category;
+//   final int quantity;
+//   final String itemDetail;
+//   final String description;
+//   final int itemSold;
+//   final double ratingCount;
+//   final Map<double, double> ratingMap;
+//
+//   @override
+//   String toString() {
+//     return 'ItemModel(name: $name, kcal: $kcal, price: $price, category: $category, quantity: $quantity)';
+//   }
+// }

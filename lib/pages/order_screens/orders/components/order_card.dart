@@ -2,7 +2,7 @@ import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test/item_model.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/model/test/order_model.dart';
 import 'package:smart_cafeteria/pages/order_screens/order_detail/order_details.dart';
 import 'package:smart_cafeteria/pages/payment/checkout_bottom_sheet.dart';
@@ -18,7 +18,7 @@ class OrderCard extends StatelessWidget {
     final bool brightness = getBrightness(context);
     // Aggregate item names
     final String itemNames = order_.orderedItems.map((item) {
-      return allItems[item.itemIndex].name.toCapitalCase();
+      return testAllItems[item.itemIndex].name.toCapitalCase();
     }).join(', ');
 
     return InkWell(

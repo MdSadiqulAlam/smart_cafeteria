@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/model/test/item_model.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
 
 import 'favorite_card.dart';
 
@@ -18,7 +18,7 @@ class _FavoriteGridviewState extends State<FavoriteGridview> {
     return GridView.builder(
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
-      itemCount: allItems.length,
+      itemCount: testAllItems.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         // maxCrossAxisExtent: 180,
@@ -28,7 +28,7 @@ class _FavoriteGridviewState extends State<FavoriteGridview> {
         // crossAxisSpacing: 7,
       ),
       itemBuilder: (BuildContext context, int index) {
-        final ItemModel item_ = allItems[index % allItems.length];
+        final ItemModel item_ = testAllItems[index % testAllItems.length];
         return FavoriteCard(item_: item_);
       },
     );

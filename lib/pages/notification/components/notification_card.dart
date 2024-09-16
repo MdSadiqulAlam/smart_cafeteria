@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/get_config.dart';
-import '../../../model/test/item_model.dart';
+import '../../../model/item_model.dart';
 import '../../../model/test/notification_model.dart';
 import '../../item_detail/item_detail.dart';
 
@@ -16,10 +16,10 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath_ = allItems[notification_.itemIndex].imagePath;
+    final String imagePath_ = testAllItems[notification_.itemIndex].imagePath;
     final String notificationTime = DateFormat('Hm').format(notification_.notificationTime);
     final String notificationDate = DateFormat('MMMd').format(notification_.notificationTime);
-    final ItemModel item_ = allItems[notification_.itemIndex];
+    final ItemModel item_ = testAllItems[notification_.itemIndex];
 
     return Stack(
       children: [
@@ -53,7 +53,7 @@ class NotificationCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(3, 7, 12, 3),
                     child: Text(
-                      '${allItems[notification_.itemIndex].name.toCapitalCase()} ${notification_.notificationText}',
+                      '${testAllItems[notification_.itemIndex].name.toCapitalCase()} ${notification_.notificationText}',
                       style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.justify,
                     ),

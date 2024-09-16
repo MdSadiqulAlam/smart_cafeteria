@@ -1,9 +1,8 @@
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test/item_model.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
 
 class ManageItemsCardAdmin extends StatelessWidget {
   const ManageItemsCardAdmin({super.key, required this.item_});
@@ -12,11 +11,21 @@ class ManageItemsCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double ratingCount = item_.ratingCount;
-    final Map<double, double> ratingMap = item_.ratingMap;
-    final double rating = fixedPrecision(
-        (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
+    // Ensure ratingCount is not null or zero
+    final num ratingCount = item_.ratingCount == 0 ? 1 : item_.ratingCount;
 
+    // Ensure ratingMap is not null and provide default values for missing keys
+    final Map<num, num> ratingMap = {
+      1: item_.ratingMap[1] ?? 0,
+      2: item_.ratingMap[2] ?? 0,
+      3: item_.ratingMap[3] ?? 0,
+      4: item_.ratingMap[4] ?? 0,
+      5: item_.ratingMap[5] ?? 0,
+    };
+
+    // Calculate rating, ensuring no division by zero
+    final num rating = fixedPrecision(
+        (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
     return InkWell(
       onTap: () {
         /// old
@@ -41,7 +50,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
                     aspectRatio: 1.5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(item_.imagePath, fit: BoxFit.cover),
+                      child: Image.network(item_.imagePath, fit: BoxFit.cover),
                     ),
                   ),
                 ),

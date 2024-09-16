@@ -95,47 +95,45 @@ class AddItemForm extends StatelessWidget {
 
           /// Category , Quantity
           const SizedBox(height: 20),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            controller: controller.quantity,
+            validator: (value) => MyValidator.validateStockQuantity(value),
+            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+              labelText: 'Stock Quantity',
+            ),
+          ),
+
+          /// category
+          const SizedBox(height: 20),
           Row(
             children: [
-              /// Category Dropdown
               Expanded(
-                child: Obx(
-                  () => DropdownButtonFormField<String>(
-                    value: controller.selectedCategory.value,
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select a category';
-                      }
-                      return null;
-                    },
-                    items: controller.categories
-                        .map((category) => DropdownMenuItem(value: category, child: Text(category.capitalizeFirst!)))
-                        .toList(),
-                    onChanged: (newValue) {
-                      controller.selectedCategory.value = newValue!;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
-                      labelText: 'Category',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Select Categories', style: getTextTheme(context).titleLarge?.copyWith(fontWeight: FontWeight.w500)),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 10.0, // Space between checkboxes
+                      children: controller.categories.map((category) {
+                        return Obx(() => FilterChip(
+                              label: Text(category.capitalizeFirst!),
+                              selected: controller.selectedCategories.contains(category),
+                              onSelected: (bool selected) {
+                                if (selected) {
+                                  controller.selectedCategories.add(category);
+                                } else {
+                                  controller.selectedCategories.remove(category);
+                                }
+                              },
+                            ));
+                      }).toList(),
                     ),
-                  ),
-                ),
-              ),
-
-              /// Quantity
-              const SizedBox(width: 15),
-              Expanded(
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: controller.quantity,
-                  validator: (value) => MyValidator.validateStockQuantity(value),
-                  expands: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
-                    labelText: 'Stock Quantity',
-                  ),
+                  ],
                 ),
               ),
             ],

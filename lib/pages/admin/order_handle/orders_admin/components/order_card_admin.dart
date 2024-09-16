@@ -14,7 +14,7 @@ class OrderCardAdmin extends StatelessWidget {
 
     /// Aggregate item names
     // final String itemNames = order_.orderedItems.map((item) {
-    //   return allItems[item.itemIndex].name.toCapitalCase();
+    //   return testAllItems[item.itemIndex].name.toCapitalCase();
     // }).join(', ');
 
     return InkWell(
