@@ -1,26 +1,34 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smart_cafeteria/pages/admin/add_new_item/components/add_item_controller.dart';
 
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/utilities/validators.dart';
 
-class AddItemForm extends StatelessWidget {
-  const AddItemForm({super.key});
+import 'package:smart_cafeteria/model/item_model.dart';
+import 'package:smart_cafeteria/pages/admin/edit_item/components/edit_item_controller.dart';
+
+class EditItemForm extends StatelessWidget {
+  final ItemModel item;
+
+  const EditItemForm({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AddItemController());
+    final controller = Get.put(EditItemController());
+
+    /// Initialize the controller with the existing item data
+    controller.initializeItemData(item);
 
     return Form(
-      key: controller.addItemFormKey,
+      key: controller.editItemFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// upload image
-          Text('Upload Item Image', style: getTextTheme(context).titleLarge?.copyWith(fontWeight: FontWeight.w500)),
+          // update image
+          Text('Update Item Image', style: getTextTheme(context).titleLarge?.copyWith(fontWeight: FontWeight.w500)),
           const SizedBox(height: 12),
           Obx(
             () => GestureDetector(
@@ -31,13 +39,18 @@ class AddItemForm extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: getColorScheme(context).onSurface),
-                  image: DecorationImage(
-                    image: controller.selectedImagePath.value.isEmpty
-                        ? const AssetImage('assets/default_image/upload_image.png') // Default image
-                        : FileImage(File(controller.selectedImagePath.value)) as ImageProvider,
-                    fit: BoxFit.cover, // Ensure the image fits nicely
-                  ),
                 ),
+                child: controller.selectedImagePath.value.isNotEmpty && File(controller.selectedImagePath.value).existsSync()
+                    ? Image.file(
+                        File(controller.selectedImagePath.value),
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: controller.currentItem.imagePath,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
               ),
             ),
           ),
@@ -91,7 +104,6 @@ class AddItemForm extends StatelessWidget {
               ),
             ],
           ),
-          // ),
 
           /// Category , Quantity
           const SizedBox(height: 20),
@@ -170,6 +182,7 @@ class AddItemForm extends StatelessWidget {
             ),
           ),
 
+          /// button
           /// create item button
           const SizedBox(height: 40),
           Center(
@@ -179,14 +192,14 @@ class AddItemForm extends StatelessWidget {
                 onPressed: () async {
                   /// bottom sheet
                   // emailVerificationBottomSheet(context: context, email_: 'sadiqul@gmail.com');
-                   controller.createItem(context);
+                  controller.updateItem(context);
                 },
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   backgroundColor: getColorScheme(context).primary.withOpacity(0.9),
                   padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
-                child: const Text('Create Item', style: TextStyle(fontSize: 20)),
+                child: const Text('Update Item', style: TextStyle(fontSize: 20)),
               ),
             ),
           ),

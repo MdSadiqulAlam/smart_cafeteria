@@ -4,6 +4,7 @@ import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 
 import '../admin_root_page.dart';
+import 'components/admin_login_form.dart';
 
 class AdminLogin extends StatelessWidget {
   const AdminLogin({super.key});
@@ -37,60 +38,7 @@ class AdminLogin extends StatelessWidget {
                       Text('with email, password', style: getTextTheme(context).titleMedium),
 
                       /// form
-                      Form(
-                        child: Column(
-                          children: [
-                            /// email
-                            const SizedBox(height: 25),
-                            SizedBox(
-                              width: getScreenWidth(context) * 0.75,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                                  labelText: 'Email',
-                                  suffixIcon: Icon(Icons.report_gmailerrorred, size: 22),
-                                ),
-                              ),
-                            ),
-
-                            ///password
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: getScreenWidth(context) * 0.75,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                                  labelText: 'Password',
-                                  suffixIcon: Icon(Icons.visibility_off_outlined, size: 22),
-                                ),
-                              ),
-                            ),
-
-                            /// remember me
-                            // const SizedBox(height: 3),
-                            // Row(
-                            //   children: [Checkbox(value: true, onChanged: (value) {}), const Text('Remember')],
-                            // ),
-
-                            ///sign in button
-                            const SizedBox(height: 50),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: FilledButton(
-                                onPressed: () {
-                                  /// todo : get.ofall
-                                  Get.to(() => AdminRootPage());
-                                },
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: getColorScheme(context).primary.withOpacity(0.9),
-                                ),
-                                child: const Text('Sign In', style: TextStyle(fontSize: 16)),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
+                      const AdminLoginForm(),
                     ],
                   ),
                 ),

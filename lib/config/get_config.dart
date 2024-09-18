@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 bool getBrightness(BuildContext context) {
-  return true;
-  // return (View.of(context).platformDispatcher.platformBrightness ==Brightness.light);
+  // return true;
+  return (View.of(context).platformDispatcher.platformBrightness ==Brightness.light);
 }
 
 double getScreenHeight(BuildContext context) =>

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,17 @@ class LoginController extends GetxController {
       //   localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       // }
 
+      // Check if the email exists in 'AdminMail' collection
+      final isAdmin = await checkIfAdminEmail(email.text.trim());
+      if (!isAdmin) {
+        Get.back();
+        MyLoadingWidgets.errorSnackBar(title: 'Access Denied', message: 'This email is not registered as an admin.');
+        return;
+      }
+
       /// Login user using EMail & Password Authentication
-      // final userCredentials =
-      await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
+      final userCredentials =
+          await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       /// Remove Loader
       Get.back();
@@ -55,6 +64,16 @@ class LoginController extends GetxController {
     } catch (e) {
       Get.back();
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap', message: e.toString());
+    }
+  }
+
+  /// Check if email is in AdminMail collection
+  Future<bool> checkIfAdminEmail(String email) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance.collection('AdminMail').doc(email).get();
+      return snapshot.exists;
+    } catch (e) {
+      throw "Error checking admin email: $e";
     }
   }
 }

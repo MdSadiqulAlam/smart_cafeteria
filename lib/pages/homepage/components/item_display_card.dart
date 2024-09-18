@@ -59,7 +59,7 @@ class ItemCardGridView extends StatelessWidget {
                     style: getTextTheme(context).headlineSmall?.copyWith(
                           color: getColorScheme(context).onSecondaryContainer,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                   ),
                 ),

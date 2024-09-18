@@ -1,8 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
+import 'package:smart_cafeteria/pages/admin/edit_item/edit_Item.dart';
+
+import '../../../../components/loading_widgets.dart';
+import '../../../../model/item_data.dart';
+import '../../../../utilities/network_manager.dart';
 
 class ManageItemsCardAdmin extends StatelessWidget {
   const ManageItemsCardAdmin({super.key, required this.item_});
@@ -11,6 +19,9 @@ class ManageItemsCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// quantity Rx variable
+    var quantity_ = item_.quantity.obs;
+
     // Ensure ratingCount is not null or zero
     final num ratingCount = item_.ratingCount == 0 ? 1 : item_.ratingCount;
 
@@ -27,11 +38,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
     final num rating = fixedPrecision(
         (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
     return InkWell(
-      onTap: () {
-        /// old
-        // Get.to(()=>ItemDetail(item_: item_));
-        // Get.to(() => ItemDetail(item_: item_));
-      },
+      onTap: () => Get.to(EditItem(item_: item_)),
       // splashColor: Theme.of(context).colorScheme.secondaryFixedDim,
       // radius: 50,
       borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -50,7 +57,18 @@ class ManageItemsCardAdmin extends StatelessWidget {
                     aspectRatio: 1.5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(item_.imagePath, fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: item_.imagePath,
+                        placeholder: (context, url) => Center(
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -66,7 +84,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
                     style: getTextTheme(context).headlineSmall?.copyWith(
                           color: getColorScheme(context).onSecondaryContainer,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                   ),
                 ),
@@ -108,7 +126,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
               ],
             ),
 
-            /// favorite button
+            /// edit button
             Positioned(
               top: 8,
               right: 7,
@@ -117,23 +135,96 @@ class ManageItemsCardAdmin extends StatelessWidget {
                 width: 33,
                 child: IconButton.filledTonal(
                   color: getColorScheme(context).tertiaryContainer,
-                  onPressed: () {},
+                  onPressed: () => Get.to(EditItem(item_: item_)),
                   tooltip: "Add To Favorites",
                   style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
-                  icon: Icon(Icons.edit, color: getColorScheme(context).onTertiaryContainer, size: 24),
+                  icon: Icon(Icons.edit, color: getColorScheme(context).onTertiaryContainer, size: 20),
                 ),
               ),
             ),
 
-            /// add to cart
-            // Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(item_: item_)),
+            /// Quantity status button
+            Positioned(
+              bottom: 7,
+              right: 5,
+              child: Obx(() => InkWell(
+                    onTap: () => _showQuantityDialog(context, quantity_),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        // color: getColorScheme(context).primary.withOpacity(0.8),
+                        color: getColorScheme(context).primary.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.inventory_2, size: 15, color: getColorScheme(context).onPrimary),
+                          const SizedBox(width: 5),
+                          Text('${quantity_.value}', style: TextStyle(color: getColorScheme(context).onPrimary)),
+                        ],
+                      ),
+                    ),
+                  )),
+            ),
           ],
         ),
       ),
     );
   }
-}
 
-double fixedPrecision(double val) {
-  return double.parse(val.toStringAsFixed(1));
+  void _showQuantityDialog(BuildContext context, RxInt quantity_) {
+    final TextEditingController quantityController = TextEditingController(text: item_.quantity.toString());
+
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Update Quantity'),
+        content: TextField(
+          controller: quantityController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Quantity'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                Get.back();
+                MyLoadingWidgets.loadingDialogue();
+
+                // Check internet connection
+                final isConnected = await NetworkManager.instance.isConnected();
+                if (!isConnected) {
+                  Get.back();
+                  MyLoadingWidgets.noInternetConnectionDialogue();
+                  return;
+                }
+
+                final newQuantity = int.tryParse(quantityController.text) ?? quantity_.value;
+                // Update in Firestore
+                final itemRepository = ItemData();
+                // await itemRepository.updateInFirestore(updatedItem);
+                await itemRepository.updateField(item_.id, 'Quantity', newQuantity);
+                // Update the reactive item
+                quantity_.value = newQuantity;
+                Get.back();
+                MyLoadingWidgets.successSnackBar(title: 'Success', message: 'Quantity updated successfully');
+              } catch (e) {
+                Get.back();
+                MyLoadingWidgets.errorSnackBar(title: 'Error', message: e.toString());
+              }
+            },
+            child: const Text('Update'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  double fixedPrecision(double val) {
+    return double.parse(val.toStringAsFixed(1));
+  }
 }

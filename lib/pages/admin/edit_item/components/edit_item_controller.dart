@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,16 +8,14 @@ import 'package:smart_cafeteria/model/item_data.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/utilities/network_manager.dart';
 
-class AddItemController extends GetxController {
-  static AddItemController get instance => Get.find();
+class EditItemController extends GetxController {
+  static EditItemController get instance => Get.find();
 
   ///variables
   final itemName = TextEditingController();
   final price = TextEditingController();
   final kcal = TextEditingController();
   final quantity = TextEditingController();
-
-  // final selectedCategory = RxnString(null);
   final description = TextEditingController();
   final itemDetail = TextEditingController();
 
@@ -25,12 +24,28 @@ class AddItemController extends GetxController {
   final selectedCategories = <String>[].obs; // List to store multiple selected categories
 
   /// global key
-  GlobalKey<FormState> addItemFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> editItemFormKey = GlobalKey<FormState>();
 
   ///  Image Picker
   var selectedImagePath = ''.obs;
   XFile? image;
 
+  late ItemModel currentItem;
+
+  /// Initialize the controller with the existing item data
+  void initializeItemData(ItemModel item) {
+    currentItem = item;
+    itemName.text = item.name;
+    price.text = item.price.toString();
+    kcal.text = item.kcal.toString();
+    quantity.text = item.quantity.toString();
+    itemDetail.text = item.itemDetail;
+    description.text = item.description;
+    selectedCategories.assignAll(item.category);
+    selectedImagePath.value = item.imagePath;
+  }
+
+  /// Pick a new image for the item
   Future<void> pickItemImage() async {
     image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -40,12 +55,11 @@ class AddItemController extends GetxController {
     }
   }
 
-  /// --- create item
-  Future<void> createItem(BuildContext context) async {
+  /// --- update item
+  Future<void> updateItem(BuildContext context) async {
     try {
       /// start loading
       MyLoadingWidgets.loadingDialogue();
-      // MyLoadingWidgets.customToast(message: 'title');
 
       /// Check Internet Connection
       final isConnected = await NetworkManager.instance.isConnected();
@@ -56,26 +70,21 @@ class AddItemController extends GetxController {
       }
 
       /// Form Validation
-      if (!addItemFormKey.currentState!.validate()) {
+      if (!editItemFormKey.currentState!.validate()) {
         Get.back();
         return;
       }
 
-      /// Check if profile image is selected
-      if (image == null) {
-        Get.back();
-        MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Please select a item image');
-        return;
+      /// Handle image update if a new image is selected
+      final itemRepository = ItemData();
+      String imageUrl = currentItem.imagePath;
+      if (image != null) {
+        imageUrl = await itemRepository.uploadImage('ItemImages/', image!);
       }
 
-      /// Upload image to Firebase Storage
-      final itemRepository = ItemData(); // Ensure ItemData class is properly imported
-      final imageUrl = await itemRepository.uploadImage('ItemImages/', image!);
-
-      /// Create a new item
-      final newItem = ItemModel(
-        id: '',
-        // ID will be assigned by Firestore
+      /// Create an updated item
+      final updatedItem = ItemModel(
+        id: currentItem.id,
         name: itemName.text.trim(),
         imagePath: imageUrl,
         price: num.parse(price.text.trim()),
@@ -84,19 +93,21 @@ class AddItemController extends GetxController {
         quantity: int.parse(quantity.text.trim()),
         itemDetail: itemDetail.text.trim(),
         description: description.text.trim(),
-        itemSold: 0,
-        ratingCount: 0.0,
-        ratingMap: {},
+        itemSold: currentItem.itemSold,
+        // Keep original sold count
+        ratingCount: currentItem.ratingCount,
+        // Keep original rating count
+        ratingMap: currentItem.ratingMap, // Keep original ratings
       );
 
-      /// Save item to Firestore
-      await itemRepository.saveToFirestore(newItem);
+      /// Update the item in Firestore
+      await itemRepository.updateInFirestore(updatedItem);
 
       ///reload the all items screen
       await ManageItemsController.instance.fetchItemsFromFirestore();
       Get.back(); // Close the loading dialog
       Get.back(); // got to all items screen
-      MyLoadingWidgets.successSnackBar(title: 'Success!', message: 'Item added successfully');
+      MyLoadingWidgets.successSnackBar(title: 'Success!', message: 'Item updated successfully');
     } catch (e) {
       Get.back();
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: e.toString());

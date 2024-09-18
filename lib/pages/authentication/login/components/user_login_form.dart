@@ -41,7 +41,7 @@ class UserLogInForm extends StatelessWidget {
             child: Obx(
               () => TextFormField(
                 controller: controller.password,
-                // validator: (value) => MyValidator.validatePassword(value),
+                validator: (value) => MyValidator.validatePassword(value),
                 obscureText: controller.hidePassword.value,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12),

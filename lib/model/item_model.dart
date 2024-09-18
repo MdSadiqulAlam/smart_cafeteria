@@ -81,9 +81,38 @@ class ItemModel {
       ratingMap: Map<double, double>.from(data['RatingMap'] ?? {}),
     );
   }
+
+  /// copy with
+  ItemModel copyWith({
+    String? id,
+    String? name,
+    String? imagePath,
+    num? price,
+    num? kcal,
+    List<String>? category,
+    int? quantity,
+    String? itemDetail,
+    String? description,
+    int? itemSold,
+    double? ratingCount,
+    Map<double, double>? ratingMap,
+  }) {
+    return ItemModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imagePath: imagePath ?? this.imagePath,
+      price: price ?? this.price,
+      kcal: kcal ?? this.kcal,
+      category: category ?? this.category,
+      quantity: quantity ?? this.quantity,
+      itemDetail: itemDetail ?? this.itemDetail,
+      description: description ?? this.description,
+      itemSold: itemSold ?? this.itemSold,
+      ratingCount: ratingCount ?? this.ratingCount,
+      ratingMap: ratingMap ?? this.ratingMap,
+    );
+  }
 }
-
-
 
 // 27 items
 List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
