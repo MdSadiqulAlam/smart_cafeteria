@@ -10,6 +10,8 @@ import 'package:smart_cafeteria/utilities/validators.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/pages/admin/edit_item/components/edit_item_controller.dart';
 
+import '../../../../model/test/category_model.dart';
+
 class EditItemForm extends StatelessWidget {
   final ItemModel item;
 
@@ -131,7 +133,7 @@ class EditItemForm extends StatelessWidget {
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 10.0, // Space between checkboxes
-                      children: controller.categories.map((category) {
+                      children: categories.map((category) {
                         return Obx(() => FilterChip(
                               label: Text(category.capitalizeFirst!),
                               selected: controller.selectedCategories.contains(category),

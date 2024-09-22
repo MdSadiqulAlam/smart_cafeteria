@@ -48,7 +48,8 @@ class ItemData {
   /// Fetch all items from Firestore
   Future<List<ItemModel>> fetchAllItems() async {
     try {
-      final snapshot = await collection.orderBy('Name', descending: false).get();
+      // final snapshot = await collection.orderBy('Name', descending: false).get();
+      final snapshot = await collection.orderBy('CreateDate', descending: false).get();
       return snapshot.docs.map((doc) => ItemModel.fromSnapshot(doc)).toList();
     } catch (e) {
       throw "Error fetching items: $e";

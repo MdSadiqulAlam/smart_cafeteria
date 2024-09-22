@@ -1,35 +1,35 @@
-class Category {
+class CategoryModel {
   final String name;
   final String imagePath;
   final String tag;
 
-  Category(
-      {required this.name, required this.imagePath, required this.tag});
+  CategoryModel({required this.name, required this.imagePath, required this.tag});
 }
 
-List<String> cats = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
 
-final List<Category> categories = [
-  Category(
+final List<CategoryModel> categoryList = [
+  CategoryModel(
     name: 'breakfast',
     imagePath: 'assets/categorical_image/breakfast.png',
     tag: 'breakfast',
   ),
-  Category(
-      name: 'beverage',
-      imagePath: 'assets/categorical_image/beverage.png',
-      tag: 'beverage'),
-  Category(
+  CategoryModel(
+    name: 'beverage',
+    imagePath: 'assets/categorical_image/beverage.png',
+    tag: 'beverage',
+  ),
+  CategoryModel(
     name: 'lunch',
     imagePath: 'assets/categorical_image/lunch.png',
     tag: 'lunch',
   ),
-  Category(
+  CategoryModel(
     name: 'snacks',
     imagePath: 'assets/categorical_image/snacks.png',
     tag: 'snacks',
   ),
-  Category(
+  CategoryModel(
     name: 'iceCream',
     imagePath: 'assets/categorical_image/icecream.png',
     tag: 'ice_cream',

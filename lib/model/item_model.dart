@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'item_data.dart';
 
 /// item model
 class ItemModel {
@@ -14,6 +19,7 @@ class ItemModel {
   int itemSold;
   double ratingCount;
   Map<double, double> ratingMap;
+  DateTime createDate;
 
   ItemModel({
     required this.id, // Firestore doc ID
@@ -28,6 +34,7 @@ class ItemModel {
     required this.itemSold,
     required this.ratingCount,
     required this.ratingMap,
+    required this.createDate,
   });
 
   /// Static function to create an empty ItemModel
@@ -44,6 +51,7 @@ class ItemModel {
         itemSold: 0,
         ratingCount: 0.0,
         ratingMap: {},
+        createDate: DateTime.now(),
       );
 
   /// Convert model to JSON structure for storing data in Firebase
@@ -59,27 +67,38 @@ class ItemModel {
       'Description': description,
       'ItemSold': itemSold,
       'RatingCount': ratingCount,
-      'RatingMap': ratingMap,
+
+      /// 'RatingMap': ratingMap,
+      // Convert Map<double, double> to Map<String, double>
+      'RatingMap': ratingMap.map((key, value) => MapEntry(key.toString(), value)),
+      'CreateDate': Timestamp.fromDate(createDate),
     };
   }
 
   /// Factory method to create an ItemModel from a Firebase document snapshot
   factory ItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
-    return ItemModel(
-      id: document.id,
-      name: data['Name'] ?? '',
-      imagePath: data['ImagePath'] ?? '',
-      price: data['Price'] ?? 0,
-      kcal: data['Kcal'] ?? 0,
-      category: List<String>.from(data['Category'] ?? []),
-      quantity: data['Quantity'] ?? 0,
-      itemDetail: data['ItemDetail'] ?? '',
-      description: data['Description'] ?? '',
-      itemSold: data['ItemSold'] ?? 0,
-      ratingCount: data['RatingCount'] ?? 0.0,
-      ratingMap: Map<double, double>.from(data['RatingMap'] ?? {}),
-    );
+    if (document.data() != null) {
+      final data = document.data()!;
+      return ItemModel(
+        id: document.id,
+        name: data['Name'] ?? '',
+        imagePath: data['ImagePath'] ?? '',
+        price: data['Price'] ?? 0,
+        kcal: data['Kcal'] ?? 0,
+        category: List<String>.from(data['Category'] ?? []),
+        quantity: data['Quantity'] ?? 0,
+        itemDetail: data['ItemDetail'] ?? '',
+        description: data['Description'] ?? '',
+        itemSold: data['ItemSold'] ?? 0,
+        ratingCount: data['RatingCount'] ?? 0.0,
+
+        ///ratingMap: Map<double, double>.from(data['RatingMap'] ?? {}),
+        // Convert Map<String, double> back to Map<double, double>
+        ratingMap: (data['RatingMap'] as Map<String, dynamic>).map((key, value) => MapEntry(double.parse(key), value.toDouble())),
+        createDate: (data['CreateDate'] as Timestamp).toDate(),
+      );
+    }
+    return ItemModel.empty();
   }
 
   /// copy with
@@ -96,6 +115,7 @@ class ItemModel {
     int? itemSold,
     double? ratingCount,
     Map<double, double>? ratingMap,
+    DateTime? createDate,
   }) {
     return ItemModel(
       id: id ?? this.id,
@@ -110,12 +130,66 @@ class ItemModel {
       itemSold: itemSold ?? this.itemSold,
       ratingCount: ratingCount ?? this.ratingCount,
       ratingMap: ratingMap ?? this.ratingMap,
+      createDate: createDate ?? this.createDate,
     );
   }
 }
 
+/// to upload all the items at once
+class DemoDataUploader {
+  final ItemData itemData = ItemData();
+
+  /// Upload all items in reverse order with a 1-second delay
+  Future<void> uploadAllItems() async {
+    try {
+      // Reverse the order of the items
+      List<ItemModel> reversedItems = testAllItems.reversed.toList();
+
+      for (ItemModel item in reversedItems) {
+        // 1. Upload image to Firebase Storage
+        // String imagePath = item.imagePath;
+        // File imageFile = File(imagePath);
+
+        // final ref = FirebaseStorage.instance.ref('ItemImages/').child(item.name + '.png');
+        // await ref.putFile(imageFile);
+
+        // String imageUrl = await ref.getDownloadURL();
+        String imageUrl =
+            'https://firebasestorage.googleapis.com/v0/b/smartcafe-202114064.appspot.com/o/ItemImages%2Fupload_image.png?alt=media&token=fe771ec1-f8aa-421f-9411-70fb605bece7';
+
+        // 2. Create a new item with the uploaded image URL
+        ItemModel newItem = ItemModel(
+          id: '',
+          name: item.name,
+          imagePath: imageUrl,
+          // Replace local path with uploaded URL
+          price: item.price,
+          kcal: item.kcal,
+          category: item.category,
+          quantity: item.quantity,
+          itemDetail: item.itemDetail,
+          description: item.description,
+          itemSold: item.itemSold,
+          ratingCount: item.ratingCount,
+          ratingMap: item.ratingMap,
+          createDate: item.createDate,
+        );
+
+        // 3. Save the item to Firestore
+        await itemData.saveToFirestore(newItem);
+
+        // 4. Add a 1-second delay after adding each item
+        await Future.delayed(const Duration(seconds: 1));
+      }
+      print('All items uploaded successfully!');
+    } catch (e) {
+      print('Error uploading items: $e');
+    }
+  }
+}
+
 // 27 items
-List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+///this list is in the category model: List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
 final List<ItemModel> testAllItems = <ItemModel>[
   ItemModel(
     id: '',
@@ -131,6 +205,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 10500, 4: 1700, 3: 0, 2: 0, 1: 734},
     category: ['lunch'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -146,6 +221,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 2231, 4: 2000, 3: 4000, 2: 4000, 1: 1000},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -161,6 +237,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 17000, 4: 2000, 3: 3000, 2: 800, 1: 57},
     category: ['lunch', 'snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -176,6 +253,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 6500, 4: 1500, 3: 400, 2: 100, 1: 73},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -191,6 +269,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 1500, 3: 500, 2: 100, 1: 134},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -206,6 +285,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -221,6 +301,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9500, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['lunch'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -236,6 +317,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['lunch'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -251,6 +333,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 2000, 4: 2000, 3: 300, 2: 6100, 1: 100},
     category: ['breakfast'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -266,6 +349,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 1000, 4: 2000, 3: 7500, 2: 300, 1: 200},
     category: ['breakfast'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -281,6 +365,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['ice_cream'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -296,6 +381,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -311,6 +397,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -326,6 +413,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -341,6 +429,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -356,6 +445,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -371,6 +461,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -386,6 +477,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -401,6 +493,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -416,6 +509,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 10000, 4: 2500, 3: 1000, 2: 300, 1: 200},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -431,6 +525,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9000, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['snacks'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -446,6 +541,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -461,6 +557,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 11000, 4: 3000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -476,6 +573,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 9500, 4: 2000, 3: 1000, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -491,6 +589,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 300, 2: 100, 1: 100},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -506,6 +605,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8000, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['beverage'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
   ItemModel(
     id: '',
@@ -521,6 +621,7 @@ final List<ItemModel> testAllItems = <ItemModel>[
     ratingMap: {5: 8500, 4: 2000, 3: 500, 2: 300, 1: 200},
     category: ['ice_cream'],
     quantity: 0,
+    createDate: DateTime.now(),
   ),
 ];
 

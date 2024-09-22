@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +19,7 @@ class EditItemController extends GetxController {
   final itemDetail = TextEditingController();
 
   /// categories
-  List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+  ///this list is in the category model: List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
   final selectedCategories = <String>[].obs; // List to store multiple selected categories
 
   /// global key
@@ -94,10 +93,11 @@ class EditItemController extends GetxController {
         itemDetail: itemDetail.text.trim(),
         description: description.text.trim(),
         itemSold: currentItem.itemSold,
-        // Keep original sold count
+
+        /// Keep original data
         ratingCount: currentItem.ratingCount,
-        // Keep original rating count
-        ratingMap: currentItem.ratingMap, // Keep original ratings
+        ratingMap: currentItem.ratingMap,
+        createDate: currentItem.createDate,
       );
 
       /// Update the item in Firestore
@@ -114,3 +114,18 @@ class EditItemController extends GetxController {
     }
   }
 }
+
+
+// String id;
+// String name; // admin can set
+// String imagePath; // admin can set
+// num price; // admin can set
+// num kcal; // admin can set
+// List<String> category; // admin can set
+// int quantity; // admin can set
+// String itemDetail; // admin can set
+// String description; // admin can set
+// int itemSold;
+// double ratingCount;
+// Map<double, double> ratingMap;
+// DateTime createDate;

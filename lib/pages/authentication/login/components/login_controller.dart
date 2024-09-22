@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +48,9 @@ class LoginController extends GetxController {
 
       // Check if the email exists in 'AdminMail' collection
       final isAdmin = await checkIfAdminEmail(email.text.trim());
-      if (!isAdmin) {
+      if (isAdmin) {
         Get.back();
-        MyLoadingWidgets.errorSnackBar(title: 'Access Denied', message: 'This email is not registered as an admin.');
+        MyLoadingWidgets.errorSnackBar(title: 'Access Denied', message: 'This email is not registered as an user.');
         return;
       }
 
@@ -56,6 +58,9 @@ class LoginController extends GetxController {
       final userCredentials =
           await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
+      if (kDebugMode) {
+        print('Printing User: ${FirebaseAuth.instance.currentUser}');
+      }
       /// Remove Loader
       Get.back();
 

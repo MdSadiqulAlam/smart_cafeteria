@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../components/loading_widgets.dart';
@@ -11,6 +12,7 @@ class AdminLoginController extends GetxController {
   final hidePassword = true.obs;
   final email = TextEditingController();
   final password = TextEditingController();
+  final deviceStorage = GetStorage();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   // Check if email exists in AdminMail collection
@@ -55,8 +57,10 @@ class AdminLoginController extends GetxController {
       final userCredentials =
           await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
-      Get.back();
+      // Set storage value to true on successful admin login
+      await deviceStorage.write('adminLoggedIn', true);
 
+      Get.back();
       // Redirect to AdminRootPage if the login is successful
       Get.to(() => const AdminRootPage());
       MyLoadingWidgets.successSnackBar(title: 'Success', message: 'Logged in successfully');

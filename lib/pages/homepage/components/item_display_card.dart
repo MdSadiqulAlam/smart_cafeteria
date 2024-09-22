@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 
@@ -36,14 +38,37 @@ class ItemCardGridView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 /// image
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(5, 5, 5, 2),
+                //   child: AspectRatio(
+                //     aspectRatio: 1.5,
+                //     child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(12),
+                //       child: Image.asset(item_.imagePath, fit: BoxFit.cover),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(5, 5, 5, 2),
                   child: AspectRatio(
                     aspectRatio: 1.5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(item_.imagePath, fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: item_.imagePath,
+                        placeholder: (context, url) =>
+                            Center(
+                              child: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                              ),
+                            ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -57,10 +82,10 @@ class ItemCardGridView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     // style: GoogleFonts.poppins(fontSize: 17, color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.w500,),
                     style: getTextTheme(context).headlineSmall?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      color: getColorScheme(context).onSecondaryContainer,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
 
@@ -80,8 +105,8 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "$rating  | sold:${item_.itemSold}",
                         style: getTextTheme(context).labelMedium?.copyWith(
-                              color: getColorScheme(context).onSecondaryContainer,
-                            ),
+                          color: getColorScheme(context).onSecondaryContainer,
+                        ),
                       ),
                     ],
                   ),
@@ -96,16 +121,16 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "TK. ${item_.price}",
                         style: getTextTheme(context).titleSmall?.copyWith(
-                              color: getColorScheme(context).onSecondaryContainer,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          color: getColorScheme(context).onSecondaryContainer,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         "   | ",
                         style: getTextTheme(context).labelLarge?.copyWith(
-                              color: getColorScheme(context).onSecondaryContainer,
-                            ),
+                          color: getColorScheme(context).onSecondaryContainer,
+                        ),
                       ),
                       Icon(
                         Icons.local_fire_department_outlined,
@@ -116,8 +141,8 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "${item_.kcal} Cal",
                         style: getTextTheme(context).labelLarge?.copyWith(
-                              color: getColorScheme(context).onSecondaryContainer,
-                            ),
+                          color: getColorScheme(context).onSecondaryContainer,
+                        ),
                       ),
                     ],
                   ),
@@ -192,7 +217,10 @@ class _FavoriteIconButtonState extends State<FavoriteIconButton> {
         style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
         icon: Icon(
           favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-          color: Theme.of(context).colorScheme.error,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .error,
           size: favorite_ ? 21 : 18,
         ),
       ),

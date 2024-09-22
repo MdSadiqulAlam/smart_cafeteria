@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
@@ -36,7 +38,22 @@ class ItemDetail extends StatelessWidget {
               aspectRatio: 1.5,
               child: Stack(
                 children: [
-                  ClipRRect(borderRadius: BorderRadius.circular(3), child: Image.asset(item_.imagePath, fit: BoxFit.fill)),
+                  // ClipRRect(borderRadius: BorderRadius.circular(3), child: Image.asset(item_.imagePath, fit: BoxFit.fill)),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: CachedNetworkImage(
+                      imageUrl: item_.imagePath,
+                      placeholder: (context, url) => Center(
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                   const Positioned(bottom: 10, right: 3, child: FavoriteIconButtonItemDetail()),
                 ],
               ),

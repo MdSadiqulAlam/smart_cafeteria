@@ -21,7 +21,7 @@ class AddItemController extends GetxController {
   final itemDetail = TextEditingController();
 
   /// categories
-  List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+  ///this list is in the category model: List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
   final selectedCategories = <String>[].obs; // List to store multiple selected categories
 
   /// global key
@@ -87,6 +87,7 @@ class AddItemController extends GetxController {
         itemSold: 0,
         ratingCount: 0.0,
         ratingMap: {},
+        createDate: DateTime.now(),
       );
 
       /// Save item to Firestore

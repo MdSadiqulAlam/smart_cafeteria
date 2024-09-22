@@ -42,7 +42,7 @@ class NotesListview extends StatelessWidget {
                   titleTextStyle: getTextTheme(context).bodyLarge?.copyWith(fontSize: 19, fontWeight: FontWeight.w600),
                   subtitle: Text(note.note),
                   subtitleTextStyle: getTextTheme(context).bodyMedium?.copyWith(fontSize: 15),
-                  onTap: () => Get.to(EditNote(note: note)),
+                  onTap: () => Get.to(()=>EditNote(note: note)),
                 ),
               ),
 

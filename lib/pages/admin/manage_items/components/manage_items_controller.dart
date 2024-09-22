@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import '../../../../model/item_data.dart';
+import '../../../../model/test/category_model.dart';
 
 class ManageItemsController extends GetxController with GetSingleTickerProviderStateMixin {
   static ManageItemsController get instance => Get.find();
@@ -15,7 +16,7 @@ class ManageItemsController extends GetxController with GetSingleTickerProviderS
   var searchFilteredItems = <ItemModel>[].obs; // search filtering
   var isLoading = false.obs;
 
-  List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
+  ///this list is in the category model: List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
 
   /// Item repository
   final itemData = ItemData(); // Create an instance of ItemData for Firestore operations

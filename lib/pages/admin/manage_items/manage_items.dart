@@ -51,7 +51,7 @@ class ManageItems extends StatelessWidget {
         ),
 
         /// tab bar body
-        const SizedBox(height: 12),
+        // const SizedBox(height: 12),
         Expanded(
           child: TabBarView(
             controller: controller.tabController,

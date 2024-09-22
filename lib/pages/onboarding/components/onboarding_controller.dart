@@ -27,7 +27,7 @@ class OnBoardingController extends GetxController {
       // final storage = GetStorage();
       // storage.write('isFirstTime', false);
       ///  write is first time false
-      Get.find<AuthenticationRepository>().deviceStorage.write('isFirstTime', false);
+      // Get.find<AuthenticationRepository>().deviceStorage.write('isFirstTime', false);
       Get.to(()=>const RootPage());
     } else {
       currentPageIndex.value++;

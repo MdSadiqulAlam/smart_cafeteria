@@ -11,6 +11,7 @@ import 'package:smart_cafeteria/pages/admin/edit_item/edit_Item.dart';
 import '../../../../components/loading_widgets.dart';
 import '../../../../model/item_data.dart';
 import '../../../../utilities/network_manager.dart';
+import 'manage_items_controller.dart';
 
 class ManageItemsCardAdmin extends StatelessWidget {
   const ManageItemsCardAdmin({super.key, required this.item_});
@@ -38,7 +39,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
     final num rating = fixedPrecision(
         (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
     return InkWell(
-      onTap: () => Get.to(EditItem(item_: item_)),
+      onTap: () => Get.to(() => EditItem(item_: item_)),
       // splashColor: Theme.of(context).colorScheme.secondaryFixedDim,
       // radius: 50,
       borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -135,7 +136,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
                 width: 33,
                 child: IconButton.filledTonal(
                   color: getColorScheme(context).tertiaryContainer,
-                  onPressed: () => Get.to(EditItem(item_: item_)),
+                  onPressed: () => Get.to(() => EditItem(item_: item_)),
                   tooltip: "Add To Favorites",
                   style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
                   icon: Icon(Icons.edit, color: getColorScheme(context).onTertiaryContainer, size: 20),
@@ -148,7 +149,9 @@ class ManageItemsCardAdmin extends StatelessWidget {
               bottom: 7,
               right: 5,
               child: Obx(() => InkWell(
-                    onTap: () => _showQuantityDialog(context, quantity_),
+                    onTap: () {
+                      _showQuantityDialog(context, quantity_);
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -174,7 +177,7 @@ class ManageItemsCardAdmin extends StatelessWidget {
   }
 
   void _showQuantityDialog(BuildContext context, RxInt quantity_) {
-    final TextEditingController quantityController = TextEditingController(text: item_.quantity.toString());
+    final TextEditingController quantityController = TextEditingController(text: quantity_.value.toString());
 
     Get.dialog(
       AlertDialog(
@@ -204,12 +207,29 @@ class ManageItemsCardAdmin extends StatelessWidget {
                 }
 
                 final newQuantity = int.tryParse(quantityController.text) ?? quantity_.value;
+
+                // Validation: Check if the quantity is non-negative
+                if (newQuantity < 0) {
+                  Get.back(); // Close the loading dialog
+                  MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Quantity cannot be negative');
+                  return;
+                }
                 // Update in Firestore
                 final itemRepository = ItemData();
-                // await itemRepository.updateInFirestore(updatedItem);
                 await itemRepository.updateField(item_.id, 'Quantity', newQuantity);
+
                 // Update the reactive item
                 quantity_.value = newQuantity;
+
+                // Update the item in ManageItemsController's allItems list
+                final manageItemsController = ManageItemsController.instance;
+                final index = manageItemsController.allItems.indexWhere((item) => item.id == item_.id);
+
+                if (index != -1) {
+                  // Update the quantity in the list
+                  // manageItemsController.allItems[index] = manageItemsController.allItems[index].copyWith(quantity: newQuantity);
+                  manageItemsController.allItems[index].quantity = newQuantity;
+                }
                 Get.back();
                 MyLoadingWidgets.successSnackBar(title: 'Success', message: 'Quantity updated successfully');
               } catch (e) {

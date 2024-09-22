@@ -7,6 +7,8 @@ import 'package:smart_cafeteria/pages/admin/add_new_item/components/add_item_con
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/utilities/validators.dart';
 
+import '../../../../model/test/category_model.dart';
+
 class AddItemForm extends StatelessWidget {
   const AddItemForm({super.key});
 
@@ -93,7 +95,7 @@ class AddItemForm extends StatelessWidget {
           ),
           // ),
 
-          /// Category , Quantity
+          ///  Quantity
           const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.number,
@@ -119,7 +121,7 @@ class AddItemForm extends StatelessWidget {
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 10.0, // Space between checkboxes
-                      children: controller.categories.map((category) {
+                      children: categories.map((category) {
                         return Obx(() => FilterChip(
                               label: Text(category.capitalizeFirst!),
                               selected: controller.selectedCategories.contains(category),

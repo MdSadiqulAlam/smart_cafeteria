@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/pages/homepage/components/carousel_slider.dart';
-
-import 'components/category_listview.dart';
-import 'components/homepage_heading.dart';
-import 'components/item_display_gridview.dart';
+import 'package:smart_cafeteria/pages/homepage/components/carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
+import 'package:smart_cafeteria/pages/homepage/components/category/category_listview.dart';
+import 'package:smart_cafeteria/pages/homepage/components/homepage_heading.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_gridview.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    /// put display controller
+    Get.put(ItemDisplayController());
+
     return SingleChildScrollView(
       // padding: const EdgeInsets.fromLTRB(10, 3, 10, 2),
       padding: const EdgeInsets.fromLTRB(0, 3, 0, 2),
@@ -20,15 +24,6 @@ class MyHomePage extends StatelessWidget {
         children: [
           /// food category
           const HomepageHeading(heading: 'Food Categories'),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 2),
-          //   child: Text(
-          //     "Food Categories",
-          //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          //           color: Theme.of(context).colorScheme.onSurfaceVariant,
-          //         ),
-          //   ),
-          // ),
           const SizedBox(height: 2),
           CategoryList(),
 
@@ -45,17 +40,11 @@ class MyHomePage extends StatelessWidget {
           const SizedBox(height: 7),
           const CarouselWithIndicator(),
 
-          /// item display
+          /// item display heading
           const SizedBox(height: 12),
           const HomepageHeading(heading: 'Only For You'),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 2),
-          //   child: Text(
-          //     "Discover and Get Great Food",
-          //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          //         color: Theme.of(context).colorScheme.onSurfaceVariant),
-          //   ),
-          // ),
+
+          /// item display gird view
           const SizedBox(height: 7),
           const ItemDisplayGridView(),
         ],

@@ -2,15 +2,15 @@ import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/homepage/components/categorical_item_display.dart';
+import 'package:smart_cafeteria/pages/homepage/components/category/categorical_item_display.dart';
 
-import '../../../model/test/category_model.dart';
+import '../../../../model/test/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key, required this.cardHeight, required this.category_});
 
   final double cardHeight;
-  final Category category_;
+  final CategoryModel category_;
 
   @override
   Widget build(BuildContext context) {

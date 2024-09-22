@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/empty_screen.dart';
+import 'package:smart_cafeteria/data/repositories/authentication/authentication_repository.dart';
+import 'package:smart_cafeteria/pages/role_based_enter/role_based_enter_screen.dart';
 
 class AdminAppbar extends StatelessWidget implements PreferredSizeWidget {
   const AdminAppbar({
@@ -29,6 +30,7 @@ class AdminAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceStorage = GetStorage();
     // final controller = Get.put(UserController());
     // String? networkImage;
     // final currentUser = FirebaseAuth.instance.currentUser;
@@ -96,14 +98,32 @@ class AdminAppbar extends StatelessWidget implements PreferredSizeWidget {
         //   ),
         if (viewOption)
           IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Implementing Options....."), duration: Duration(milliseconds: 1000)),
+            onPressed: () async {
+              await Get.dialog(
+                AlertDialog(
+                  title: const Text('Logout Confirmation'),
+                  content: const Text('Are you sure you want to logout?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: const Text('No'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await AuthenticationRepository.instance.logout();
+                        // Store admin logout status in GetStorage
+                        await deviceStorage.write('adminLoggedIn', false);
+                        Get.offAll(() => const RoleBasedEnterScreen());
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                ),
               );
             },
             tooltip: "Options",
             style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
-            icon: Icon(Icons.more_vert_rounded, color: getColorScheme(context).primary, size: 25),
+            icon: Icon(Icons.logout_rounded, color: getColorScheme(context).primary, size: 25),
           ),
         // const SizedBox(width: 15),
       ],
@@ -112,35 +132,4 @@ class AdminAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class AdminSearchbar extends StatelessWidget {
-  const AdminSearchbar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25.0),
-      child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text(" SearchBar"), duration: Duration(milliseconds: 700)),
-          );
-        },
-        borderRadius: BorderRadius.circular(30),
-        child: Ink(
-          height: 42,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: getColorScheme(context).secondaryContainer),
-          child: Row(
-            children: [
-              const SizedBox(width: 20),
-              Icon(Icons.search_rounded, color: getColorScheme(context).primary, size: 26),
-              const SizedBox(width: 10),
-              Text("Search Food Item", style: GoogleFonts.roboto(fontSize: 18, color: getColorScheme(context).primary)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

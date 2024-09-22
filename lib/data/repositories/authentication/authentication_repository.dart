@@ -31,7 +31,7 @@ class AuthenticationRepository extends GetxController {
     roleSelect();
   }
 
-  void roleSelect() {
+  Future<void> roleSelect() async {
     Get.offAll(() => const RoleBasedEnterScreen());
   }
 
@@ -40,7 +40,7 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       // Get.offAll(() => const RootPage());
-      Get.to(const RootPage());
+      Get.to(()=>const RootPage());
       if (user.emailVerified == false) {
         emailVerificationBottomSheet(context: Get.overlayContext!, email_: user.email!);
       }
@@ -48,7 +48,7 @@ class AuthenticationRepository extends GetxController {
       await deviceStorage.writeIfNull('isFirstTime', true);
 
       /// todo : correct route based on first time
-      Get.offAll(() => const Onboarding());
+      Get.to(()=> const Onboarding());
       // deviceStorage.read('isFirstTime') != true
       //     ? Get.offAll(() => const RoleBasedEnterScreen())
       //     : Get.offAll(() => const Onboarding());
@@ -57,7 +57,7 @@ class AuthenticationRepository extends GetxController {
 
   void adminScreenRedirect() {
     // Get.offAll(() =>const AdminLogin());
-    Get.to(const AdminLogin());
+    Get.to(()=>const AdminLogin());
   }
 
   /// Email login authentication

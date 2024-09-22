@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/empty_screen.dart';
-
-import '../pages/authentication/login/login.dart';
-import '../pages/notification/notification.dart';
+import 'package:smart_cafeteria/pages/authentication/login/login.dart';
+import 'package:smart_cafeteria/pages/notification/notification.dart';
+import 'package:smart_cafeteria/pages/search_item/search_item.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppbar({
@@ -46,10 +46,22 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
         visible: showTitle,
         child: pageTitle == 'HomePage'
             ? const MySearchbar()
-            : Padding(
-                padding: EdgeInsets.only(left: titlePadding ? 30 : 0),
-                child: Text(pageTitle!, style: TextStyle(fontSize: 24, color: getColorScheme(context).primary)),
-              ),
+            : pageTitle == ""
+                ? Padding(
+                    padding: EdgeInsets.only(left: titlePadding ? 30 : 0),
+                    // child: Text(pageTitle!, style: TextStyle(fontSize: 24, color: getColorScheme(context).primary)),
+                    child: Row(
+                      children: [
+                        SizedBox(height: 30, width: 30, child: Image.asset('assets/logos/mist_logo.png')),
+                        const SizedBox(width: 12),
+                        Text('MIST Cafeteria', style: TextStyle(fontSize: 24, color: getColorScheme(context).primary)),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(left: titlePadding ? 30 : 0),
+                    child: Text(pageTitle!, style: TextStyle(fontSize: 24, color: getColorScheme(context).primary)),
+                  ),
       ),
       actions: [
         if (showNotification)
@@ -114,11 +126,7 @@ class MySearchbar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0),
       child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text(" SearchBar"), duration: Duration(milliseconds: 700)),
-          );
-        },
+        onTap: () =>Get.to(()=>const SearchItem()),
         borderRadius: BorderRadius.circular(30),
         child: Ink(
           height: 42,
