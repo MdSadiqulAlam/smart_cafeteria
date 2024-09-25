@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/pages/item_detail/item_detail.dart';
+
+import 'favorite_controller.dart';
 
 class FavoriteCard extends StatelessWidget {
   const FavoriteCard({super.key, required this.item_});
@@ -15,10 +19,7 @@ class FavoriteCard extends StatelessWidget {
     Color subInfoColor = getColorScheme(context).onSurfaceVariant.withOpacity(0.8);
 
     return InkWell(
-      onTap: () {
-        Get.to(() => ItemDetail(item_: item_));
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => ItemDetail(item_: item_)));
-      },
+      onTap: () => Get.to(() => ItemDetail(item_: item_)),
       borderRadius: BorderRadius.circular(7),
       child: Ink(
         decoration: BoxDecoration(
@@ -37,7 +38,18 @@ class FavoriteCard extends StatelessWidget {
                   aspectRatio: 1,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.horizontal(left: Radius.circular(7), right: Radius.circular(1)),
-                    child: Image.asset(item_.imagePath, fit: BoxFit.cover),
+                    child: CachedNetworkImage(
+                      imageUrl: item_.imagePath,
+                      placeholder: (context, url) => Center(
+                        child: SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -55,6 +67,8 @@ class FavoriteCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
+
+                    /// item details
                     SizedBox(
                       width: getScreenWidth(context) * 0.55,
                       child: Text(
@@ -64,6 +78,8 @@ class FavoriteCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
+                    /// price , calorie , sold
                     const SizedBox(height: 3),
                     Row(
                       children: [
@@ -87,13 +103,17 @@ class FavoriteCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 5),
+
+                    /// add to cart button
                     const AddToCartFavourite(),
                     const SizedBox(height: 5),
                   ],
                 ),
               ],
             ),
-            const Positioned(top: 5, right: 5, child: FavoriteIconButton()),
+
+            /// favorite button
+            Positioned(top: 5, right: 5, child: FavoriteIconButton(itemId: item_.id)),
             // const Positioned(bottom: 5, right: 5, child: AddToCartFavourite()),
           ],
         ),
@@ -116,6 +136,7 @@ class _AddToCartFavouriteState extends State<AddToCartFavourite> {
     if (!addingToCart) {
       setState(() => addingToCart = true);
 
+      /// todo : add to cart
       await Future.delayed(const Duration(milliseconds: 2000), () {});
 
       setState(() => addingToCart = false);
@@ -157,41 +178,26 @@ class _AddToCartFavouriteState extends State<AddToCartFavourite> {
   }
 }
 
-class FavoriteIconButton extends StatefulWidget {
-  const FavoriteIconButton({super.key});
+class FavoriteIconButton extends StatelessWidget {
+  const FavoriteIconButton({super.key, required this.itemId});
 
-  @override
-  State<FavoriteIconButton> createState() => _FavoriteIconButtonState();
-}
+  final String itemId;
 
-class _FavoriteIconButtonState extends State<FavoriteIconButton> {
-  bool favorite_ = true;
-
-  void _toggleFavorite() {
-    setState(() {
-      favorite_ = !favorite_;
-    });
+  Future<void> _removeFromFavorites() async {
+    final favoriteController = FavoriteController.instance;
+    favoriteController.removeFromFavorites(itemId);
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 28,
-      width: 28,
+      height: 30,
+      width: 30,
       child: IconButton.filledTonal(
-        onPressed: _toggleFavorite,
+        onPressed: _removeFromFavorites,
         tooltip: "Add To Favorites",
-        style: IconButton.styleFrom(
-          padding: const EdgeInsets.all(0),
-          // minimumSize: const Size.square(30),
-          // maximumSize: const Size.square(50),
-          backgroundColor: getColorScheme(context).tertiaryContainer,
-        ),
-        icon: Icon(
-          favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-          color: getColorScheme(context).error,
-          size: favorite_ ? 18.5 : 16,
-        ),
+        style: IconButton.styleFrom(padding: const EdgeInsets.all(0), backgroundColor: getColorScheme(context).tertiaryContainer),
+        icon: Icon(Icons.favorite_rounded, color: getColorScheme(context).error, size: 18.5),
       ),
     );
   }

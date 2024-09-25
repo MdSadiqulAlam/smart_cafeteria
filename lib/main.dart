@@ -27,7 +27,7 @@ Future<void> main() async {
   runApp(const MyApp());
   if (kDebugMode) {
     print('Printing User: ${FirebaseAuth.instance.currentUser}');
-    print(FirebaseAuth.instance.currentUser?.uid);
+    print('printing user id: ${FirebaseAuth.instance.currentUser?.uid}');
   }
 
   /// todo: initialize authentication

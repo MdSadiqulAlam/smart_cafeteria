@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
-
-import '../../item_detail/item_detail.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/item_detail/item_detail.dart';
+import 'package:smart_cafeteria/model/favorite_data.dart';
+import 'package:smart_cafeteria/components/loading_widgets.dart';
 
 class ItemCardGridView extends StatelessWidget {
   const ItemCardGridView({super.key, required this.item_});
@@ -16,17 +18,22 @@ class ItemCardGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double ratingCount = item_.ratingCount;
-    final Map<double, double> ratingMap = item_.ratingMap;
-    final double rating = fixedPrecision(
-        (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
+    double ratingCount = item_.ratingCount ?? 0;
+    // if (ratingCount.isNaN) print(ratingCount);
+    Map<double, double> ratingMap = item_.ratingMap;
+    double rating = fixedPrecision((5 * (ratingMap[5] ?? 0) +
+            4 * (ratingMap[4] ?? 0) +
+            3 * (ratingMap[3] ?? 0) +
+            2 * (ratingMap[2] ?? 0) +
+            1 * (ratingMap[1] ?? 0)) /
+        (ratingCount == 0 ? 1 : ratingCount));
+    // print(ratingCount);
+    if (rating.isNaN || ratingMap.isEmpty || ratingCount.isNaN || ratingCount == 0) {
+      rating = 5;
+    }
 
     return InkWell(
-      onTap: () {
-        /// old
-        // Get.to(()=>ItemDetail(item_: item_));
-        Get.to(() => ItemDetail(item_: item_));
-      },
+      onTap: () => Get.to(() => ItemDetail(item_: item_)),
       // splashColor: Theme.of(context).colorScheme.secondaryFixedDim,
       // radius: 50,
       borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -38,7 +45,6 @@ class ItemCardGridView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 /// image
                 // Padding(
                 //   padding: const EdgeInsets.fromLTRB(5, 5, 5, 2),
@@ -58,14 +64,13 @@ class ItemCardGridView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       child: CachedNetworkImage(
                         imageUrl: item_.imagePath,
-                        placeholder: (context, url) =>
-                            Center(
-                              child: SizedBox(
-                                height: 30,
-                                width: 30,
-                                child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
-                              ),
-                            ),
+                        placeholder: (context, url) => Center(
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                          ),
+                        ),
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                         fit: BoxFit.cover,
                       ),
@@ -82,10 +87,10 @@ class ItemCardGridView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     // style: GoogleFonts.poppins(fontSize: 17, color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.w500,),
                     style: getTextTheme(context).headlineSmall?.copyWith(
-                      color: getColorScheme(context).onSecondaryContainer,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          color: getColorScheme(context).onSecondaryContainer,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
 
@@ -105,8 +110,8 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "$rating  | sold:${item_.itemSold}",
                         style: getTextTheme(context).labelMedium?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                        ),
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
                       ),
                     ],
                   ),
@@ -121,16 +126,16 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "TK. ${item_.price}",
                         style: getTextTheme(context).titleSmall?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+                              color: getColorScheme(context).onSecondaryContainer,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       Text(
                         "   | ",
                         style: getTextTheme(context).labelLarge?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                        ),
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
                       ),
                       Icon(
                         Icons.local_fire_department_outlined,
@@ -141,8 +146,8 @@ class ItemCardGridView extends StatelessWidget {
                       Text(
                         "${item_.kcal} Cal",
                         style: getTextTheme(context).labelLarge?.copyWith(
-                          color: getColorScheme(context).onSecondaryContainer,
-                        ),
+                              color: getColorScheme(context).onSecondaryContainer,
+                            ),
                       ),
                     ],
                   ),
@@ -151,7 +156,8 @@ class ItemCardGridView extends StatelessWidget {
             ),
 
             /// favorite button
-            const Positioned(top: 8, right: 7, child: FavoriteIconButton()),
+            Positioned(top: 8, right: 7, child: FavoriteIconButton(itemId: item_.id)),
+            // Positioned(top: 8, right: 7, child: FavoriteIconButtonFrontend()),
 
             /// add to cart
             Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(item_: item_)),
@@ -190,40 +196,89 @@ class AddToCartOutlineButton extends StatelessWidget {
   }
 }
 
-class FavoriteIconButton extends StatefulWidget {
-  const FavoriteIconButton({super.key});
+// class FavoriteIconButtonFrontend extends StatefulWidget {
+//   const FavoriteIconButtonFrontend({super.key});
+//
+//   @override
+//   State<FavoriteIconButtonFrontend> createState() => _FavoriteIconButtonFrontendState();
+// }
+//
+// class _FavoriteIconButtonFrontendState extends State<FavoriteIconButtonFrontend> {
+//   bool favorite_ = false;
+//
+//   void _toggleFavorite() {
+//     setState(() {
+//       favorite_ = !favorite_;
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 32,
+//       width: 32,
+//       child: IconButton.filledTonal(
+//         onPressed: _toggleFavorite,
+//         tooltip: "Add To Favorites",
+//         style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+//         icon: Icon(
+//           favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+//           color: Theme.of(context).colorScheme.error,
+//           size: favorite_ ? 21 : 18,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  @override
-  State<FavoriteIconButton> createState() => _FavoriteIconButtonState();
-}
-
-class _FavoriteIconButtonState extends State<FavoriteIconButton> {
-  bool favorite_ = false;
-
-  void _toggleFavorite() {
-    setState(() {
-      favorite_ = !favorite_;
-    });
-  }
+class FavoriteIconButton extends StatelessWidget {
+  final String itemId; // The item's ID for identifying favorites
+  const FavoriteIconButton({super.key, required this.itemId});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 32,
-      width: 32,
-      child: IconButton.filledTonal(
-        onPressed: _toggleFavorite,
-        tooltip: "Add To Favorites",
-        style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
-        icon: Icon(
-          favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-          color: Theme
-              .of(context)
-              .colorScheme
-              .error,
-          size: favorite_ ? 21 : 18,
-        ),
-      ),
+    // Use ItemDisplayController to manage favorite status
+    final itemDisplayController = ItemDisplayController.instance;
+    // Check if the item is in the user's favorites
+    final isFavorite = itemDisplayController.favoriteItemIds.contains(itemId).obs;
+
+    final favoriteData = FavoriteData();
+
+    return Obx(
+      () {
+        return SizedBox(
+          height: 32,
+          width: 32,
+          child: IconButton.filledTonal(
+            onPressed: () async {
+              try {
+                if (isFavorite.value) {
+                  // Remove item from favorites in Firestore and update locally
+                  await favoriteData.removeFavoriteItem(itemId);
+                  itemDisplayController.favoriteItemIds.remove(itemId);
+                } else {
+                  // Add item to favorites in Firestore and update locally
+                  await favoriteData.addFavoriteItem(itemId);
+                  itemDisplayController.favoriteItemIds.add(itemId);
+                }
+                isFavorite.value = !isFavorite.value; // Toggle the observable value
+              } catch (e) {
+                MyLoadingWidgets.errorSnackBar(
+                  title: 'Oh Snap!',
+                  message: 'Error updating favorite status: $e',
+                );
+              }
+            },
+            // tooltip: isFavorite.value ? "Remove from Favorites" : "Add to Favorites",
+            style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
+            icon: Icon(
+              isFavorite.value ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+              color: getColorScheme(context).error,
+              size: isFavorite.value ? 21 : 18,
+            ),
+          ),
+        );
+      },
     );
   }
 }

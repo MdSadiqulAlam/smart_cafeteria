@@ -50,7 +50,7 @@ class EditItem extends StatelessWidget {
         Get.back(); // Go back to the previous screen after deletion
         MyLoadingWidgets.successSnackBar(title: 'Success', message: 'Item deleted successfully');
       } catch (e) {
-        Get.snackbar('Error', 'Failed to delete item: $e', snackPosition: SnackPosition.BOTTOM);
+        MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: 'Failed to delete item: $e');
       }
     }
   }

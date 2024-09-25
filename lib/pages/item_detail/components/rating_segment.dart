@@ -4,12 +4,7 @@ import 'package:smart_cafeteria/pages/item_detail/components/rating_progress_ind
 import 'package:smart_cafeteria/pages/item_detail/components/rating_star_indicator.dart';
 
 class RatingSegment extends StatelessWidget {
-  const RatingSegment({
-    super.key,
-    required this.rating,
-    required this.ratingCount,
-    required this.ratingMap,
-  });
+  const RatingSegment({super.key, required this.rating, required this.ratingCount, required this.ratingMap});
 
   final double rating;
   final double ratingCount;
@@ -17,8 +12,9 @@ class RatingSegment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String formattedRatingCount =
-        NumberFormat.decimalPatternDigits().format(ratingCount.toInt());
+    final String formattedRatingCount = NumberFormat.decimalPatternDigits().format(ratingCount.toInt());
+
+    // print('$rating  $ratingCount $ratingMap $formattedRatingCount');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -33,14 +29,13 @@ class RatingSegment extends StatelessWidget {
               children: [
                 Text(
                   rating.toString(),
-                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style:
+                      Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                 RatingStarIndicator(rating: rating),
                 Text(
                   formattedRatingCount,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -51,23 +46,23 @@ class RatingSegment extends StatelessWidget {
               children: [
                 RatingProgressIndicator(
                   index: "5",
-                  value: fixedPrecision(ratingMap[5]! / ratingCount),
+                  value: fixedPrecision(ratingMap[5] ?? 0 / (ratingCount == 0 ? 1 : ratingCount)),
                 ),
                 RatingProgressIndicator(
                   index: "4",
-                  value: fixedPrecision(ratingMap[4]! / ratingCount),
+                  value: fixedPrecision(ratingMap[4] ?? 0 / (ratingCount == 0 ? 1 : ratingCount)),
                 ),
                 RatingProgressIndicator(
                   index: "3",
-                  value: fixedPrecision(ratingMap[3]! / ratingCount),
+                  value: fixedPrecision(ratingMap[3] ?? 0 / (ratingCount == 0 ? 1 : ratingCount)),
                 ),
                 RatingProgressIndicator(
                   index: "2",
-                  value: fixedPrecision(ratingMap[2]! / ratingCount),
+                  value: fixedPrecision(ratingMap[2] ?? 0 / (ratingCount == 0 ? 1 : ratingCount)),
                 ),
                 RatingProgressIndicator(
                   index: "1",
-                  value: fixedPrecision(ratingMap[1]! / ratingCount),
+                  value: fixedPrecision(ratingMap[1] ?? 0 / (ratingCount == 0 ? 1 : ratingCount)),
                 ),
               ],
             ),

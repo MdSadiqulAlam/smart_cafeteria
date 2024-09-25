@@ -10,7 +10,7 @@ class ItemData {
   final collection = FirebaseFirestore.instance.collection('Items');
 
   /// Save a new item to Firestore
-   Future<void> saveToFirestore(ItemModel item) async {
+  Future<void> saveToFirestore(ItemModel item) async {
     try {
       await collection.add(item.toJson());
     } catch (e) {
@@ -49,7 +49,7 @@ class ItemData {
   Future<List<ItemModel>> fetchAllItems() async {
     try {
       // final snapshot = await collection.orderBy('Name', descending: false).get();
-      final snapshot = await collection.orderBy('CreateDate', descending: false).get();
+      final snapshot = await collection.orderBy('CreateDate', descending: true).get();
       return snapshot.docs.map((doc) => ItemModel.fromSnapshot(doc)).toList();
     } catch (e) {
       throw "Error fetching items: $e";

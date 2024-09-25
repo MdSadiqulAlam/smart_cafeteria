@@ -18,10 +18,18 @@ class ItemDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double ratingCount = item_.ratingCount;
+    final double ratingCount = item_.ratingCount ?? 1;
     final Map<double, double> ratingMap = item_.ratingMap;
-    final double rating = fixedPrecision(
-        (5 * ratingMap[5]! + 4 * ratingMap[4]! + 3 * ratingMap[3]! + 2 * ratingMap[2]! + 1 * ratingMap[1]!) / ratingCount);
+    double rating = fixedPrecision((5 * (ratingMap[5] ?? 0) +
+            4 * (ratingMap[4] ?? 0) +
+            3 * (ratingMap[3] ?? 0) +
+            2 * (ratingMap[2] ?? 0) +
+            1 * (ratingMap[1] ?? 0)) /
+        ratingCount);
+
+    if (rating.isNaN || ratingMap.isEmpty || item_.ratingCount==0) {
+      rating = 5;
+    }
 
     return Scaffold(
       appBar: const MyAppbar(showNotification: true),
@@ -156,11 +164,9 @@ class ItemDetail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 "Ratings",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: getTextTheme(context)
+                    .titleLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 21, fontWeight: FontWeight.bold),
               ),
             ),
             // const SizedBox(height: 10),
@@ -168,17 +174,11 @@ class ItemDetail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 "Ratings and reviews are verified and are from people who have ordered the same food",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                style: getTextTheme(context).bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
             ),
             const SizedBox(height: 10),
-            RatingSegment(
-              rating: rating,
-              ratingCount: ratingCount,
-              ratingMap: ratingMap,
-            ),
+            RatingSegment(rating: rating, ratingCount: ratingCount, ratingMap: ratingMap),
             const SizedBox(height: 10),
           ],
         ),

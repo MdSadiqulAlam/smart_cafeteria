@@ -40,7 +40,7 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       // Get.offAll(() => const RootPage());
-      Get.to(()=>const RootPage());
+      Get.offAll(()=>const RootPage());
       if (user.emailVerified == false) {
         emailVerificationBottomSheet(context: Get.overlayContext!, email_: user.email!);
       }

@@ -35,7 +35,7 @@ class NotesListviewController extends GetxController {
       notesList.removeWhere((note) => note.id == noteId);
       MyLoadingWidgets.successSnackBar(title: 'Success!', message: 'Note Deleted successfully.');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to delete note: $e');
+      MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: 'Failed to delete note: $e');
     }
   }
 

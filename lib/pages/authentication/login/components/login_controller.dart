@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
 
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../utilities/network_manager.dart';
@@ -61,6 +62,8 @@ class LoginController extends GetxController {
       if (kDebugMode) {
         print('Printing User: ${FirebaseAuth.instance.currentUser}');
       }
+
+      await ItemDisplayController.instance.fetchFavoriteItems();
       /// Remove Loader
       Get.back();
 
