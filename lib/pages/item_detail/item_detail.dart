@@ -27,7 +27,7 @@ class ItemDetail extends StatelessWidget {
             1 * (ratingMap[1] ?? 0)) /
         ratingCount);
 
-    if (rating.isNaN || ratingMap.isEmpty || item_.ratingCount==0) {
+    if (rating.isNaN || ratingMap.isEmpty || item_.ratingCount == 0) {
       rating = 5;
     }
 
@@ -62,7 +62,7 @@ class ItemDetail extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  const Positioned(bottom: 10, right: 3, child: FavoriteIconButtonItemDetail()),
+                  Positioned(bottom: 10, right: 3, child: FavoriteIconButtonItemDetail(itemId: item_.id)),
                 ],
               ),
             ),
@@ -183,7 +183,7 @@ class ItemDetail extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const AddToCartSegment(),
+      bottomNavigationBar: AddToCartSegment(itemId: item_.id),
     );
   }
 }

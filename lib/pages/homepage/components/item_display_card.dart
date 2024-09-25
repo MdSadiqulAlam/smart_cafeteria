@@ -10,6 +10,7 @@ import 'package:smart_cafeteria/pages/homepage/components/item_display/item_disp
 import 'package:smart_cafeteria/pages/item_detail/item_detail.dart';
 import 'package:smart_cafeteria/model/favorite_data.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
+import 'package:smart_cafeteria/pages/root_page.dart';
 
 class ItemCardGridView extends StatelessWidget {
   const ItemCardGridView({super.key, required this.item_});
@@ -19,7 +20,7 @@ class ItemCardGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double ratingCount = item_.ratingCount ?? 0;
-    // if (ratingCount.isNaN) print(ratingCount);
+
     Map<double, double> ratingMap = item_.ratingMap;
     double rating = fixedPrecision((5 * (ratingMap[5] ?? 0) +
             4 * (ratingMap[4] ?? 0) +
@@ -27,7 +28,7 @@ class ItemCardGridView extends StatelessWidget {
             2 * (ratingMap[2] ?? 0) +
             1 * (ratingMap[1] ?? 0)) /
         (ratingCount == 0 ? 1 : ratingCount));
-    // print(ratingCount);
+
     if (rating.isNaN || ratingMap.isEmpty || ratingCount.isNaN || ratingCount == 0) {
       rating = 5;
     }
@@ -160,7 +161,7 @@ class ItemCardGridView extends StatelessWidget {
             // Positioned(top: 8, right: 7, child: FavoriteIconButtonFrontend()),
 
             /// add to cart
-            Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(item_: item_)),
+            Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(itemId: item_.id)),
           ],
         ),
       ),
@@ -169,70 +170,57 @@ class ItemCardGridView extends StatelessWidget {
 }
 
 class AddToCartOutlineButton extends StatelessWidget {
-  const AddToCartOutlineButton({super.key, required this.item_});
+  const AddToCartOutlineButton({super.key, required this.itemId});
 
-  final ItemModel item_;
+  final String itemId;
 
   @override
   Widget build(BuildContext context) {
+    final itemDisplayController = ItemDisplayController.instance; // Create an instance of CartController
+
     return SizedBox(
       height: 27,
       width: 27,
-      child: IconButton.outlined(
-        onPressed: () {
+      child: IconButton.filled(
+        onPressed: () async {
+          // Add item to cart in Firestore using ItemDisplayController
+          await itemDisplayController.addItemToCart(itemId, 1);
+
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("${item_.name} added to cart"), duration: const Duration(milliseconds: 700)),
+            SnackBar(
+              content: const Text("Item added to cart"),
+              duration: const Duration(milliseconds: 3000),
+              action: SnackBarAction(
+                label: 'Go to Cart',
+                textColor: getColorScheme(context).onPrimaryContainer,
+                backgroundColor: getColorScheme(context).primaryContainer,
+                onPressed: () {
+                  if (Get.currentRoute == '/RootPage') {
+                    Get.offAll(() => const RootPage(initialPage: 2));
+                  } else {
+                    Get.to(() => const RootPage(initialPage: 2));
+                  }
+                },
+              ),
+            ),
           );
         },
         tooltip: "Add To Cart",
         style: IconButton.styleFrom(
+          backgroundColor: getColorScheme(context).primary.withOpacity(0.9),
           padding: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          side: BorderSide(width: 2, color: getColorScheme(context).outline),
+          // side: BorderSide(width: 2, color: getColorScheme(context).outline),
         ),
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.add_shopping_cart_outlined, size: 16),
       ),
     );
   }
 }
 
-// class FavoriteIconButtonFrontend extends StatefulWidget {
-//   const FavoriteIconButtonFrontend({super.key});
-//
-//   @override
-//   State<FavoriteIconButtonFrontend> createState() => _FavoriteIconButtonFrontendState();
-// }
-//
-// class _FavoriteIconButtonFrontendState extends State<FavoriteIconButtonFrontend> {
-//   bool favorite_ = false;
-//
-//   void _toggleFavorite() {
-//     setState(() {
-//       favorite_ = !favorite_;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: 32,
-//       width: 32,
-//       child: IconButton.filledTonal(
-//         onPressed: _toggleFavorite,
-//         tooltip: "Add To Favorites",
-//         style: IconButton.styleFrom(padding: const EdgeInsets.all(0)),
-//         icon: Icon(
-//           favorite_ ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-//           color: Theme.of(context).colorScheme.error,
-//           size: favorite_ ? 21 : 18,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class FavoriteIconButton extends StatelessWidget {
-  final String itemId; // The item's ID for identifying favorites
+  final String itemId;
+
   const FavoriteIconButton({super.key, required this.itemId});
 
   @override

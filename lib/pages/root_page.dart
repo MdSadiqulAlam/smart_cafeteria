@@ -23,25 +23,31 @@ List<PageElement> allPages = [
 ];
 
 class RootPage extends StatefulWidget {
-  const RootPage({super.key});
+  final int initialPage;
+
+  const RootPage({super.key, this.initialPage = 0});
 
   @override
   State<RootPage> createState() => _RootPageState();
 }
 
 class _RootPageState extends State<RootPage> {
-  int currentPage = 0;
+   late int currentPage;
+
+  @override
+  void initState() {
+    super.initState();
+    currentPage = widget.initialPage;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // print(FirebaseAuth.instance.currentUser);
     return Scaffold(
       // drawer: AppbarMenu(),
       appBar: MyAppbar(
         showTitle: true,
         showNotification: true,
         viewProfile: true,
-        // currentPage: currentPage,
         pageTitle: allPages[currentPage].title,
         leadingBackArrow: false,
       ),
@@ -49,34 +55,14 @@ class _RootPageState extends State<RootPage> {
       bottomNavigationBar: NavigationBar(
         backgroundColor: getColorScheme(context).secondaryContainer,
         indicatorColor: getColorScheme(context).primaryContainer,
-        destinations: [
-          NavigationDestination(
-            // icon: Icon(currentPage == 0 ? Icons.home_filled : Icons.home),
-            icon: Icon(Icons.home_filled),
-            label: "Home",
-          ),
-          NavigationDestination(
-            // icon: Icon(currentPage == 1 ? Icons.favorite : Icons.favorite_outline),
-            icon: Icon(Icons.favorite),
-            label: "Favorites",
-          ),
-          NavigationDestination(
-            // icon: Icon(currentPage == 2 ? Icons.shopping_cart : Icons.shopping_cart_outlined),
-            icon: Icon(Icons.shopping_cart),
-            label: "Cart",
-          ),
-          NavigationDestination(
-            // icon: Icon(currentPage == 3 ? Icons.view_list_rounded : Icons.view_agenda_outlined),
-            icon: Icon(Icons.view_list_rounded),
-            label: "Orders",
-          ),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home_filled), label: "Home"),
+          NavigationDestination(icon: Icon(Icons.favorite), label: "Favorites"),
+          NavigationDestination(icon: Icon(Icons.shopping_cart), label: "Cart"),
+          NavigationDestination(icon: Icon(Icons.view_list_rounded), label: "Orders"),
         ],
         selectedIndex: currentPage,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
-        },
+        onDestinationSelected: (int index) => setState(() => currentPage = index),
       ),
     );
   }

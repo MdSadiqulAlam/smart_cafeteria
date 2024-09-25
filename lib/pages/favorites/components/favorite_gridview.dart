@@ -31,7 +31,7 @@ class FavoriteGridview extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           // maxCrossAxisExtent: 180,
-          mainAxisExtent: 103,
+          mainAxisExtent: 105,
           // childAspectRatio: 0.95,
           mainAxisSpacing: 10,
           // crossAxisSpacing: 7,

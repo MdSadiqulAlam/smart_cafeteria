@@ -40,16 +40,4 @@ class FavoriteController extends GetxController {
     }
   }
 
-  /// Remove an item from the favorites
-  Future<void> removeFromFavorites(String itemId) async {
-    try {
-      // Remove item ID in ItemDisplayController
-      await ItemDisplayController.instance.removeFavorite(itemId);
-
-      // Update favorite items list
-      await updateFavoriteItems();
-    } catch (e) {
-      MyLoadingWidgets.errorSnackBar(title: 'Error on favorites page', message: "Error removing favorite item: $e");
-    }
-  }
 }

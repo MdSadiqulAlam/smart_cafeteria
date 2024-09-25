@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'payment_screen.dart';
 
-Future<void> checkoutBottomSheet(BuildContext context) async {
+Future<void> checkoutBottomSheet({required BuildContext context, required num totalPrice}) async {
   showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {
@@ -54,7 +52,7 @@ Future<void> checkoutBottomSheet(BuildContext context) async {
                 children: [
                   const Text('Total Amount:', style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                   Text(
-                    '970 TK',
+                    '$totalPrice TK',
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: getColorScheme(context).error),
                   ),
                 ],

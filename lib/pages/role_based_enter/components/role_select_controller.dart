@@ -26,8 +26,7 @@ class RoleSelectController extends GetxController {
     bool isAdminLoggedIn = deviceStorage.read<bool>('adminLoggedIn') ?? false;
 
     /// todo: to upload while role select, execute this
-    // final uploader = DemoDataUploader();
-    // uploader.uploadAllItems();
+    // DemoDataUploader.uploadAllItems();
 
     if (userRole == true) {
       if (isAdminLoggedIn) {

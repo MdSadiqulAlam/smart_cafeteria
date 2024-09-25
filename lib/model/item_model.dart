@@ -1,12 +1,13 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-import 'item_data.dart';
+import 'package:smart_cafeteria/model/item_data.dart';
 
 /// item model
 class ItemModel {
+  @override
+  String toString() {
+    return 'ItemModel(name: $name, kcal: $kcal, price: $price, category: $category, quantity: $quantity)';
+  }
+
   String id;
   String name; // admin can set
   String imagePath; // admin can set
@@ -137,15 +138,13 @@ class ItemModel {
 
 /// to upload all the items at once
 class DemoDataUploader {
-  final ItemData itemData = ItemData();
-
   /// Upload all items in reverse order with a 1-second delay
-  Future<void> uploadAllItems() async {
+  static Future<void> uploadAllItems() async {
+    final ItemData itemData = ItemData();
     try {
-      // Reverse the order of the items
-      List<ItemModel> reversedItems = testAllItems.reversed.toList();
-
-      for (ItemModel item in reversedItems) {
+      // for (ItemModel item in testAllItems) {
+      for (int i = testAllItems.length - 1; i >= 0; i--) {
+        ItemModel item = testAllItems[i];
         // 1. Upload image to Firebase Storage
         // String imagePath = item.imagePath;
         // File imageFile = File(imagePath);
@@ -172,7 +171,7 @@ class DemoDataUploader {
           itemSold: item.itemSold,
           ratingCount: item.ratingCount,
           ratingMap: item.ratingMap,
-          createDate: item.createDate,
+          createDate: DateTime.now(),
         );
 
         // 3. Save the item to Firestore
@@ -190,7 +189,7 @@ class DemoDataUploader {
 
 // 27 items
 ///this list is in the category model: List<String> categories = ['breakfast', 'beverage', 'lunch', 'snacks', 'ice_cream'];
-final List<ItemModel> testAllItems = <ItemModel>[
+List<ItemModel> testAllItems = <ItemModel>[
   ItemModel(
     id: '',
     name: "khichuri",

@@ -1,38 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
+import 'package:smart_cafeteria/model/item_model.dart';
+import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
+import 'package:smart_cafeteria/pages/cart/components/cart_item_card.dart';
+import 'package:smart_cafeteria/pages/cart/components/checkout_segment.dart';
 
-import '../../model/item_model.dart';
-import 'components/cart_item_card.dart';
-import 'components/checkout_segment.dart';
-
-class MyCart extends StatefulWidget {
+class MyCart extends StatelessWidget {
   const MyCart({super.key});
 
   @override
-  State<MyCart> createState() => _MyCartState();
-}
-
-class _MyCartState extends State<MyCart> {
-  @override
   Widget build(BuildContext context) {
+    final cartController = Get.put(CartController());
+// print(cartController.cartItems);
     return Column(
       children: [
+        const SizedBox(height: 3),
         Expanded(
-          flex: 14,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(12, 3, 12, 2),
-            // physics: const BouncingScrollPhysics(),
-            child: ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              // itemCount: testAllItemsTest.length,
-              itemCount: 7,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (_, int index) {
-                ItemModel item_ = testAllItems[index % testAllItems.length];
-                return CartItemCard(item_: item_);
-              },
-            ),
-          ),
+          flex: 13,
+          child: Obx(() {
+            if (cartController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (cartController.cartItems.isEmpty) {
+              return Center(child: Text("Your cart is empty", style: getTextTheme(context).bodyLarge));
+            }
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(12, 3, 12, 2),
+              child: ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: cartController.cartItems.length,
+                // Update to use dynamic item count
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (_, int index) {
+                  ItemModel item = cartController.cartItems[index]; // Use items from cartController
+                  return CartItemCard(item_: item);
+                },
+              ),
+            );
+          }),
         ),
         const Expanded(flex: 1, child: CheckoutSegment()),
       ],

@@ -133,7 +133,7 @@ class OrderCard extends StatelessWidget {
                     height: 35,
                     child: FilledButton(
                       onPressed: () {
-                        checkoutBottomSheet(context);
+                        checkoutBottomSheet(context: context, totalPrice: 0);
                       },
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.all(0),

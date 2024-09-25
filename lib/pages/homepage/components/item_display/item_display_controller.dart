@@ -4,6 +4,8 @@ import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/item_data.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/model/favorite_data.dart';
+import 'package:smart_cafeteria/model/cart_model.dart';
+import 'package:smart_cafeteria/model/cart_data.dart';
 
 class ItemDisplayController extends GetxController {
   static ItemDisplayController get instance => Get.find();
@@ -11,19 +13,21 @@ class ItemDisplayController extends GetxController {
   /// Variables
   var allItems = <ItemModel>[].obs; // All items fetched from Firestore
   var favoriteItemIds = <String>[].obs; // Favorite items of the user (list of item IDs)
+  var myCart = CartModel(cartItems: []).obs; // User's cart data
   var isLoading = false.obs;
 
   /// Item repository
   final itemData = ItemData(); // Create an instance of ItemData for Firestore operations
   final favoriteData = FavoriteData(); // Firestore operations for favorite items
+  final cartData = CartData(); // Firestore operations for cart data
 
   @override
   void onInit() {
     super.onInit();
     fetchItemsFromFirestore(); // Fetch items from Firestore on initialization
     fetchFavoriteItems(); // Fetch favorite items
+    fetchCartItems(); // Fetch cart items
     listenForItemUpdates(); // Listen for real-time updates when items are added or modified
-    // listenForFavoriteUpdates(); // Listen for real-time updates to the user's favorites
   }
 
   /// Fetch items from Firestore
@@ -53,6 +57,19 @@ class ItemDisplayController extends GetxController {
     }
   }
 
+  /// Fetch the user's cart items
+  Future<void> fetchCartItems() async {
+    try {
+      final cartModel = await cartData.getCart();
+      // print(cartModel);
+      if (cartModel != null) {
+        myCart.value = cartModel;
+      }
+    } catch (e) {
+      MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: 'Error fetching cart items: $e');
+    }
+  }
+
   /// Listen for real-time updates in Firestore
   void listenForItemUpdates() {
     itemData.collection.snapshots().listen((snapshot) {
@@ -78,22 +95,7 @@ class ItemDisplayController extends GetxController {
     });
   }
 
-  /// Listen for real-time updates to the user's favorite items
-  // void listenForFavoriteUpdates() {
-  //   if (favoriteData.user == null) return;
-  //
-  //   favoriteData.collection.doc(favoriteData.user!.uid).snapshots().listen((snapshot) {
-  //     if (snapshot.exists) {
-  //       // If there is a change in the user's favorites, update the list
-  //       final favoriteModel = FavoriteModel.fromSnapshot(snapshot);
-  //       favoriteItems.value = favoriteModel.favoriteItems;
-  //     } else {
-  //       // If the document doesn't exist, clear the favorite items list
-  //       favoriteItems.clear();
-  //     }
-  //   });
-  // }
-
+  /// FAVORITE FAVORITE FAVORITE FAVORITE FAVORITE______________________________________________________________
   /// Check if an item is a favorite
   bool isItemFavorite(String itemId) {
     return favoriteItemIds.contains(itemId);
@@ -116,6 +118,67 @@ class ItemDisplayController extends GetxController {
       favoriteItemIds.remove(itemId);
     } catch (e) {
       MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Failed to remove favorite: $e');
+    }
+  }
+
+  /// CART CART CART CART CART_________________________________________________________________________________
+  /// Check if an item is in the cart
+  bool isItemInCart(String itemId) {
+    return myCart.value.cartItems.any((item) => item.itemId == itemId);
+  }
+
+  /// Get the quantity of an item in the cart
+  int getItemQuantity(String itemId) {
+    final cartItem = myCart.value.cartItems.firstWhereOrNull((item) => item.itemId == itemId);
+    return cartItem?.quantity ?? 0;
+  }
+
+  /// Get the total number of items in the cart
+  int get getTotalItemCount {
+    return myCart.value.cartItems.fold(0, (totalCount, item) => totalCount + item.quantity);
+  }
+
+  /// Add an item to the cart
+  Future<void> addItemToCart(String itemId, int quantity) async {
+    try {
+      await cartData.addItemToCart(CartItemIds(itemId: itemId, quantity: quantity));
+      // Update the cart in the controller after adding item
+
+      await fetchCartItems();
+    } catch (e) {
+      MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Failed to add item to cart: $e');
+    }
+  }
+
+  /// Remove an item from the cart
+  Future<void> removeItemFromCart(String itemId) async {
+    try {
+      await cartData.removeItemFromCart(itemId);
+      // Update the cart in the controller after removing item
+      await fetchCartItems();
+    } catch (e) {
+      MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Failed to remove item from cart: $e');
+    }
+  }
+
+  /// Update the quantity of an item in the cart
+  Future<void> updateItemQuantity(String itemId, int quantity) async {
+    try {
+      await cartData.updateItemQuantity(itemId, quantity);
+      // Update the cart in the controller after updating item quantity
+      await fetchCartItems();
+    } catch (e) {
+      MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Failed to update item quantity: $e');
+    }
+  }
+
+  /// Clear all items from the user's cart
+  Future<void> clearCart() async {
+    try {
+      await cartData.deleteCartField('cartItems');
+      myCart.value = CartModel(cartItems: []);
+    } catch (e) {
+      MyLoadingWidgets.errorSnackBar(title: 'Error', message: 'Failed to clear cart: $e');
     }
   }
 }

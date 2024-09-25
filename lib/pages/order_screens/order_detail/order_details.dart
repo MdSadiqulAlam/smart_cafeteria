@@ -14,7 +14,7 @@ class OrderDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppbar(showTitle: true, pageTitle: 'Order Details',titlePadding: false, viewOption: true),
+      appBar: const MyAppbar(showTitle: true, pageTitle: 'Order Details', titlePadding: false, viewOption: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 3),
         physics: const BouncingScrollPhysics(),
@@ -28,8 +28,7 @@ class OrderDetails extends StatelessWidget {
                 : GestureDetector(
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Getting qr code"), duration: const Duration(milliseconds: 700)),
+                        const SnackBar(content: Text("Getting qr code"), duration: const Duration(milliseconds: 700)),
                       );
                     },
                     child: Container(
@@ -90,7 +89,7 @@ class OrderDetails extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 100),
         child: FilledButton.tonal(
           onPressed: () {
-            checkoutBottomSheet(context);
+            checkoutBottomSheet(context: context, totalPrice: 0);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),

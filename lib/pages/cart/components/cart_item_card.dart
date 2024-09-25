@@ -1,9 +1,13 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
+import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
 
 import '../../../model/item_model.dart';
 import '../../item_detail/item_detail.dart';
@@ -39,13 +43,24 @@ class CartItemCard extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(()=>ItemDetail(item_: item_));
+                    Get.to(() => ItemDetail(item_: item_));
                   },
                   child: AspectRatio(
                     aspectRatio: 0.97,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(1.5)),
-                      child: Image.asset(item_.imagePath, fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: item_.imagePath,
+                        placeholder: (context, url) => Center(
+                          child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: LoadingAnimationWidget.stretchedDots(color: getColorScheme(context).onSurface, size: 30),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -93,17 +108,14 @@ class CartItemCard extends StatelessWidget {
           right: 2,
           top: 2,
           child: SizedBox(
-            height: 25,
-            width: 25,
+            height: 30,
+            width: 30,
             child: IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(content: Text("clicked"), duration: Duration(milliseconds: 700)));
-              },
+              onPressed: () => ItemDisplayController.instance.removeItemFromCart(item_.id),
               padding: const EdgeInsets.all(0),
               // icon: const Icon(Icons.delete_outline_rounded),
               icon: const Icon(Icons.close),
-              iconSize: 20,
+              iconSize: 23,
             ),
           ),
         ),
@@ -112,30 +124,21 @@ class CartItemCard extends StatelessWidget {
   }
 }
 
-class CartItemQuantity extends StatefulWidget {
+class CartItemQuantity extends StatelessWidget {
   const CartItemQuantity({super.key, required this.item_});
 
   final ItemModel item_;
 
   @override
-  State<CartItemQuantity> createState() => _CartItemQuantityState();
-}
-
-class _CartItemQuantityState extends State<CartItemQuantity> {
-  int quantity = 1;
-
-  void _setQuantity(int val) {
-    setState(() {
-      quantity += val;
-      quantity = max(quantity, 1);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final ItemModel item_ = widget.item_;
+    final itemDisplayController = ItemDisplayController.instance;
+    // final cartController = CartController.instance;
+
+    int quantity = itemDisplayController.getItemQuantity(item_.id);
+
+    /// size variables
     const double textSize_ = 16.5;
-    const double iconSize_ = 20;
+    const double iconSize_ = 22;
     const double iconBorderSize_ = iconSize_ + 5;
 
     return Stack(
@@ -147,18 +150,16 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
               children: [
                 Text(
                   "Tk. ${item_.price * quantity}",
-                  style: getTextTheme(context).labelMedium?.copyWith(
-                        // color: Theme.of(context).colorScheme.onSecondaryContainer,
-                        color: getColorScheme(context).error,
-                        fontSize: textSize_ + 2.8,
-                      ),
+                  style: getTextTheme(context)
+                      .labelMedium
+                      ?.copyWith(color: getColorScheme(context).error, fontSize: textSize_ + 2.8),
                 ),
                 const SizedBox(width: 15),
                 Text(
                   "${item_.price} x1",
                   style: getTextTheme(context)
                       .labelLarge
-                      ?.copyWith(color: getColorScheme(context).onSurfaceVariant, fontSize: textSize_ - 3),
+                      ?.copyWith(color: getColorScheme(context).onSurfaceVariant, fontSize: textSize_ - 1),
                 ),
               ],
             ),
@@ -166,17 +167,13 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
             /// cal info
             Row(
               children: [
-                Icon(
-                  Icons.local_fire_department_outlined,
-                  color: getColorScheme(context).onSecondaryContainer,
-                  size: textSize_ + 2,
-                ),
+                Icon(Icons.local_fire_department_outlined,
+                    color: getColorScheme(context).onSecondaryContainer, size: textSize_ + 2),
                 Text(
                   "${item_.kcal * quantity} cal",
-                  style: getTextTheme(context).labelLarge?.copyWith(
-                        color: getColorScheme(context).onSecondaryContainer,
-                        fontSize: textSize_,
-                      ),
+                  style: getTextTheme(context)
+                      .labelLarge
+                      ?.copyWith(color: getColorScheme(context).onSecondaryContainer, fontSize: textSize_),
                 ),
               ],
             ),
@@ -196,7 +193,12 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
                   width: iconBorderSize_,
                   child: IconButton.filledTonal(
                     onPressed: () {
-                      _setQuantity(-1);
+                      // _setQuantity(-1);
+                      if (quantity > 1) {
+                        itemDisplayController.updateItemQuantity(item_.id, quantity - 1);
+                      } else {
+                        itemDisplayController.removeItemFromCart(item_.id);
+                      }
                     },
                     padding: const EdgeInsets.all(0),
                     style: IconButton.styleFrom(backgroundColor: getColorScheme(context).tertiaryContainer),
@@ -219,7 +221,8 @@ class _CartItemQuantityState extends State<CartItemQuantity> {
                   width: iconBorderSize_,
                   child: IconButton.filledTonal(
                     onPressed: () {
-                      _setQuantity(1);
+                      // _setQuantity(1);
+                      itemDisplayController.updateItemQuantity(item_.id, quantity + 1);
                     },
                     padding: const EdgeInsets.all(0),
                     style: IconButton.styleFrom(backgroundColor: getColorScheme(context).tertiaryContainer),
