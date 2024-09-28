@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/item_model.dart';
-import 'package:smart_cafeteria/model/test/order_model.dart';
+import 'package:smart_cafeteria/model/order_model.dart';
 import 'order_detail_component.dart';
 import 'ordered_item_card.dart';
 
@@ -59,10 +58,9 @@ class _OrderedItemDropDownState extends State<OrderedItemDropDown> {
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (_, int index) {
                   OrderedItemModel orderedItem_ = order_.orderedItems[index];
-                  ItemModel item_ = testAllItems[orderedItem_.itemIndex];
-                  final double cardHeight = getAppBarHeight() * 1.49;
+                  // ItemModel item_ = testAllItems[orderedItem_.itemIndex];
 
-                  return OrderedItemCard(item_: item_, cardHeight: cardHeight, orderedItem_: orderedItem_);
+                  return OrderedItemCard( orderedItem_: orderedItem_);
                 },
               )
             : const SizedBox.shrink(),

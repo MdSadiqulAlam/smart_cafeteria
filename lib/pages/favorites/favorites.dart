@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/favorites/components/favorite_gridview.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 
 class Favorites extends StatelessWidget {
   const Favorites({super.key});

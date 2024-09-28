@@ -36,6 +36,8 @@ class CartModel {
 
   CartModel({required this.cartItems});
 
+  static CartModel empty()=>CartModel(cartItems: []);
+
   // Convert CartItemModel to a Map (for Firestore)
   Map<String, dynamic> toJson() {
     return {

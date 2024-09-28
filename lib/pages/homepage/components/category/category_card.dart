@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/homepage/components/category/categorical_item_display.dart';
 
-import '../../../../model/test/category_model.dart';
+import '../../../../model/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key, required this.cardHeight, required this.category_});

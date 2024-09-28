@@ -10,7 +10,7 @@ import 'package:smart_cafeteria/utilities/validators.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/pages/admin/edit_item/components/edit_item_controller.dart';
 
-import '../../../../model/test/category_model.dart';
+import '../../../../model/category_model.dart';
 
 class EditItemForm extends StatelessWidget {
   final ItemModel item;

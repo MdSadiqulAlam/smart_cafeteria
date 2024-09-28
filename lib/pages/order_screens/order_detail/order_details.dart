@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test/order_model.dart';
+import 'package:smart_cafeteria/model/order_model.dart';
 import '../../payment/checkout_bottom_sheet.dart';
 import 'components/order_detail_component.dart';
 import 'components/ordered_item_dropdown.dart';
@@ -14,7 +15,7 @@ class OrderDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppbar(showTitle: true, pageTitle: 'Order Details', titlePadding: false, viewOption: true),
+      appBar: const MyAppbar(showTitle: true, pageTitle: 'Order Details', titlePadding: false),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 3),
         physics: const BouncingScrollPhysics(),
@@ -68,11 +69,11 @@ class OrderDetails extends StatelessWidget {
             const SizedBox(height: 7),
             MyOrderDetailContainer(
               components_: <Widget>[
-                MyOrderDetailStatusRow(label: 'Order Created', status: order_.date),
+                MyOrderDetailStatusRow(label: 'Order ID', status: order_.id),
+                // MyOrderDetailStatusRow(label: 'Order Created', status: order_.date),
                 const MyOrderDetailHorizontalDivider(),
-                MyOrderDetailStatusRow(label: 'Order Time', status: order_.time),
-                const MyOrderDetailHorizontalDivider(),
-                MyOrderDetailStatusRow(label: 'Order ID', status: order_.orderID),
+                MyOrderDetailStatusRow(label: 'Order Time', status:'${DateFormat('HH:mm').format(order_.orderDate)} | ${DateFormat('MMM dd, yy').format(order_.orderDate)}'),
+                // const MyOrderDetailHorizontalDivider(),
               ],
             ),
 

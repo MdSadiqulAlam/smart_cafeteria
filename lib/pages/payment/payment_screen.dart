@@ -4,7 +4,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_controller.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key, required this.paymentMethod});
@@ -42,7 +43,10 @@ class ConfirmPaymentButton extends StatelessWidget {
     if (loadingPayment.value == false) {
       loadingPayment.value = true;
       try {
-        await ItemDisplayController.instance.clearCart();
+        /// todo : place order
+        await OrderController.instance.placeOrder();
+
+        Get.back();
         Get.back();
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           const SnackBar(content: Text("Payment Received"), duration: Duration(milliseconds: 1000)),

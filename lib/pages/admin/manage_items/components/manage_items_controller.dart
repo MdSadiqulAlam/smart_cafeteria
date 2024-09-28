@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import '../../../../model/item_data.dart';
-import '../../../../model/test/category_model.dart';
+import '../../../../model/category_model.dart';
 
 class ManageItemsController extends GetxController with GetSingleTickerProviderStateMixin {
   static ManageItemsController get instance => Get.find();

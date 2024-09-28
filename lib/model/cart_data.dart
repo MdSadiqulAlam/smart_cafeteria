@@ -23,6 +23,8 @@ class CartData {
         // cart.cartItems = cart.cartItems.reversed.toList();
 
         return cart;
+      } else {
+        return CartModel.empty();
       }
     } catch (e) {
       print('Error fetching cart: $e');

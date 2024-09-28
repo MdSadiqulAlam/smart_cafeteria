@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 
 class CartController extends GetxController {
   static CartController get instance => Get.find();

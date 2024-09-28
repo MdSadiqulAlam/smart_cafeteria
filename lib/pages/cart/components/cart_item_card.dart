@@ -1,13 +1,10 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 
 import '../../../model/item_model.dart';
 import '../../item_detail/item_detail.dart';
@@ -78,10 +75,10 @@ class CartItemCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       // style: GoogleFonts.poppins(fontSize: 17, color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.w500,),
-                      style: getTextTheme(context).headlineSmall?.copyWith(
+                      style: getTextTheme(context).titleSmall?.copyWith(
                             color: getColorScheme(context).onSecondaryContainer,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                     SizedBox(

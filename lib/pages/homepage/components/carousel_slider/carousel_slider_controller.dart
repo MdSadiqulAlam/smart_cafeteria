@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 
 class CarouselSliderController extends GetxController {

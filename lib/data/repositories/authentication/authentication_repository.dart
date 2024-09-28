@@ -8,10 +8,13 @@ import 'package:smart_cafeteria/pages/root_page.dart';
 import 'package:smart_cafeteria/utilities/exceptions/firebase_auth_exceptions.dart';
 import 'package:smart_cafeteria/utilities/exceptions/format_exceptions.dart';
 import 'package:smart_cafeteria/utilities/exceptions/platform_exceptions.dart';
-
-import '../../../pages/admin/admin_login/admin_login.dart';
-import '../../../pages/onboarding/onboarding.dart';
-import '../../../utilities/exceptions/firebase_exceptions.dart';
+import 'package:smart_cafeteria/pages/admin/admin_login/admin_login.dart';
+import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
+import 'package:smart_cafeteria/pages/favorites/components/favorite_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/onboarding/onboarding.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_controller.dart';
+import 'package:smart_cafeteria/utilities/exceptions/firebase_exceptions.dart';
 
 class AuthenticationRepository extends GetxController {
   //getter method
@@ -39,6 +42,7 @@ class AuthenticationRepository extends GetxController {
   void screenRedirect() async {
     final user = _auth.currentUser;
     if (user != null) {
+
       // Get.offAll(() => const RootPage());
       Get.offAll(()=>const RootPage());
       if (user.emailVerified == false) {

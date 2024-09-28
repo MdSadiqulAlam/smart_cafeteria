@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/pages/admin/manage_items/components/manage_items_controller.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-
-import 'components/manage_items_listview.dart';
+import 'package:smart_cafeteria/pages/admin/manage_items/components/manage_items_listview.dart';
 
 class ManageItems extends StatelessWidget {
   const ManageItems({super.key});

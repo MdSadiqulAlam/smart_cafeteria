@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
-
-import '../../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../../utilities/network_manager.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
+import 'package:smart_cafeteria/data/repositories/authentication/authentication_repository.dart';
+import 'package:smart_cafeteria/utilities/network_manager.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_controller.dart';
 
 class LoginController extends GetxController {
   /// Variables
@@ -56,14 +56,16 @@ class LoginController extends GetxController {
       }
 
       /// Login user using EMail & Password Authentication
-      final userCredentials =
-          await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
+      // final userCredentials =
+      await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       if (kDebugMode) {
         print('Printing User: ${FirebaseAuth.instance.currentUser}');
       }
 
-      await ItemDisplayController.instance.fetchFavoriteItems();
+      // await ItemDisplayController.instance.fetchFavoriteItems();
+      // await OrderController.instance.fetchUserOrders();
+
       /// Remove Loader
       Get.back();
 

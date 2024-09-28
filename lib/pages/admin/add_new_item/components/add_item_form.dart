@@ -7,7 +7,7 @@ import 'package:smart_cafeteria/pages/admin/add_new_item/components/add_item_con
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/utilities/validators.dart';
 
-import '../../../../model/test/category_model.dart';
+import '../../../../model/category_model.dart';
 
 class AddItemForm extends StatelessWidget {
   const AddItemForm({super.key});

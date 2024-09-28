@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/model/test/order_model.dart';
+import 'package:smart_cafeteria/model/order_model.dart';
 import 'package:smart_cafeteria/pages/admin/order_handle/orders_admin/components/order_card_admin.dart';
 
 class OrdersListviewAdmin extends StatelessWidget {
@@ -9,7 +9,7 @@ class OrdersListviewAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<OrderModel> filteredOrders = (completed ? completedOrders : pendingOrders);
+    final List<OrderModel> filteredOrders = (completed ? testCompletedOrders : testPendingOrders);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(15, 10, 15, 2),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/note_model.dart';
 import 'package:smart_cafeteria/pages/admin/notes_admin/components/notes_listview_controller.dart';
+import 'package:smart_cafeteria/model/note_data.dart';
 
 class NewNoteController extends GetxController {
   static NewNoteController get instance => Get.find();

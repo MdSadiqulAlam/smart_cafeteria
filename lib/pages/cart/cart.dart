@@ -11,8 +11,8 @@ class MyCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartController = Get.put(CartController());
-// print(cartController.cartItems);
+    final cartController = CartController.instance;
+
     return Column(
       children: [
         const SizedBox(height: 3),

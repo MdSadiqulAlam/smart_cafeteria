@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 import 'package:smart_cafeteria/pages/payment/checkout_bottom_sheet.dart';
 
 class CheckoutSegment extends StatelessWidget {
@@ -18,9 +18,10 @@ class CheckoutSegment extends StatelessWidget {
       () {
         // Check if the cart is empty
         if (cartController.cartItems.isEmpty) {
-          return Container(); // Return an empty container if cart is empty
+          return const SizedBox.shrink();
         }
         return Container(
+          padding: const EdgeInsets.symmetric(vertical: 7),
           decoration: BoxDecoration(
             border: Border.symmetric(horizontal: BorderSide(color: getColorScheme(context).outline, width: 0.5)),
             color: getColorScheme(context).secondaryContainer,

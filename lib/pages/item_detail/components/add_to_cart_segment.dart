@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 
 import '../../../components/loading_widgets.dart';
 import '../../root_page.dart';
@@ -39,11 +39,11 @@ class AddToCartSegment extends StatelessWidget {
               textColor: getColorScheme(Get.context!).onPrimaryContainer,
               backgroundColor: getColorScheme(Get.context!).primaryContainer,
               onPressed: () {
-                if (Get.currentRoute == '/RootPage') {
-                  Get.offAll(() => const RootPage(initialPage: 2));
-                } else {
-                  Get.to(() => const RootPage(initialPage: 2));
-                }
+                // if (Get.currentRoute == '/RootPage') {
+                Get.offAll(() => const RootPage(initialPage: 2));
+                // } else {
+                //   Get.to(() => const RootPage(initialPage: 2));
+                // }
               },
             ),
           ),

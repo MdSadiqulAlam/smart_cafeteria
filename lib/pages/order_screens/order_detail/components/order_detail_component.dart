@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../config/get_config.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 
 class MyOrderDetailContainer extends StatelessWidget {
   const MyOrderDetailContainer({
@@ -78,14 +77,13 @@ class MyOrderDetailStatusRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: getTextTheme(context).labelLarge?.copyWith(color: getColorScheme(context).outline, fontSize: 15.5)),
+        Text(label,
+            style: getTextTheme(context).labelLarge?.copyWith(color: getColorScheme(context).onSurfaceVariant, fontSize: 15.5)),
         Text(
           status,
-          style: getTextTheme(context).labelSmall?.copyWith(
-                color: colorStatus ? statusColor : getColorScheme(context).onSecondaryContainer,
-                fontSize: 17,
-                // fontWeight: FontWeight.bold,
-              ),
+          style: getTextTheme(context)
+              .labelSmall
+              ?.copyWith(color: colorStatus ? statusColor : getColorScheme(context).onSecondaryContainer, fontSize: 17),
         ),
       ],
     );

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/pages/item_detail/item_detail.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 import 'package:smart_cafeteria/pages/homepage/components/carousel_slider/carousel_slider_controller.dart';
 
 class CarouselWithIndicator extends StatelessWidget {

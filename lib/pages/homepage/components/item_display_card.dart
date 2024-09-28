@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 import 'package:smart_cafeteria/pages/item_detail/item_detail.dart';
 import 'package:smart_cafeteria/model/favorite_data.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
@@ -161,7 +161,7 @@ class ItemCardGridView extends StatelessWidget {
             // Positioned(top: 8, right: 7, child: FavoriteIconButtonFrontend()),
 
             /// add to cart
-            Positioned(bottom: 5, right: 5, child: AddToCartOutlineButton(itemId: item_.id)),
+            Positioned(bottom: 7, right: 7, child: AddToCartOutlineButton(itemId: item_.id)),
           ],
         ),
       ),
@@ -195,11 +195,11 @@ class AddToCartOutlineButton extends StatelessWidget {
                 textColor: getColorScheme(context).onPrimaryContainer,
                 backgroundColor: getColorScheme(context).primaryContainer,
                 onPressed: () {
-                  if (Get.currentRoute == '/RootPage') {
-                    Get.offAll(() => const RootPage(initialPage: 2));
-                  } else {
-                    Get.to(() => const RootPage(initialPage: 2));
-                  }
+                  // if (Get.currentRoute == '/RootPage') {
+                  Get.offAll(() => const RootPage(initialPage: 2));
+                  // } else {
+                  //   Get.to(() => const RootPage(initialPage: 2));
+                  // }
                 },
               ),
             ),
@@ -209,7 +209,7 @@ class AddToCartOutlineButton extends StatelessWidget {
         style: IconButton.styleFrom(
           backgroundColor: getColorScheme(context).primary.withOpacity(0.9),
           padding: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           // side: BorderSide(width: 2, color: getColorScheme(context).outline),
         ),
         icon: const Icon(Icons.add_shopping_cart_outlined, size: 16),

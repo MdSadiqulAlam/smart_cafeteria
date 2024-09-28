@@ -1,78 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/model/test/order_model.dart';
-
-import 'order_card.dart';
+import 'package:get/get.dart';
+import 'package:smart_cafeteria/model/order_model.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_card.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_controller.dart';
+import 'package:smart_cafeteria/config/get_config.dart';
 
 class OrdersListview extends StatelessWidget {
-  const OrdersListview({super.key, this.filter = false, this.completed = false});
+  const OrdersListview({super.key});
 
-  final bool filter;
-  final bool completed;
 
   @override
   Widget build(BuildContext context) {
-    final List<OrderModel> filteredOrders =
-        filter ? (completed ? completedOrders : pendingOrders) : [...pendingOrders, ...completedOrders];
+    return Obx(() {
+      final orderController = OrderController.instance; // Access the OrderController
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 2),
-      physics: const BouncingScrollPhysics(),
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: filteredOrders.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 15),
-        itemBuilder: (_, int index) {
-          final OrderModel order_ = filteredOrders[index];
-          return OrderCard(order_: order_);
-        },
-      ),
-    );
+      // Display loading indicator while data is being fetched
+      if (orderController.isLoading.value == true) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      // Determine which orders to display based on the filter
+      List<OrderModel> displayedOrders = orderController.filteredOrders;
+
+      // If displayedOrders is empty, show a message
+      if (displayedOrders.isEmpty) {
+        return Center(child: Text('Now Orders to show!', style: getTextTheme(context).bodyLarge));
+      }
+
+      return SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(15, 10, 15, 2),
+        physics: const BouncingScrollPhysics(),
+        child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: displayedOrders.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 15),
+          itemBuilder: (_, int index) {
+            final OrderModel order_ = displayedOrders[index];
+            return OrderCard(order_: order_);
+          },
+        ),
+      );
+    });
   }
 }
-
-// class MyAnimatedText extends StatefulWidget {
-//   const MyAnimatedText({super.key});
-//
-//   @override
-//   State<MyAnimatedText> createState() => _MyAnimatedTextState();
-// }
-// class _MyAnimatedTextState extends State<MyAnimatedText>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController controller;
-//   late Animation animation;
-//   late Color color_;
-//
-//   @override
-//   @mustCallSuper
-//   void initState() {
-//     super.initState();
-//     controller = AnimationController(
-//       vsync: this,
-//       duration: const Duration(milliseconds: 3000),
-//     );
-//     animation =
-//         ColorTween(begin: Colors.amber.shade800, end: Colors.greenAccent)
-//             .animate(controller);
-//
-//     animation.addListener(() {
-//       setState(() {
-//         color_ = animation.value;
-//       });
-//     });
-//
-//     controller.forward();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Text(
-//       'Pending Pickup',
-//       style: getTextTheme(context).labelLarge?.copyWith(
-//             fontStyle: FontStyle.italic,
-//             fontSize: 16,
-//             color: color_,
-//           ),
-//     );
-//   }
-// }

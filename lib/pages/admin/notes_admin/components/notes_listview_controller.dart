@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/model/note_model.dart';
-
-import '../../../../components/loading_widgets.dart';
+import 'package:smart_cafeteria/components/loading_widgets.dart';
+import 'package:smart_cafeteria/model/note_data.dart';
 
 class NotesListviewController extends GetxController {
   static NotesListviewController get instance => Get.find();

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/favorite_data.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
+import 'package:smart_cafeteria/pages/homepage/components/item_display_controller.dart';
 
 class FavoriteIconButtonItemDetail extends StatelessWidget {
   const FavoriteIconButtonItemDetail({super.key, required this.itemId});

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_cafeteria/pages/cart/components/cart_controller.dart';
 import 'package:smart_cafeteria/pages/homepage/components/carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
 import 'package:smart_cafeteria/pages/homepage/components/category/category_listview.dart';
 import 'package:smart_cafeteria/pages/homepage/components/homepage_heading.dart';
-import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_controller.dart';
 import 'package:smart_cafeteria/pages/homepage/components/item_display/item_display_gridview.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -12,8 +9,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// put display controller
-    Get.put(ItemDisplayController());
 
     return SingleChildScrollView(
       // padding: const EdgeInsets.fromLTRB(10, 3, 10, 2),

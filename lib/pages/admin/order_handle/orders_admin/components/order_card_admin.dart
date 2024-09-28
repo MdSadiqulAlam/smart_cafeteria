@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
-import 'package:smart_cafeteria/model/test/order_model.dart';
+import 'package:smart_cafeteria/model/order_model.dart';
 
 class OrderCardAdmin extends StatelessWidget {
   const OrderCardAdmin({super.key, required this.order_});
@@ -11,11 +12,6 @@ class OrderCardAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     // final double cardHeight = const Size.fromHeight(kToolbarHeight).height * 2;
     final bool brightness = getBrightness(context);
-
-    /// Aggregate item names
-    // final String itemNames = order_.orderedItems.map((item) {
-    //   return testAllItems[item.itemIndex].name.toCapitalCase();
-    // }).join(', ');
 
     return InkWell(
       onTap: () {
@@ -43,10 +39,8 @@ class OrderCardAdmin extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Order: ${order_.orderID}',
-                      style: getTextTheme(context).titleMedium?.copyWith(
-                            color: getColorScheme(context).onSecondaryContainer,
-                          ),
+                      'Order: ${order_.id}',
+                      style: getTextTheme(context).titleMedium?.copyWith(color: getColorScheme(context).onSecondaryContainer),
                     ),
                   ),
                   Padding(
@@ -80,19 +74,13 @@ class OrderCardAdmin extends StatelessWidget {
 
               /// info table
               const SizedBox(height: 10),
-              MyStatusRow(
-                label: 'Status',
-                status: order_.completed ? 'Completed' : 'Paid',
-              ),
+              MyStatusRow(label: 'Status', status: order_.completed ? 'Completed' : 'Paid'),
               const MyHorizontalDivider(),
-              MyStatusRow(
-                label: 'Price (${order_.totalItem} Items)',
-                status: '${order_.totalPaid} Tk',
-              ),
+              MyStatusRow(label: 'Price (${order_.totalItem} Items)', status: '${order_.totalPaid} Tk'),
               const MyHorizontalDivider(),
               MyStatusRow(
                 label: order_.completed ? 'Completed On' : 'Paid On',
-                status: '${order_.time} ${order_.date}',
+                status: '${DateFormat('HH:mm').format(order_.orderDate)},  ${DateFormat('MMM dd').format(order_.orderDate)}',
               ),
 
               /// buttons

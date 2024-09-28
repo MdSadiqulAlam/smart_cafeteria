@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_cafeteria/pages/admin/notes_admin/components/notes_listview_controller.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 
+import 'package:smart_cafeteria/model/note_data.dart';
+
 class EditNoteController extends GetxController {
   final NoteModel note;
 
