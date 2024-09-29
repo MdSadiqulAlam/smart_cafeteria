@@ -7,11 +7,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/item_model.dart';
 import 'package:smart_cafeteria/pages/admin/edit_item/edit_Item.dart';
-
-import '../../../../components/loading_widgets.dart';
-import '../../../../model/item_data.dart';
-import '../../../../utilities/network_manager.dart';
-import 'manage_items_controller.dart';
+import 'package:smart_cafeteria/components/loading_widgets.dart';
+import 'package:smart_cafeteria/model/item_data.dart';
+import 'package:smart_cafeteria/utilities/network_manager.dart';
+import 'package:smart_cafeteria/pages/admin/manage_items/components/manage_items_controller.dart';
 
 class ManageItemsCardAdmin extends StatelessWidget {
   const ManageItemsCardAdmin({super.key, required this.item_});

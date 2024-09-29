@@ -6,8 +6,10 @@ import 'package:smart_cafeteria/pages/order_screens/orders/components/order_cont
 import 'package:smart_cafeteria/config/get_config.dart';
 
 class OrdersListview extends StatelessWidget {
-  const OrdersListview({super.key});
+  const OrdersListview({super.key, this.filter = false, this.completed = false});
 
+  final bool filter;
+  final bool completed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +21,13 @@ class OrdersListview extends StatelessWidget {
         return const Center(child: CircularProgressIndicator());
       }
       // Determine which orders to display based on the filter
-      List<OrderModel> displayedOrders = orderController.filteredOrders;
+      final displayedOrders = filter
+          ? (completed ? orderController.completedOrders : orderController.pendingOrders)
+          : [...orderController.pendingOrders, ...orderController.completedOrders];
 
       // If displayedOrders is empty, show a message
       if (displayedOrders.isEmpty) {
-        return Center(child: Text('Now Orders to show!', style: getTextTheme(context).bodyLarge));
+        return Center(child: Text('No Orders to show!', style: getTextTheme(context).bodyLarge));
       }
 
       return SingleChildScrollView(

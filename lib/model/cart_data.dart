@@ -17,10 +17,14 @@ class CartData {
       final doc = await _cartCollection.doc(user!.uid).get();
       if (doc.exists && doc.data() != null) {
         // Parse the document data into a CartModel
-        final cart = CartModel.fromJson(doc.data() as Map<String, dynamic>);
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-        // Reverse the cartItems list
-        // cart.cartItems = cart.cartItems.reversed.toList();
+        // Check if cartItems exists in data, if not, assign an empty list
+        if (!data.containsKey('cartItems') || data['cartItems'] == null) {
+          return CartModel.empty();
+        }
+
+        final cart = CartModel.fromJson(data);
 
         return cart;
       } else {
@@ -29,7 +33,7 @@ class CartData {
     } catch (e) {
       print('Error fetching cart: $e');
     }
-    return null;
+    return CartModel.empty();
   }
 
   /// Add an item to the cart

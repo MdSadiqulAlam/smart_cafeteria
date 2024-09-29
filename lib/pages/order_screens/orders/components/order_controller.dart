@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:smart_cafeteria/components/loading_widgets.dart';
 import 'package:smart_cafeteria/model/order_model.dart';
@@ -15,10 +15,7 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
   var userOrder = UserOrderModel.empty().obs; // Observable instance of UserOrderModel
   var pendingOrders = <OrderModel>[].obs; // Observable list of pending orders
   var completedOrders = <OrderModel>[].obs; // Observable list of completed orders
-  var filteredOrders = <OrderModel>[].obs; // Observable list of filtered orders
   var isLoading = false.obs;
-
-  late final TabController tabController; // TabController
 
   /// Data Services
   final userOrderData = UserOrderData(); // UserOrder data service
@@ -28,17 +25,12 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(length: 3,initialIndex: 1, vsync: this);
-    tabController.addListener(() {
-      filterOrders(); // Call the filter function whenever the tab changes
+    fetchUserOrders(); // Fetch orders immediately on initialization
+    // Listen for real-time updates on user order
+    userOrderData.listenForUserOrderUpdates((updatedUserOrder) {
+      userOrder.value = updatedUserOrder; // Update the observable with the new user order
+      fetchUserOrders(); // Fetch pending and completed orders after user order updates
     });
-    fetchUserOrders(); // Fetch user orders on controller initialization
-  }
-
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
   }
 
   /// Fetch user orders (pending and completed) and update lists
@@ -53,7 +45,7 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
       await fetchCompletedOrders();
 
       // Call filterOrders to set the initial filtered orders
-      filterOrders();
+      // filterOrders();
     } catch (e) {
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: "Error fetching user orders: $e");
     } finally {
@@ -67,17 +59,12 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
       final pendingOrdersList = <OrderModel>[];
       for (String orderId in userOrder.value.pendingOrderIds) {
         final order = await pendingOrderData.fetchPendingOrderById(orderId);
-        pendingOrdersList.add(order);
-
-        /// todo: print debug
-        for (OrderedItemModel oitem in order.orderedItems) {
-          print(oitem.name);
-        }
+        // pendingOrdersList.add(order);
+        pendingOrdersList.insert(0, order);
       }
       pendingOrders.value = pendingOrdersList; // Update pendingOrders list
     } catch (e) {
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: "Error fetching pending orders: $e");
-      print("Error fetching pending orders: $e");
     }
   }
 
@@ -87,33 +74,12 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
       final completedOrdersList = <OrderModel>[];
       for (String orderId in userOrder.value.completedOrderIds) {
         final order = await completedOrderData.fetchCompletedOrderById(orderId);
-        completedOrdersList.add(order);
+        // completedOrdersList.add(order);
+        completedOrdersList.insert(0, order);
       }
       completedOrders.value = completedOrdersList; // Update completedOrders list
     } catch (e) {
       MyLoadingWidgets.errorSnackBar(title: 'Oh Snap!', message: "Error fetching completed orders: $e");
-    }
-  }
-
-  /// Filter orders based on the selected tab index
-  void filterOrders() {
-    int currentIndex = tabController.index;
-
-    switch (currentIndex) {
-      case 0:
-        // Show all orders
-        filteredOrders.value = [...pendingOrders, ...completedOrders];
-        break;
-      case 1:
-        // Show pending orders
-        filteredOrders.value = pendingOrders;
-        break;
-      case 2:
-        // Show completed orders
-        filteredOrders.value = completedOrders;
-        break;
-      default:
-        filteredOrders.value = [...pendingOrders, ...completedOrders];
     }
   }
 
@@ -141,11 +107,14 @@ class OrderController extends GetxController with GetSingleTickerProviderStateMi
 
       // Calculate total kcal for the entire order
       final num totalKcal = orderedItems.fold(0, (total, item) => total + (item.kcal * item.quantity));
+      // Get the current logged-in user's ID
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final userId = currentUser != null ? currentUser.uid : '';
 
       // Create a new order model with Firestore ID being auto-assigned
       final newOrder = OrderModel(
         id: '',
-        // Firestore will auto-assign the ID when saving
+        userId: userId,
         completed: false,
         orderDate: DateTime.now(),
         totalPaid: orderedItems.fold(0, (total, item) => total + (item.itemPrice * item.quantity)),

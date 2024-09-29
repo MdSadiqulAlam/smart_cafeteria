@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/order_model.dart';
+import 'package:smart_cafeteria/pages/admin/order_handle/order_detail_admin/order_details_admin.dart';
+import 'package:smart_cafeteria/pages/order_screens/orders/components/order_card.dart';
 
 class OrderCardAdmin extends StatelessWidget {
   const OrderCardAdmin({super.key, required this.order_});
@@ -15,10 +18,8 @@ class OrderCardAdmin extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // todo: goto details
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Getting QR code"), duration: Duration(milliseconds: 700)),
-        );
+        Get.to(() => OrderDetailsAdmin(order_: order_));
+        // Get.to(()=>OrderDetails(order_: order_));
       },
       borderRadius: BorderRadius.circular(10),
       child: Ink(
@@ -39,7 +40,7 @@ class OrderCardAdmin extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Order: ${order_.id}',
+                      'Order:  ${order_.id.substring(order_.id.length - 10)}',
                       style: getTextTheme(context).titleMedium?.copyWith(color: getColorScheme(context).onSecondaryContainer),
                     ),
                   ),
@@ -59,19 +60,6 @@ class OrderCardAdmin extends StatelessWidget {
                 ],
               ),
 
-              /// item names
-              // const SizedBox(height: 1),
-              // Text(
-              //   itemNames,
-              //   maxLines: 1,
-              //   overflow: TextOverflow.ellipsis,
-              //   style: getTextTheme(context).titleSmall?.copyWith(
-              //     fontSize: 18,
-              //     color: getColorScheme(context).onSecondaryContainer,
-              //     // fontWeight: FontWeight.bold,
-              //   ),
-              // ),
-
               /// info table
               const SizedBox(height: 10),
               MyStatusRow(label: 'Status', status: order_.completed ? 'Completed' : 'Paid'),
@@ -82,104 +70,9 @@ class OrderCardAdmin extends StatelessWidget {
                 label: order_.completed ? 'Completed On' : 'Paid On',
                 status: '${DateFormat('HH:mm').format(order_.orderDate)},  ${DateFormat('MMM dd').format(order_.orderDate)}',
               ),
-
-              /// buttons
-              // const SizedBox(height: 5),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     /// Details button
-              //     SizedBox(
-              //       width: getScreenWidth(context) * 0.33,
-              //       height: 35,
-              //       child: FilledButton(
-              //         onPressed: () {
-              //           Get.to(() => OrderDetails(order_: order_));
-              //         },
-              //         style: FilledButton.styleFrom(
-              //           padding: const EdgeInsets.all(0),
-              //           backgroundColor: brightness
-              //               ? getColorScheme(context).primaryContainer
-              //               : getColorScheme(context).primaryContainer.withOpacity(0.57),
-              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              //         ),
-              //         child: Center(
-              //           child: Text(
-              //             'Details',
-              //             style: TextStyle(fontSize: 18, color: getColorScheme(context).onPrimaryContainer),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //
-              //     /// Reorder button
-              //     SizedBox(
-              //       width: getScreenWidth(context) * 0.33,
-              //       height: 35,
-              //       child: FilledButton(
-              //         onPressed: () {
-              //           checkoutBottomSheet(context);
-              //         },
-              //         style: FilledButton.styleFrom(
-              //           padding: const EdgeInsets.all(0),
-              //           backgroundColor: getColorScheme(context).primary.withOpacity(0.85),
-              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              //         ),
-              //         child: const Center(child: Text('Re-Order', style: TextStyle(fontSize: 18))),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // order_.completed
-              //     ? const SizedBox.shrink()
-              //     : Align(
-              //         alignment: Alignment.topRight,
-              //         child: Text('Tap to get QRCode',
-              //             style: TextStyle(
-              //                 color: getColorScheme(context).onSecondaryContainer, fontSize: 13, fontWeight: FontWeight.bold)),
-              //       ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyHorizontalDivider extends StatelessWidget {
-  const MyHorizontalDivider({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Divider(color: getColorScheme(context).outlineVariant, height: 5, thickness: 1.5),
-    );
-  }
-}
-
-class MyStatusRow extends StatelessWidget {
-  const MyStatusRow({super.key, required this.label, required this.status});
-
-  final String label;
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: getTextTheme(context).labelLarge?.copyWith(color: getColorScheme(context).outline, fontSize: 15),
-          ),
-          Text(
-            status,
-            style: getTextTheme(context).labelSmall?.copyWith(color: getColorScheme(context).onSecondaryContainer, fontSize: 17),
-          ),
-        ],
       ),
     );
   }

@@ -19,6 +19,7 @@ class OrderCard extends StatelessWidget {
 
     // Aggregate item names directly from orderedItems
     final String itemNames = order_.orderedItems.map((item) => item.name.toCapitalCase()).join(', ');
+    String displayId = order_.id.length > 10 ? order_.id.substring(0, 10) : order_.id;
 
     return InkWell(
       onTap: () {
@@ -45,7 +46,7 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Order:  ${order_.id.substring(order_.id.length - 10)}',
+                      'Order:  $displayId',
                       style: getTextTheme(context).titleMedium?.copyWith(color: getColorScheme(context).onSecondaryContainer),
                     ),
                   ),

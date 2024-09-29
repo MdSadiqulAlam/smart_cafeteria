@@ -7,6 +7,10 @@ import 'package:smart_cafeteria/model/favorite_data.dart';
 import 'package:smart_cafeteria/model/cart_model.dart';
 import 'package:smart_cafeteria/model/cart_data.dart';
 
+import '../../cart/components/cart_controller.dart';
+import '../../favorites/components/favorite_controller.dart';
+import '../../order_screens/orders/components/order_controller.dart';
+
 class ItemDisplayController extends GetxController {
   static ItemDisplayController get instance => Get.find();
 
@@ -24,6 +28,10 @@ class ItemDisplayController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    /// order controller initiation
+    // Get.put(OrderController());
+
     fetchItemsFromFirestore(); // Fetch items from Firestore on initialization
     fetchFavoriteItems(); // Fetch favorite items
     fetchCartItems(); // Fetch cart items

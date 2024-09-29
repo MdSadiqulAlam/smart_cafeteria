@@ -57,6 +57,7 @@ class OrderModel {
     required this.totalItem,
     required this.orderedItems,
     required this.totalKcal,
+    required this.userId,
   });
 
   final String id;
@@ -66,6 +67,7 @@ class OrderModel {
   final num totalItem;
   final List<OrderedItemModel> orderedItems;
   final num totalKcal;
+  final String userId;
 
   static OrderModel empty() => OrderModel(
     id: '',
@@ -75,6 +77,7 @@ class OrderModel {
     totalItem: 0,
     orderedItems: [],
     totalKcal: 0,
+    userId: '',
   );
 
   Map<String, dynamic> toJson() {
@@ -85,6 +88,7 @@ class OrderModel {
       'totalItem': totalItem,
       'orderedItems': orderedItems.map((item) => item.toJson()).toList(),
       'totalKcal': totalKcal,
+      'userId': userId,
     };
   }
 
@@ -97,12 +101,11 @@ class OrderModel {
         orderDate: (data['orderDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
         totalPaid: data['totalPaid'] ?? 0,
         totalItem: data['totalItem'] ?? 0,
-        // Updated to parse list of maps
         orderedItems: (data['orderedItems'] as List<dynamic>?)
             ?.map((itemData) => OrderedItemModel.fromMap(itemData as Map<String, dynamic>))
-            .toList() ??
-            [],
+            .toList() ?? [],
         totalKcal: data['totalKcal'] ?? 0,
+        userId: data['userId'] ?? '',
       );
     }
     return OrderModel.empty();
@@ -116,6 +119,7 @@ class OrderModel {
     num? totalItem,
     List<OrderedItemModel>? orderedItems,
     num? totalKcal,
+    String? userId,
   }) {
     return OrderModel(
       id: id ?? this.id,
@@ -125,25 +129,14 @@ class OrderModel {
       totalItem: totalItem ?? this.totalItem,
       orderedItems: orderedItems ?? this.orderedItems,
       totalKcal: totalKcal ?? this.totalKcal,
+      userId: userId ?? this.userId,
     );
-  }
-
-  num calculateTotalPrice() {
-    return orderedItems.fold(0, (total, item) => total + (item.itemPrice * item.quantity));
-  }
-
-  int getItemCount() {
-    return orderedItems.fold(0, (total, item) => total + item.quantity.toInt());
-  }
-
-  /// Utility method to calculate the total kcal of the order
-  num calculateTotalKcal() {
-    return orderedItems.fold(0, (total, item) => total + (item.kcal * item.quantity));
   }
 }
 
 
-/// demo orders______________________________________________________________________________________________________________
+
+/// Demo orders______________________________________________________________________________________________________________
 final List<OrderModel> testCompletedOrders = <OrderModel>[
   OrderModel(
     id: "#0004982345",
@@ -152,7 +145,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
     totalPaid: 5999,
     totalItem: 6,
     totalKcal: 1800,
-    // Example total kcal value
+    userId: "demouserid123",
     orderedItems: <OrderedItemModel>[
       OrderedItemModel(
         itemId: "00341",
@@ -161,7 +154,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 2,
         itemPrice: 1998,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 500, // Example kcal per item
+        kcal: 500,
       ),
       OrderedItemModel(
         itemId: "00342",
@@ -170,7 +163,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 300, // Example kcal per item
+        kcal: 300,
       ),
       OrderedItemModel(
         itemId: "00343",
@@ -179,7 +172,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 3,
         itemPrice: 2997,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 300, // Example kcal per item
+        kcal: 300,
       ),
     ],
   ),
@@ -190,7 +183,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
     totalPaid: 8999,
     totalItem: 5,
     totalKcal: 2000,
-    // Example total kcal value
+    userId: "demouserid123",
     orderedItems: <OrderedItemModel>[
       OrderedItemModel(
         itemId: "00344",
@@ -199,7 +192,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 1999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 500, // Example kcal per item
+        kcal: 500,
       ),
       OrderedItemModel(
         itemId: "00345",
@@ -208,7 +201,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 2,
         itemPrice: 3998,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 800, // Example kcal per item
+        kcal: 800,
       ),
       OrderedItemModel(
         itemId: "00346",
@@ -217,7 +210,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 2999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 300, // Example kcal per item
+        kcal: 300,
       ),
       OrderedItemModel(
         itemId: "00347",
@@ -226,7 +219,7 @@ final List<OrderModel> testCompletedOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 1999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 400, // Example kcal per item
+        kcal: 400,
       ),
     ],
   ),
@@ -240,7 +233,7 @@ final List<OrderModel> testPendingOrders = <OrderModel>[
     totalPaid: 16999,
     totalItem: 9,
     totalKcal: 3500,
-    // Example total kcal value
+    userId: "demouserid123",
     orderedItems: <OrderedItemModel>[
       OrderedItemModel(
         itemId: "00376",
@@ -249,7 +242,7 @@ final List<OrderModel> testPendingOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 1999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 500, // Example kcal per item
+        kcal: 500,
       ),
       OrderedItemModel(
         itemId: "00377",
@@ -258,7 +251,7 @@ final List<OrderModel> testPendingOrders = <OrderModel>[
         quantity: 2,
         itemPrice: 3998,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 700, // Example kcal per item
+        kcal: 700,
       ),
       OrderedItemModel(
         itemId: "00378",
@@ -267,7 +260,7 @@ final List<OrderModel> testPendingOrders = <OrderModel>[
         quantity: 3,
         itemPrice: 2997,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 1000, // Example kcal per item
+        kcal: 1000,
       ),
       OrderedItemModel(
         itemId: "00379",
@@ -276,8 +269,9 @@ final List<OrderModel> testPendingOrders = <OrderModel>[
         quantity: 1,
         itemPrice: 1999,
         imagePath: "assets/default_image/upload_image.png",
-        kcal: 800, // Example kcal per item
+        kcal: 800,
       ),
     ],
   ),
 ];
+

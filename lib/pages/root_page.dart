@@ -47,7 +47,7 @@ class _RootPageState extends State<RootPage> {
     Get.put(ItemDisplayController());
     Get.put(FavoriteController());
     Get.put(CartController());
-    // Get.put(OrderController());
+    Get.put(OrderController());
   }
 
   @override

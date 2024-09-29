@@ -50,7 +50,7 @@ class OrderedItemCard extends StatelessWidget {
             ),
 
             /// info
-            const SizedBox(width: 13),
+            const SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

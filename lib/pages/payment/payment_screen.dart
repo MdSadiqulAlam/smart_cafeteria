@@ -39,15 +39,15 @@ class ConfirmPaymentButton extends StatelessWidget {
 
   final RxBool loadingPayment = false.obs;
 
-  void _loadPayment() async {
+  Future<void> _loadPayment() async {
     if (loadingPayment.value == false) {
       loadingPayment.value = true;
       try {
-        /// todo : place order
         await OrderController.instance.placeOrder();
 
+        /// todo: check payment
         Get.back();
-        Get.back();
+        // Get.back();
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           const SnackBar(content: Text("Payment Received"), duration: Duration(milliseconds: 1000)),
         );
@@ -70,12 +70,9 @@ class ConfirmPaymentButton extends StatelessWidget {
         child: loadingPayment.value
             ? FilledButton.tonal(
                 key: const ValueKey<bool>(true),
-                onPressed: () => _loadPayment(),
+                onPressed: () {},
                 style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30)),
-                child: LoadingAnimationWidget.fourRotatingDots(
-                  color: getColorScheme(context).onSecondaryContainer,
-                  size: 30,
-                ),
+                child: LoadingAnimationWidget.fourRotatingDots(color: getColorScheme(context).onSecondaryContainer, size: 30),
               )
             : FilledButton.tonal(
                 key: const ValueKey<bool>(false),

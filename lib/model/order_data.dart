@@ -17,7 +17,6 @@ class PendingOrdersData {
     }
   }
 
-
   /// Update an existing pending order in Firestore
   Future<void> updatePendingOrder(OrderModel order) async {
     try {
@@ -60,7 +59,7 @@ class PendingOrdersData {
   Future<void> moveToCompleted(OrderModel order) async {
     try {
       await deletePendingOrder(order.id); // Remove from PendingOrders
-      await CompletedOrdersData().saveCompletedOrder(order); // Add to CompletedOrders
+      await CompletedOrdersData().updateToCompletedOrder(order); // Save to CompletedOrders with the same order ID
     } catch (e) {
       throw "Error moving order to completed: $e";
     }
@@ -76,6 +75,16 @@ class CompletedOrdersData {
       await collection.add(order.toJson());
     } catch (e) {
       throw "Error saving completed order: $e";
+    }
+  }
+
+  /// Update (or create) a completed order with the same order ID from PendingOrders
+  Future<void> updateToCompletedOrder(OrderModel order) async {
+    try {
+      // Set the document in CompletedOrders using the same order ID
+      await collection.doc(order.id).set(order.toJson(), SetOptions(merge: true));
+    } catch (e) {
+      throw "Error updating completed order: $e";
     }
   }
 

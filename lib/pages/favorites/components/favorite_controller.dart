@@ -26,18 +26,28 @@ class FavoriteController extends GetxController {
   /// Update favoriteItems based on the favoriteItemIds from ItemDisplayController
   Future<void> updateFavoriteItems() async {
     try {
-      isLoading.value = true; // Start loading
+      isLoading.value = true;
 
       final allItems = ItemDisplayController.instance.allItems;
       final favoriteItemIds = ItemDisplayController.instance.favoriteItemIds;
 
-      // Filter allItems to include only those items whose ID is in favoriteItemIds
-      favoriteItems.value = allItems.where((item) => favoriteItemIds.contains(item.id)).toList();
+      // Temporary list to store valid items
+      final validItems = <ItemModel>[];
+      for (var favoriteId in favoriteItemIds) {
+        final item = allItems.firstWhere((item) => item.id == favoriteId, orElse: () => ItemModel.empty());
+
+        if (item.id != '') {
+          validItems.add(item); // Add valid item to the list
+        } else {
+          // Remove the item from the backend if it's not found
+          await ItemDisplayController.instance.removeFavorite(favoriteId);
+        }
+      }
+      favoriteItems.value = validItems.reversed.toList();
     } catch (e) {
       MyLoadingWidgets.errorSnackBar(title: 'Error on favorites page', message: "Failed to update favorite items $e");
     } finally {
       isLoading.value = false; // Stop loading
     }
   }
-
 }

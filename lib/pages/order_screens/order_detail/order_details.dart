@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:smart_cafeteria/components/appbar.dart';
 import 'package:smart_cafeteria/config/get_config.dart';
 import 'package:smart_cafeteria/model/order_model.dart';
-import '../../payment/checkout_bottom_sheet.dart';
-import 'components/order_detail_component.dart';
-import 'components/ordered_item_dropdown.dart';
+import 'package:smart_cafeteria/pages/payment/checkout_bottom_sheet.dart';
+import 'package:smart_cafeteria/pages/order_screens/order_detail/components/order_detail_component.dart';
+import 'package:smart_cafeteria/pages/order_screens/order_detail/components/ordered_item_dropdown.dart';
 
 class OrderDetails extends StatelessWidget {
   const OrderDetails({super.key, required this.order_});
@@ -49,9 +49,9 @@ class OrderDetails extends StatelessWidget {
                   ),
 
             /// order status
-            order_.completed ? const SizedBox.shrink() : const SizedBox(height: 10),
+            order_.completed ? const SizedBox.shrink() : const SizedBox(height: 7),
             const MyOrderDetailsLabel(label_: 'Order Status'),
-            const SizedBox(height: 7),
+            // const SizedBox(height: 7),
             MyOrderDetailContainer(
               components_: <Widget>[
                 MyOrderDetailStatusRow(
@@ -64,9 +64,9 @@ class OrderDetails extends StatelessWidget {
             ),
 
             /// order details
-            const SizedBox(height: 10),
-            const MyOrderDetailsLabel(label_: 'Order Details'),
             const SizedBox(height: 7),
+            const MyOrderDetailsLabel(label_: 'Order Details'),
+            // const SizedBox(height: 7),
             MyOrderDetailContainer(
               components_: <Widget>[
                 MyOrderDetailStatusRow(label: 'Order ID', status: order_.id),
@@ -80,7 +80,7 @@ class OrderDetails extends StatelessWidget {
             /// item details
             const SizedBox(height: 10),
             MyOrderDetailsLabel(label_: 'Item Detail (${order_.totalItem})'),
-            const SizedBox(height: 7),
+            // const SizedBox(height: 7),
             OrderedItemDropDown(order_: order_),
             const SizedBox(height: 100),
           ],
