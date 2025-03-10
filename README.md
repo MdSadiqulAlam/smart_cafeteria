@@ -2,6 +2,7 @@
 
 A **Flutter**-based mobile application designed to streamline the cafeteria experience by allowing users to browse menu items, place orders, and track their order status in real-time.
 
+<!-- Embed the video -->
 <video width="640" height="360" controls>
   <source src="https://github.com/MdSadiqulAlam/smart_cafeteria/raw/main/SmartCafeteria_demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
